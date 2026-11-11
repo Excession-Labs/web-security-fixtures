@@ -1,0 +1,9 @@
+HTTP/1.0 200 OK
+Server: CookieFixture/1.0.0 
+Date: Wed, 11 Nov 2026 10:10:45 GMT
+Content-Type: application/json
+Content-Length: 30
+Cache-Control: no-store
+Set-Cookie: sid=2f265d07d6b69a252a14a1ada46cb791; Domain=example.test; Path=/
+
+{"ok": true, "user": "alice"}

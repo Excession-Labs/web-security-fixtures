@@ -1,0 +1,22 @@
+exit code: 0
+stdout bytes: 211
+--- stderr ---
+* Added hsts.test:50583:127.0.0.1 to DNS cache
+* Hostname hsts.test was found in DNS cache
+*   Trying 127.0.0.1:50583...
+* Connected to hsts.test (127.0.0.1) port 50583
+> GET / HTTP/1.1
+> Host: hsts.test:50583
+> User-Agent: curl/8.7.1
+> Accept: */*
+> 
+* Request completely sent off
+* HTTP 1.0, assume close after body
+< HTTP/1.0 301 Moved Permanently
+< Server: HstsFixture/1.0.0 
+< Date: Wed, 11 Nov 2026 09:58:55 GMT
+< Location: https://hsts.test:50582/
+< Content-Length: 0
+< Strict-Transport-Security: max-age=31536000; includeSubDomains
+< 
+* Closing connection

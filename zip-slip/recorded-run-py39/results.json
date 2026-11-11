@@ -1,0 +1,1046 @@
+{
+  "schema_version": 1,
+  "fixture_version": "1.0.0",
+  "started_at": "2026-11-11T10:00:39.141918+00:00",
+  "method": "Real curl uploads to two locally spawned fixture modes, then the same archives through Python's own extraction",
+  "scope": {
+    "hosts": [
+      "127.0.0.1"
+    ],
+    "methods": [
+      "POST"
+    ],
+    "paths": [
+      "/upload/zip",
+      "/upload/tar"
+    ],
+    "writes": "only inside a temporary folder that verify.py creates and removes",
+    "data": "Synthetic marker files only"
+  },
+  "versions": {
+    "python": "3.9.6",
+    "os": "Darwin",
+    "architecture": "arm64",
+    "curl": "curl 8.7.1 (x86_64-apple-darwin24.0) libcurl/8.7.1 (SecureTransport) LibreSSL/3.3.6 zlib/1.2.12 nghttp2/1.64.0",
+    "tarfile_has_filters": false,
+    "tarfile_default_filter": "n/a"
+  },
+  "sha256": {
+    "fixture.py": "acbe4b9e5257872179335848120cb8f24db342b0309845f343745b8334cebc81",
+    "verify.py": "35ecbc7ae7d75c514aaebf7c00a491aaa9d898639c9dfd0ee46857bc433e9846"
+  },
+  "reproduction_command": "python3 verify.py --output recorded-run-py39",
+  "agent_execution": {
+    "executed": false,
+    "note": "Scripted checks only; no model or agent ran"
+  },
+  "cases": [
+    {
+      "id": "vulnerable/zip-benign",
+      "started_at": "2026-11-11T10:00:39.188658+00:00",
+      "elapsed_ms": 7.905,
+      "server": {
+        "fixture_version": "1.0.0",
+        "mode": "vulnerable",
+        "root": "/private/var/folders/bv/1kt12mw94_sbpfvm9xw5lw380000gn/T/zipslip-run-3vgv9mkh/zipslip-vulnerable",
+        "base_url": "http://127.0.0.1:51831"
+      },
+      "archive_kind": "zip",
+      "archive_members": [
+        "docs/",
+        "docs/readme.txt"
+      ],
+      "archive_sha256": "a908deda48368c38f0ea57ed986fd49bc33cabda3baf5f8b3298c05a03b5eda5",
+      "command": [
+        "curl",
+        "--noproxy",
+        "*",
+        "--silent",
+        "--show-error",
+        "--include",
+        "--http1.1",
+        "--connect-timeout",
+        "1",
+        "--max-time",
+        "3",
+        "--request",
+        "POST",
+        "--header",
+        "Content-Type: application/octet-stream",
+        "--data-binary",
+        "@/private/var/folders/bv/1kt12mw94_sbpfvm9xw5lw380000gn/T/zipslip-run-3vgv9mkh/archives/vulnerable-zip-benign.zip",
+        "http://127.0.0.1:51831/upload/zip"
+      ],
+      "curl_exit_code": 0,
+      "stderr": "",
+      "secure_expected_status": 200,
+      "demonstration_expected_status": 200,
+      "observed_status": 200,
+      "observed_body": {
+        "extracted": [
+          "docs/",
+          "docs/readme.txt"
+        ],
+        "status": "ok"
+      },
+      "new_files": [
+        "uploads/docs/readme.txt"
+      ],
+      "escaped_files": [],
+      "stray_files": [],
+      "boundary_holds": true,
+      "matches_demonstration": true,
+      "response_file": "vulnerable-zip-benign.http",
+      "response_sha256": "8ddd3f1896f809ad1957154b5e3abf05ca8d7a7874714ea15ddfb338f3501f63"
+    },
+    {
+      "id": "vulnerable/zip-inside-dotdot",
+      "started_at": "2026-11-11T10:00:39.196973+00:00",
+      "elapsed_ms": 7.685,
+      "server": {
+        "fixture_version": "1.0.0",
+        "mode": "vulnerable",
+        "root": "/private/var/folders/bv/1kt12mw94_sbpfvm9xw5lw380000gn/T/zipslip-run-3vgv9mkh/zipslip-vulnerable",
+        "base_url": "http://127.0.0.1:51831"
+      },
+      "archive_kind": "zip",
+      "archive_members": [
+        "docs/../notes.txt"
+      ],
+      "archive_sha256": "182c354051448318752909138249a8a866cee0043db2e2432d65379ff4d9ad5b",
+      "command": [
+        "curl",
+        "--noproxy",
+        "*",
+        "--silent",
+        "--show-error",
+        "--include",
+        "--http1.1",
+        "--connect-timeout",
+        "1",
+        "--max-time",
+        "3",
+        "--request",
+        "POST",
+        "--header",
+        "Content-Type: application/octet-stream",
+        "--data-binary",
+        "@/private/var/folders/bv/1kt12mw94_sbpfvm9xw5lw380000gn/T/zipslip-run-3vgv9mkh/archives/vulnerable-zip-inside-dotdot.zip",
+        "http://127.0.0.1:51831/upload/zip"
+      ],
+      "curl_exit_code": 0,
+      "stderr": "",
+      "secure_expected_status": 200,
+      "demonstration_expected_status": 200,
+      "observed_status": 200,
+      "observed_body": {
+        "extracted": [
+          "docs/../notes.txt"
+        ],
+        "status": "ok"
+      },
+      "new_files": [
+        "uploads/notes.txt"
+      ],
+      "escaped_files": [],
+      "stray_files": [],
+      "boundary_holds": true,
+      "matches_demonstration": true,
+      "response_file": "vulnerable-zip-inside-dotdot.http",
+      "response_sha256": "b5c2669bf41e30bb798b28e4e57f948b2382d01da9b1ad02635d810b6e9c58d8"
+    },
+    {
+      "id": "vulnerable/zip-dotdot",
+      "started_at": "2026-11-11T10:00:39.205069+00:00",
+      "elapsed_ms": 7.188,
+      "server": {
+        "fixture_version": "1.0.0",
+        "mode": "vulnerable",
+        "root": "/private/var/folders/bv/1kt12mw94_sbpfvm9xw5lw380000gn/T/zipslip-run-3vgv9mkh/zipslip-vulnerable",
+        "base_url": "http://127.0.0.1:51831"
+      },
+      "archive_kind": "zip",
+      "archive_members": [
+        "../outside/pwned-zip-dotdot.txt"
+      ],
+      "archive_sha256": "7d57617b02cedc04a9bc4466ef8ddae12b163ddf0cc3cdb228734759f305e8a0",
+      "command": [
+        "curl",
+        "--noproxy",
+        "*",
+        "--silent",
+        "--show-error",
+        "--include",
+        "--http1.1",
+        "--connect-timeout",
+        "1",
+        "--max-time",
+        "3",
+        "--request",
+        "POST",
+        "--header",
+        "Content-Type: application/octet-stream",
+        "--data-binary",
+        "@/private/var/folders/bv/1kt12mw94_sbpfvm9xw5lw380000gn/T/zipslip-run-3vgv9mkh/archives/vulnerable-zip-dotdot.zip",
+        "http://127.0.0.1:51831/upload/zip"
+      ],
+      "curl_exit_code": 0,
+      "stderr": "",
+      "secure_expected_status": 400,
+      "demonstration_expected_status": 200,
+      "observed_status": 200,
+      "observed_body": {
+        "extracted": [
+          "../outside/pwned-zip-dotdot.txt"
+        ],
+        "status": "ok"
+      },
+      "new_files": [
+        "outside/pwned-zip-dotdot.txt"
+      ],
+      "escaped_files": [
+        "outside/pwned-zip-dotdot.txt"
+      ],
+      "stray_files": [],
+      "boundary_holds": false,
+      "matches_demonstration": true,
+      "response_file": "vulnerable-zip-dotdot.http",
+      "response_sha256": "2cf6c0519ced1471973e9c181c4de6b9e97ed0b0057ba2b8b54fb306a1765f4a"
+    },
+    {
+      "id": "vulnerable/zip-absolute",
+      "started_at": "2026-11-11T10:00:39.212672+00:00",
+      "elapsed_ms": 7.428,
+      "server": {
+        "fixture_version": "1.0.0",
+        "mode": "vulnerable",
+        "root": "/private/var/folders/bv/1kt12mw94_sbpfvm9xw5lw380000gn/T/zipslip-run-3vgv9mkh/zipslip-vulnerable",
+        "base_url": "http://127.0.0.1:51831"
+      },
+      "archive_kind": "zip",
+      "archive_members": [
+        "/private/var/folders/bv/1kt12mw94_sbpfvm9xw5lw380000gn/T/zipslip-run-3vgv9mkh/zipslip-vulnerable/outside/pwned-zip-absolute.txt"
+      ],
+      "archive_sha256": "5d425975ac7f027b6ef7a198f4fd483e88fdf49c9b13df18676121a227b60503",
+      "command": [
+        "curl",
+        "--noproxy",
+        "*",
+        "--silent",
+        "--show-error",
+        "--include",
+        "--http1.1",
+        "--connect-timeout",
+        "1",
+        "--max-time",
+        "3",
+        "--request",
+        "POST",
+        "--header",
+        "Content-Type: application/octet-stream",
+        "--data-binary",
+        "@/private/var/folders/bv/1kt12mw94_sbpfvm9xw5lw380000gn/T/zipslip-run-3vgv9mkh/archives/vulnerable-zip-absolute.zip",
+        "http://127.0.0.1:51831/upload/zip"
+      ],
+      "curl_exit_code": 0,
+      "stderr": "",
+      "secure_expected_status": 400,
+      "demonstration_expected_status": 200,
+      "observed_status": 200,
+      "observed_body": {
+        "extracted": [
+          "/private/var/folders/bv/1kt12mw94_sbpfvm9xw5lw380000gn/T/zipslip-run-3vgv9mkh/zipslip-vulnerable/outside/pwned-zip-absolute.txt"
+        ],
+        "status": "ok"
+      },
+      "new_files": [
+        "outside/pwned-zip-absolute.txt"
+      ],
+      "escaped_files": [
+        "outside/pwned-zip-absolute.txt"
+      ],
+      "stray_files": [],
+      "boundary_holds": false,
+      "matches_demonstration": true,
+      "response_file": "vulnerable-zip-absolute.http",
+      "response_sha256": "f386e0b7308109de1822149d53853b9d99821951813ba36798313bfd124ed4b0"
+    },
+    {
+      "id": "vulnerable/tar-benign",
+      "started_at": "2026-11-11T10:00:39.220601+00:00",
+      "elapsed_ms": 7.256,
+      "server": {
+        "fixture_version": "1.0.0",
+        "mode": "vulnerable",
+        "root": "/private/var/folders/bv/1kt12mw94_sbpfvm9xw5lw380000gn/T/zipslip-run-3vgv9mkh/zipslip-vulnerable",
+        "base_url": "http://127.0.0.1:51831"
+      },
+      "archive_kind": "tar",
+      "archive_members": [
+        "reports",
+        "reports/summary.txt"
+      ],
+      "archive_sha256": "b8e1d7c4f1fc150c73bd2e582dfd2cb81470d4cede833f2dbd02d968ae9afa82",
+      "command": [
+        "curl",
+        "--noproxy",
+        "*",
+        "--silent",
+        "--show-error",
+        "--include",
+        "--http1.1",
+        "--connect-timeout",
+        "1",
+        "--max-time",
+        "3",
+        "--request",
+        "POST",
+        "--header",
+        "Content-Type: application/octet-stream",
+        "--data-binary",
+        "@/private/var/folders/bv/1kt12mw94_sbpfvm9xw5lw380000gn/T/zipslip-run-3vgv9mkh/archives/vulnerable-tar-benign.tar",
+        "http://127.0.0.1:51831/upload/tar"
+      ],
+      "curl_exit_code": 0,
+      "stderr": "",
+      "secure_expected_status": 200,
+      "demonstration_expected_status": 200,
+      "observed_status": 200,
+      "observed_body": {
+        "extracted": [
+          "reports",
+          "reports/summary.txt"
+        ],
+        "status": "ok"
+      },
+      "new_files": [
+        "uploads/reports/summary.txt"
+      ],
+      "escaped_files": [],
+      "stray_files": [],
+      "boundary_holds": true,
+      "matches_demonstration": true,
+      "response_file": "vulnerable-tar-benign.http",
+      "response_sha256": "83f32518eca84c7b8d94ed88fb1323a55ee3e05771baf5333edb28cd8a2651dc"
+    },
+    {
+      "id": "vulnerable/tar-dotdot",
+      "started_at": "2026-11-11T10:00:39.228451+00:00",
+      "elapsed_ms": 7.412,
+      "server": {
+        "fixture_version": "1.0.0",
+        "mode": "vulnerable",
+        "root": "/private/var/folders/bv/1kt12mw94_sbpfvm9xw5lw380000gn/T/zipslip-run-3vgv9mkh/zipslip-vulnerable",
+        "base_url": "http://127.0.0.1:51831"
+      },
+      "archive_kind": "tar",
+      "archive_members": [
+        "../outside/pwned-tar-dotdot.txt"
+      ],
+      "archive_sha256": "f2bfdd95cc95e606f0d6857be3e9ef0e56a1c97abfe594437b6ecc442edae00d",
+      "command": [
+        "curl",
+        "--noproxy",
+        "*",
+        "--silent",
+        "--show-error",
+        "--include",
+        "--http1.1",
+        "--connect-timeout",
+        "1",
+        "--max-time",
+        "3",
+        "--request",
+        "POST",
+        "--header",
+        "Content-Type: application/octet-stream",
+        "--data-binary",
+        "@/private/var/folders/bv/1kt12mw94_sbpfvm9xw5lw380000gn/T/zipslip-run-3vgv9mkh/archives/vulnerable-tar-dotdot.tar",
+        "http://127.0.0.1:51831/upload/tar"
+      ],
+      "curl_exit_code": 0,
+      "stderr": "",
+      "secure_expected_status": 400,
+      "demonstration_expected_status": 200,
+      "observed_status": 200,
+      "observed_body": {
+        "extracted": [
+          "../outside/pwned-tar-dotdot.txt"
+        ],
+        "status": "ok"
+      },
+      "new_files": [
+        "outside/pwned-tar-dotdot.txt"
+      ],
+      "escaped_files": [
+        "outside/pwned-tar-dotdot.txt"
+      ],
+      "stray_files": [],
+      "boundary_holds": false,
+      "matches_demonstration": true,
+      "response_file": "vulnerable-tar-dotdot.http",
+      "response_sha256": "a264aecc2fa16933bf21a3aed18aa96721a32e902b9e394aa343bfc7027dd53a"
+    },
+    {
+      "id": "vulnerable/tar-absolute",
+      "started_at": "2026-11-11T10:00:39.236380+00:00",
+      "elapsed_ms": 7.744,
+      "server": {
+        "fixture_version": "1.0.0",
+        "mode": "vulnerable",
+        "root": "/private/var/folders/bv/1kt12mw94_sbpfvm9xw5lw380000gn/T/zipslip-run-3vgv9mkh/zipslip-vulnerable",
+        "base_url": "http://127.0.0.1:51831"
+      },
+      "archive_kind": "tar",
+      "archive_members": [
+        "/private/var/folders/bv/1kt12mw94_sbpfvm9xw5lw380000gn/T/zipslip-run-3vgv9mkh/zipslip-vulnerable/outside/pwned-tar-absolute.txt"
+      ],
+      "archive_sha256": "8b01305014c45a1c38aa29ed3f3d99c6d1ed76b39947ee935e742a14e40e1f96",
+      "command": [
+        "curl",
+        "--noproxy",
+        "*",
+        "--silent",
+        "--show-error",
+        "--include",
+        "--http1.1",
+        "--connect-timeout",
+        "1",
+        "--max-time",
+        "3",
+        "--request",
+        "POST",
+        "--header",
+        "Content-Type: application/octet-stream",
+        "--data-binary",
+        "@/private/var/folders/bv/1kt12mw94_sbpfvm9xw5lw380000gn/T/zipslip-run-3vgv9mkh/archives/vulnerable-tar-absolute.tar",
+        "http://127.0.0.1:51831/upload/tar"
+      ],
+      "curl_exit_code": 0,
+      "stderr": "",
+      "secure_expected_status": 400,
+      "demonstration_expected_status": 200,
+      "observed_status": 200,
+      "observed_body": {
+        "extracted": [
+          "/private/var/folders/bv/1kt12mw94_sbpfvm9xw5lw380000gn/T/zipslip-run-3vgv9mkh/zipslip-vulnerable/outside/pwned-tar-absolute.txt"
+        ],
+        "status": "ok"
+      },
+      "new_files": [
+        "outside/pwned-tar-absolute.txt"
+      ],
+      "escaped_files": [
+        "outside/pwned-tar-absolute.txt"
+      ],
+      "stray_files": [],
+      "boundary_holds": false,
+      "matches_demonstration": true,
+      "response_file": "vulnerable-tar-absolute.http",
+      "response_sha256": "1511e177ef76d76fcef43bacf8874ba09573b00cb2a74f1bf6a6b7b9ed623031"
+    },
+    {
+      "id": "vulnerable/tar-symlink",
+      "started_at": "2026-11-11T10:00:39.244714+00:00",
+      "elapsed_ms": 7.592,
+      "server": {
+        "fixture_version": "1.0.0",
+        "mode": "vulnerable",
+        "root": "/private/var/folders/bv/1kt12mw94_sbpfvm9xw5lw380000gn/T/zipslip-run-3vgv9mkh/zipslip-vulnerable",
+        "base_url": "http://127.0.0.1:51831"
+      },
+      "archive_kind": "tar",
+      "archive_members": [
+        "link",
+        "link/pwned-tar-symlink.txt"
+      ],
+      "archive_sha256": "c3fe4925377eb42e0668e73ac4c1ec2476c0cc8f636309718e6be6ecce6e7126",
+      "command": [
+        "curl",
+        "--noproxy",
+        "*",
+        "--silent",
+        "--show-error",
+        "--include",
+        "--http1.1",
+        "--connect-timeout",
+        "1",
+        "--max-time",
+        "3",
+        "--request",
+        "POST",
+        "--header",
+        "Content-Type: application/octet-stream",
+        "--data-binary",
+        "@/private/var/folders/bv/1kt12mw94_sbpfvm9xw5lw380000gn/T/zipslip-run-3vgv9mkh/archives/vulnerable-tar-symlink.tar",
+        "http://127.0.0.1:51831/upload/tar"
+      ],
+      "curl_exit_code": 0,
+      "stderr": "",
+      "secure_expected_status": 400,
+      "demonstration_expected_status": 200,
+      "observed_status": 200,
+      "observed_body": {
+        "extracted": [
+          "link",
+          "link/pwned-tar-symlink.txt"
+        ],
+        "status": "ok"
+      },
+      "new_files": [
+        "outside/pwned-tar-symlink.txt",
+        "uploads/link"
+      ],
+      "escaped_files": [
+        "outside/pwned-tar-symlink.txt"
+      ],
+      "stray_files": [],
+      "boundary_holds": false,
+      "matches_demonstration": true,
+      "response_file": "vulnerable-tar-symlink.http",
+      "response_sha256": "e655e840bf1a62a5f2ed23b9f2bb84e03107055185d0c03291b9091e79e82678"
+    },
+    {
+      "id": "fixed/zip-benign",
+      "started_at": "2026-11-11T10:00:39.290174+00:00",
+      "elapsed_ms": 8.196,
+      "server": {
+        "fixture_version": "1.0.0",
+        "mode": "fixed",
+        "root": "/private/var/folders/bv/1kt12mw94_sbpfvm9xw5lw380000gn/T/zipslip-run-3vgv9mkh/zipslip-fixed",
+        "base_url": "http://127.0.0.1:51840"
+      },
+      "archive_kind": "zip",
+      "archive_members": [
+        "docs/",
+        "docs/readme.txt"
+      ],
+      "archive_sha256": "a908deda48368c38f0ea57ed986fd49bc33cabda3baf5f8b3298c05a03b5eda5",
+      "command": [
+        "curl",
+        "--noproxy",
+        "*",
+        "--silent",
+        "--show-error",
+        "--include",
+        "--http1.1",
+        "--connect-timeout",
+        "1",
+        "--max-time",
+        "3",
+        "--request",
+        "POST",
+        "--header",
+        "Content-Type: application/octet-stream",
+        "--data-binary",
+        "@/private/var/folders/bv/1kt12mw94_sbpfvm9xw5lw380000gn/T/zipslip-run-3vgv9mkh/archives/fixed-zip-benign.zip",
+        "http://127.0.0.1:51840/upload/zip"
+      ],
+      "curl_exit_code": 0,
+      "stderr": "",
+      "secure_expected_status": 200,
+      "demonstration_expected_status": 200,
+      "observed_status": 200,
+      "observed_body": {
+        "extracted": [
+          "docs/",
+          "docs/readme.txt"
+        ],
+        "status": "ok"
+      },
+      "new_files": [
+        "uploads/docs/readme.txt"
+      ],
+      "escaped_files": [],
+      "stray_files": [],
+      "boundary_holds": true,
+      "matches_demonstration": true,
+      "response_file": "fixed-zip-benign.http",
+      "response_sha256": "8ddd3f1896f809ad1957154b5e3abf05ca8d7a7874714ea15ddfb338f3501f63"
+    },
+    {
+      "id": "fixed/zip-inside-dotdot",
+      "started_at": "2026-11-11T10:00:39.299069+00:00",
+      "elapsed_ms": 7.641,
+      "server": {
+        "fixture_version": "1.0.0",
+        "mode": "fixed",
+        "root": "/private/var/folders/bv/1kt12mw94_sbpfvm9xw5lw380000gn/T/zipslip-run-3vgv9mkh/zipslip-fixed",
+        "base_url": "http://127.0.0.1:51840"
+      },
+      "archive_kind": "zip",
+      "archive_members": [
+        "docs/../notes.txt"
+      ],
+      "archive_sha256": "182c354051448318752909138249a8a866cee0043db2e2432d65379ff4d9ad5b",
+      "command": [
+        "curl",
+        "--noproxy",
+        "*",
+        "--silent",
+        "--show-error",
+        "--include",
+        "--http1.1",
+        "--connect-timeout",
+        "1",
+        "--max-time",
+        "3",
+        "--request",
+        "POST",
+        "--header",
+        "Content-Type: application/octet-stream",
+        "--data-binary",
+        "@/private/var/folders/bv/1kt12mw94_sbpfvm9xw5lw380000gn/T/zipslip-run-3vgv9mkh/archives/fixed-zip-inside-dotdot.zip",
+        "http://127.0.0.1:51840/upload/zip"
+      ],
+      "curl_exit_code": 0,
+      "stderr": "",
+      "secure_expected_status": 200,
+      "demonstration_expected_status": 200,
+      "observed_status": 200,
+      "observed_body": {
+        "extracted": [
+          "docs/../notes.txt"
+        ],
+        "status": "ok"
+      },
+      "new_files": [
+        "uploads/notes.txt"
+      ],
+      "escaped_files": [],
+      "stray_files": [],
+      "boundary_holds": true,
+      "matches_demonstration": true,
+      "response_file": "fixed-zip-inside-dotdot.http",
+      "response_sha256": "b5c2669bf41e30bb798b28e4e57f948b2382d01da9b1ad02635d810b6e9c58d8"
+    },
+    {
+      "id": "fixed/zip-dotdot",
+      "started_at": "2026-11-11T10:00:39.307303+00:00",
+      "elapsed_ms": 7.539,
+      "server": {
+        "fixture_version": "1.0.0",
+        "mode": "fixed",
+        "root": "/private/var/folders/bv/1kt12mw94_sbpfvm9xw5lw380000gn/T/zipslip-run-3vgv9mkh/zipslip-fixed",
+        "base_url": "http://127.0.0.1:51840"
+      },
+      "archive_kind": "zip",
+      "archive_members": [
+        "../outside/pwned-zip-dotdot.txt"
+      ],
+      "archive_sha256": "7d57617b02cedc04a9bc4466ef8ddae12b163ddf0cc3cdb228734759f305e8a0",
+      "command": [
+        "curl",
+        "--noproxy",
+        "*",
+        "--silent",
+        "--show-error",
+        "--include",
+        "--http1.1",
+        "--connect-timeout",
+        "1",
+        "--max-time",
+        "3",
+        "--request",
+        "POST",
+        "--header",
+        "Content-Type: application/octet-stream",
+        "--data-binary",
+        "@/private/var/folders/bv/1kt12mw94_sbpfvm9xw5lw380000gn/T/zipslip-run-3vgv9mkh/archives/fixed-zip-dotdot.zip",
+        "http://127.0.0.1:51840/upload/zip"
+      ],
+      "curl_exit_code": 0,
+      "stderr": "",
+      "secure_expected_status": 400,
+      "demonstration_expected_status": 400,
+      "observed_status": 400,
+      "observed_body": {
+        "error": "member_outside_destination",
+        "member": "../outside/pwned-zip-dotdot.txt"
+      },
+      "new_files": [],
+      "escaped_files": [],
+      "stray_files": [],
+      "boundary_holds": true,
+      "matches_demonstration": true,
+      "response_file": "fixed-zip-dotdot.http",
+      "response_sha256": "ac4133e470b9290d8825d1b817e17f6441a24c53d2a10800e438f6133278c486"
+    },
+    {
+      "id": "fixed/zip-absolute",
+      "started_at": "2026-11-11T10:00:39.315504+00:00",
+      "elapsed_ms": 7.319,
+      "server": {
+        "fixture_version": "1.0.0",
+        "mode": "fixed",
+        "root": "/private/var/folders/bv/1kt12mw94_sbpfvm9xw5lw380000gn/T/zipslip-run-3vgv9mkh/zipslip-fixed",
+        "base_url": "http://127.0.0.1:51840"
+      },
+      "archive_kind": "zip",
+      "archive_members": [
+        "/private/var/folders/bv/1kt12mw94_sbpfvm9xw5lw380000gn/T/zipslip-run-3vgv9mkh/zipslip-fixed/outside/pwned-zip-absolute.txt"
+      ],
+      "archive_sha256": "44e316cb516572634f3fb4ddc86990d3dbe1b615d1bae448d97492faae794e78",
+      "command": [
+        "curl",
+        "--noproxy",
+        "*",
+        "--silent",
+        "--show-error",
+        "--include",
+        "--http1.1",
+        "--connect-timeout",
+        "1",
+        "--max-time",
+        "3",
+        "--request",
+        "POST",
+        "--header",
+        "Content-Type: application/octet-stream",
+        "--data-binary",
+        "@/private/var/folders/bv/1kt12mw94_sbpfvm9xw5lw380000gn/T/zipslip-run-3vgv9mkh/archives/fixed-zip-absolute.zip",
+        "http://127.0.0.1:51840/upload/zip"
+      ],
+      "curl_exit_code": 0,
+      "stderr": "",
+      "secure_expected_status": 400,
+      "demonstration_expected_status": 400,
+      "observed_status": 400,
+      "observed_body": {
+        "error": "member_outside_destination",
+        "member": "/private/var/folders/bv/1kt12mw94_sbpfvm9xw5lw380000gn/T/zipslip-run-3vgv9mkh/zipslip-fixed/outside/pwned-zip-absolute.txt"
+      },
+      "new_files": [],
+      "escaped_files": [],
+      "stray_files": [],
+      "boundary_holds": true,
+      "matches_demonstration": true,
+      "response_file": "fixed-zip-absolute.http",
+      "response_sha256": "45aafe9cbb9b2214cab2b4867aa3ac98c7e54414bab6125a178458cf1a600ab9"
+    },
+    {
+      "id": "fixed/tar-benign",
+      "started_at": "2026-11-11T10:00:39.323553+00:00",
+      "elapsed_ms": 8.003,
+      "server": {
+        "fixture_version": "1.0.0",
+        "mode": "fixed",
+        "root": "/private/var/folders/bv/1kt12mw94_sbpfvm9xw5lw380000gn/T/zipslip-run-3vgv9mkh/zipslip-fixed",
+        "base_url": "http://127.0.0.1:51840"
+      },
+      "archive_kind": "tar",
+      "archive_members": [
+        "reports",
+        "reports/summary.txt"
+      ],
+      "archive_sha256": "b8e1d7c4f1fc150c73bd2e582dfd2cb81470d4cede833f2dbd02d968ae9afa82",
+      "command": [
+        "curl",
+        "--noproxy",
+        "*",
+        "--silent",
+        "--show-error",
+        "--include",
+        "--http1.1",
+        "--connect-timeout",
+        "1",
+        "--max-time",
+        "3",
+        "--request",
+        "POST",
+        "--header",
+        "Content-Type: application/octet-stream",
+        "--data-binary",
+        "@/private/var/folders/bv/1kt12mw94_sbpfvm9xw5lw380000gn/T/zipslip-run-3vgv9mkh/archives/fixed-tar-benign.tar",
+        "http://127.0.0.1:51840/upload/tar"
+      ],
+      "curl_exit_code": 0,
+      "stderr": "",
+      "secure_expected_status": 200,
+      "demonstration_expected_status": 200,
+      "observed_status": 200,
+      "observed_body": {
+        "extracted": [
+          "reports",
+          "reports/summary.txt"
+        ],
+        "status": "ok"
+      },
+      "new_files": [
+        "uploads/reports/summary.txt"
+      ],
+      "escaped_files": [],
+      "stray_files": [],
+      "boundary_holds": true,
+      "matches_demonstration": true,
+      "response_file": "fixed-tar-benign.http",
+      "response_sha256": "83f32518eca84c7b8d94ed88fb1323a55ee3e05771baf5333edb28cd8a2651dc"
+    },
+    {
+      "id": "fixed/tar-dotdot",
+      "started_at": "2026-11-11T10:00:39.332361+00:00",
+      "elapsed_ms": 8.44,
+      "server": {
+        "fixture_version": "1.0.0",
+        "mode": "fixed",
+        "root": "/private/var/folders/bv/1kt12mw94_sbpfvm9xw5lw380000gn/T/zipslip-run-3vgv9mkh/zipslip-fixed",
+        "base_url": "http://127.0.0.1:51840"
+      },
+      "archive_kind": "tar",
+      "archive_members": [
+        "../outside/pwned-tar-dotdot.txt"
+      ],
+      "archive_sha256": "f2bfdd95cc95e606f0d6857be3e9ef0e56a1c97abfe594437b6ecc442edae00d",
+      "command": [
+        "curl",
+        "--noproxy",
+        "*",
+        "--silent",
+        "--show-error",
+        "--include",
+        "--http1.1",
+        "--connect-timeout",
+        "1",
+        "--max-time",
+        "3",
+        "--request",
+        "POST",
+        "--header",
+        "Content-Type: application/octet-stream",
+        "--data-binary",
+        "@/private/var/folders/bv/1kt12mw94_sbpfvm9xw5lw380000gn/T/zipslip-run-3vgv9mkh/archives/fixed-tar-dotdot.tar",
+        "http://127.0.0.1:51840/upload/tar"
+      ],
+      "curl_exit_code": 0,
+      "stderr": "",
+      "secure_expected_status": 400,
+      "demonstration_expected_status": 400,
+      "observed_status": 400,
+      "observed_body": {
+        "error": "member_outside_destination",
+        "member": "../outside/pwned-tar-dotdot.txt"
+      },
+      "new_files": [],
+      "escaped_files": [],
+      "stray_files": [],
+      "boundary_holds": true,
+      "matches_demonstration": true,
+      "response_file": "fixed-tar-dotdot.http",
+      "response_sha256": "dbb4369a675cd8c0c00f0868c2e98747e17a556ae36bb4c91e3f9b1be92701bc"
+    },
+    {
+      "id": "fixed/tar-absolute",
+      "started_at": "2026-11-11T10:00:39.341852+00:00",
+      "elapsed_ms": 7.996,
+      "server": {
+        "fixture_version": "1.0.0",
+        "mode": "fixed",
+        "root": "/private/var/folders/bv/1kt12mw94_sbpfvm9xw5lw380000gn/T/zipslip-run-3vgv9mkh/zipslip-fixed",
+        "base_url": "http://127.0.0.1:51840"
+      },
+      "archive_kind": "tar",
+      "archive_members": [
+        "/private/var/folders/bv/1kt12mw94_sbpfvm9xw5lw380000gn/T/zipslip-run-3vgv9mkh/zipslip-fixed/outside/pwned-tar-absolute.txt"
+      ],
+      "archive_sha256": "0a2c593a0c2ecb5933790111955d787bebb28ff72e440feb10500a9672018b90",
+      "command": [
+        "curl",
+        "--noproxy",
+        "*",
+        "--silent",
+        "--show-error",
+        "--include",
+        "--http1.1",
+        "--connect-timeout",
+        "1",
+        "--max-time",
+        "3",
+        "--request",
+        "POST",
+        "--header",
+        "Content-Type: application/octet-stream",
+        "--data-binary",
+        "@/private/var/folders/bv/1kt12mw94_sbpfvm9xw5lw380000gn/T/zipslip-run-3vgv9mkh/archives/fixed-tar-absolute.tar",
+        "http://127.0.0.1:51840/upload/tar"
+      ],
+      "curl_exit_code": 0,
+      "stderr": "",
+      "secure_expected_status": 400,
+      "demonstration_expected_status": 400,
+      "observed_status": 400,
+      "observed_body": {
+        "error": "member_outside_destination",
+        "member": "/private/var/folders/bv/1kt12mw94_sbpfvm9xw5lw380000gn/T/zipslip-run-3vgv9mkh/zipslip-fixed/outside/pwned-tar-absolute.txt"
+      },
+      "new_files": [],
+      "escaped_files": [],
+      "stray_files": [],
+      "boundary_holds": true,
+      "matches_demonstration": true,
+      "response_file": "fixed-tar-absolute.http",
+      "response_sha256": "79b06101ebc9b6694de60dcfca730a086f8b5e228681fd2eb936d13ac844eede"
+    },
+    {
+      "id": "fixed/tar-symlink",
+      "started_at": "2026-11-11T10:00:39.350714+00:00",
+      "elapsed_ms": 7.916,
+      "server": {
+        "fixture_version": "1.0.0",
+        "mode": "fixed",
+        "root": "/private/var/folders/bv/1kt12mw94_sbpfvm9xw5lw380000gn/T/zipslip-run-3vgv9mkh/zipslip-fixed",
+        "base_url": "http://127.0.0.1:51840"
+      },
+      "archive_kind": "tar",
+      "archive_members": [
+        "link",
+        "link/pwned-tar-symlink.txt"
+      ],
+      "archive_sha256": "c3fe4925377eb42e0668e73ac4c1ec2476c0cc8f636309718e6be6ecce6e7126",
+      "command": [
+        "curl",
+        "--noproxy",
+        "*",
+        "--silent",
+        "--show-error",
+        "--include",
+        "--http1.1",
+        "--connect-timeout",
+        "1",
+        "--max-time",
+        "3",
+        "--request",
+        "POST",
+        "--header",
+        "Content-Type: application/octet-stream",
+        "--data-binary",
+        "@/private/var/folders/bv/1kt12mw94_sbpfvm9xw5lw380000gn/T/zipslip-run-3vgv9mkh/archives/fixed-tar-symlink.tar",
+        "http://127.0.0.1:51840/upload/tar"
+      ],
+      "curl_exit_code": 0,
+      "stderr": "",
+      "secure_expected_status": 400,
+      "demonstration_expected_status": 400,
+      "observed_status": 400,
+      "observed_body": {
+        "error": "member_outside_destination",
+        "member": "link -> ../outside"
+      },
+      "new_files": [],
+      "escaped_files": [],
+      "stray_files": [],
+      "boundary_holds": true,
+      "matches_demonstration": true,
+      "response_file": "fixed-tar-symlink.http",
+      "response_sha256": "788a99f9f83c0c59d2b4535d5d1162d24881293cea407d915497f03f4ff4900e"
+    }
+  ],
+  "stdlib": [
+    {
+      "archive": "zip-benign",
+      "method": "zipfile.extractall",
+      "outcome": "extracted",
+      "exception": null,
+      "new_files": [
+        "uploads/docs/readme.txt"
+      ],
+      "escaped_files": [],
+      "warnings": [],
+      "class": "ok"
+    },
+    {
+      "archive": "zip-inside-dotdot",
+      "method": "zipfile.extractall",
+      "outcome": "extracted",
+      "exception": null,
+      "new_files": [
+        "uploads/docs/notes.txt"
+      ],
+      "escaped_files": [],
+      "warnings": [],
+      "class": "ok"
+    },
+    {
+      "archive": "zip-dotdot",
+      "method": "zipfile.extractall",
+      "outcome": "extracted",
+      "exception": null,
+      "new_files": [
+        "uploads/outside/pwned-zip-dotdot.txt"
+      ],
+      "escaped_files": [],
+      "warnings": [],
+      "class": "escape"
+    },
+    {
+      "archive": "zip-absolute",
+      "method": "zipfile.extractall",
+      "outcome": "extracted",
+      "exception": null,
+      "new_files": [
+        "uploads/private/var/folders/bv/1kt12mw94_sbpfvm9xw5lw380000gn/T/zipslip-run-3vgv9mkh/stdlib-04/outside/pwned-zip-absolute.txt"
+      ],
+      "escaped_files": [],
+      "warnings": [],
+      "class": "escape"
+    },
+    {
+      "archive": "tar-benign",
+      "method": "tarfile.extractall (no filter argument)",
+      "outcome": "extracted",
+      "exception": null,
+      "new_files": [
+        "uploads/reports/summary.txt"
+      ],
+      "escaped_files": [],
+      "warnings": [],
+      "class": "ok"
+    },
+    {
+      "archive": "tar-dotdot",
+      "method": "tarfile.extractall (no filter argument)",
+      "outcome": "extracted",
+      "exception": null,
+      "new_files": [
+        "outside/pwned-tar-dotdot.txt"
+      ],
+      "escaped_files": [
+        "outside/pwned-tar-dotdot.txt"
+      ],
+      "warnings": [],
+      "class": "escape"
+    },
+    {
+      "archive": "tar-absolute",
+      "method": "tarfile.extractall (no filter argument)",
+      "outcome": "extracted",
+      "exception": null,
+      "new_files": [
+        "outside/pwned-tar-absolute.txt"
+      ],
+      "escaped_files": [
+        "outside/pwned-tar-absolute.txt"
+      ],
+      "warnings": [],
+      "class": "escape"
+    },
+    {
+      "archive": "tar-symlink",
+      "method": "tarfile.extractall (no filter argument)",
+      "outcome": "extracted",
+      "exception": null,
+      "new_files": [
+        "outside/pwned-tar-symlink.txt",
+        "uploads/link"
+      ],
+      "escaped_files": [
+        "outside/pwned-tar-symlink.txt"
+      ],
+      "warnings": [],
+      "class": "escape"
+    }
+  ],
+  "failures": [],
+  "temporary_folder_removed": true,
+  "finished_at": "2026-11-11T10:00:39.383981+00:00",
+  "all_demonstration_checks_passed": true
+}

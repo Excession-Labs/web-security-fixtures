@@ -1,0 +1,6 @@
+HTTP/1.0 301 Moved Permanently
+Server: HstsFixture/1.0.0 
+Date: Wed, 11 Nov 2026 09:58:55 GMT
+Location: https://hsts.test:50587/
+Content-Length: 0
+

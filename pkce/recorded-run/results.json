@@ -1,0 +1,973 @@
+{
+  "schema_version": 1,
+  "fixture_version": "1.0.0",
+  "started_at": "2026-11-11T09:58:56.042797+00:00",
+  "method": "Real curl subprocesses against two locally spawned fixture modes",
+  "scope": {
+    "hosts": [
+      "127.0.0.1"
+    ],
+    "methods": [
+      "GET",
+      "POST"
+    ],
+    "paths": [
+      "/authorize",
+      "/token"
+    ],
+    "data": "One synthetic public client; verifiers, codes and tokens are one-time demo values"
+  },
+  "versions": {
+    "python": "3.15.2",
+    "os": "Darwin",
+    "architecture": "arm64",
+    "curl": "curl 8.7.1 (x86_64-apple-darwin24.0) libcurl/8.7.1 (SecureTransport) LibreSSL/3.3.6 zlib/1.2.12 nghttp2/1.64.0"
+  },
+  "sha256": {
+    "fixture.py": "0960c99334fb8b209ffcda23b2c3d186bf3492b323286ea145bfbe14d860a1d0",
+    "verify.py": "e0cf7f8430c6d76595384021c663ad90fe76fe0d94d449374853dcc0a7f01141"
+  },
+  "reproduction_command": "python3 verify.py --output recorded-run",
+  "agent_execution": {
+    "executed": false,
+    "note": "HTTP verification was scripted; no model or Excession agent ran"
+  },
+  "rfc7636_appendix_b_vector": {
+    "verifier": "dBjftJeZ4CVP-mB92K27uhbUJU1p1r_wW1gFWFOEjXk",
+    "expected_challenge": "E9Melhoa2OwvFrEMTJguCHaoeK1t8URWbuGJSstw-cM",
+    "computed_challenge": "E9Melhoa2OwvFrEMTJguCHaoeK1t8URWbuGJSstw-cM",
+    "matches": true
+  },
+  "cases": [
+    {
+      "id": "vulnerable/legit-s256",
+      "started_at": "2026-11-11T09:58:56.093529+00:00",
+      "client_start": "s256",
+      "redeemer_sends": "verifier",
+      "server": "http://127.0.0.1:50601",
+      "steps": [
+        {
+          "step": "authorize",
+          "command": [
+            "curl",
+            "--noproxy",
+            "*",
+            "--silent",
+            "--show-error",
+            "--include",
+            "--http1.1",
+            "--connect-timeout",
+            "1",
+            "--max-time",
+            "3",
+            "--request",
+            "GET",
+            "http://127.0.0.1:50601/authorize?response_type=code&client_id=demo-public-app&redirect_uri=demoapp%3A%2F%2Fcallback&state=demo-state-legit-s256&code_challenge=VuywtG9PQeHVkauqVoaOB8cbZ1dWLYHuVoi5QIszsx8&code_challenge_method=S256"
+          ],
+          "curl_exit_code": 0,
+          "stderr": "",
+          "status": 302,
+          "response_file": "vulnerable-legit-s256-authorize.http",
+          "response_sha256": "48b67b8bb4036d9910133603003d4ce158e1c8eee6d87d0cffeae52d19de5c83"
+        },
+        {
+          "step": "token",
+          "command": [
+            "curl",
+            "--noproxy",
+            "*",
+            "--silent",
+            "--show-error",
+            "--include",
+            "--http1.1",
+            "--connect-timeout",
+            "1",
+            "--max-time",
+            "3",
+            "--request",
+            "POST",
+            "--data",
+            "grant_type=authorization_code&code=utkXwjruYLU8DHPhRyUuSw&client_id=demo-public-app&redirect_uri=demoapp%3A%2F%2Fcallback&code_verifier=bgm4SpCCXnOSJQ4DN5EvrL7-JF0ptcU9acDQmcuB7JM",
+            "http://127.0.0.1:50601/token"
+          ],
+          "curl_exit_code": 0,
+          "stderr": "",
+          "status": 200,
+          "response_file": "vulnerable-legit-s256-token.http",
+          "response_sha256": "ad9eeabf59e275aebede13555b8d228398c052f7c34813cd4e1f25987a810090"
+        }
+      ],
+      "authorize": {
+        "status": 302,
+        "location_scheme": "demoapp",
+        "returned_params": [
+          "code",
+          "state"
+        ],
+        "error": null,
+        "state_echoed": true
+      },
+      "token": {
+        "status": 200,
+        "body_keys": [
+          "access_token",
+          "token_type"
+        ],
+        "error": null
+      },
+      "elapsed_ms": 16.67,
+      "secure_expected_outcome": "token_issued",
+      "demonstration_expected_outcome": "token_issued",
+      "observed_outcome": "token_issued",
+      "matches_demonstration": true,
+      "boundary_holds": true
+    },
+    {
+      "id": "vulnerable/intercept-no-verifier",
+      "started_at": "2026-11-11T09:58:56.110256+00:00",
+      "client_start": "s256",
+      "redeemer_sends": "none",
+      "server": "http://127.0.0.1:50601",
+      "steps": [
+        {
+          "step": "authorize",
+          "command": [
+            "curl",
+            "--noproxy",
+            "*",
+            "--silent",
+            "--show-error",
+            "--include",
+            "--http1.1",
+            "--connect-timeout",
+            "1",
+            "--max-time",
+            "3",
+            "--request",
+            "GET",
+            "http://127.0.0.1:50601/authorize?response_type=code&client_id=demo-public-app&redirect_uri=demoapp%3A%2F%2Fcallback&state=demo-state-intercept-no-verifier&code_challenge=aaaY-o50fAhBq1RyxrCUF6QWjJCCxnesKprIvr4AdFI&code_challenge_method=S256"
+          ],
+          "curl_exit_code": 0,
+          "stderr": "",
+          "status": 302,
+          "response_file": "vulnerable-intercept-no-verifier-authorize.http",
+          "response_sha256": "990eef654a865065b673f345adf4c8f69cf8fa5e8f1d3d97cb8d6db1c6d5d5de"
+        },
+        {
+          "step": "token",
+          "command": [
+            "curl",
+            "--noproxy",
+            "*",
+            "--silent",
+            "--show-error",
+            "--include",
+            "--http1.1",
+            "--connect-timeout",
+            "1",
+            "--max-time",
+            "3",
+            "--request",
+            "POST",
+            "--data",
+            "grant_type=authorization_code&code=Awb_hZZmRxtiNaCBTgiQqw&client_id=demo-public-app&redirect_uri=demoapp%3A%2F%2Fcallback",
+            "http://127.0.0.1:50601/token"
+          ],
+          "curl_exit_code": 0,
+          "stderr": "",
+          "status": 200,
+          "response_file": "vulnerable-intercept-no-verifier-token.http",
+          "response_sha256": "ae61b9db28b390051ad6adf6e2c557bcc09fc89642365ea100831631d8836938"
+        }
+      ],
+      "authorize": {
+        "status": 302,
+        "location_scheme": "demoapp",
+        "returned_params": [
+          "code",
+          "state"
+        ],
+        "error": null,
+        "state_echoed": true
+      },
+      "token": {
+        "status": 200,
+        "body_keys": [
+          "access_token",
+          "token_type"
+        ],
+        "error": null
+      },
+      "elapsed_ms": 18.238,
+      "secure_expected_outcome": "token_denied:invalid_grant",
+      "demonstration_expected_outcome": "token_issued",
+      "observed_outcome": "token_issued",
+      "matches_demonstration": true,
+      "boundary_holds": false
+    },
+    {
+      "id": "vulnerable/intercept-guessed-verifier",
+      "started_at": "2026-11-11T09:58:56.128560+00:00",
+      "client_start": "s256",
+      "redeemer_sends": "guess",
+      "server": "http://127.0.0.1:50601",
+      "steps": [
+        {
+          "step": "authorize",
+          "command": [
+            "curl",
+            "--noproxy",
+            "*",
+            "--silent",
+            "--show-error",
+            "--include",
+            "--http1.1",
+            "--connect-timeout",
+            "1",
+            "--max-time",
+            "3",
+            "--request",
+            "GET",
+            "http://127.0.0.1:50601/authorize?response_type=code&client_id=demo-public-app&redirect_uri=demoapp%3A%2F%2Fcallback&state=demo-state-intercept-guessed-verifier&code_challenge=HGNzXDMTcgk8Ubf7P6pETYEoC503LO6H7nh6WreBAdA&code_challenge_method=S256"
+          ],
+          "curl_exit_code": 0,
+          "stderr": "",
+          "status": 302,
+          "response_file": "vulnerable-intercept-guessed-verifier-authorize.http",
+          "response_sha256": "022ff75eb9e355a6d87f31ad587df41de1be072351a87f0c5b1c455659d43924"
+        },
+        {
+          "step": "token",
+          "command": [
+            "curl",
+            "--noproxy",
+            "*",
+            "--silent",
+            "--show-error",
+            "--include",
+            "--http1.1",
+            "--connect-timeout",
+            "1",
+            "--max-time",
+            "3",
+            "--request",
+            "POST",
+            "--data",
+            "grant_type=authorization_code&code=j4PUFcCMp7MSlVrlzej6FQ&client_id=demo-public-app&redirect_uri=demoapp%3A%2F%2Fcallback&code_verifier=edRSwKKrOfnMpUMRPOd7H_ssflD1gGjgpfjfoPBV44g",
+            "http://127.0.0.1:50601/token"
+          ],
+          "curl_exit_code": 0,
+          "stderr": "",
+          "status": 200,
+          "response_file": "vulnerable-intercept-guessed-verifier-token.http",
+          "response_sha256": "c110c7d8b8f5cf158fae4aa2dfbce063c607c5778dade0d94039c38302d23340"
+        }
+      ],
+      "authorize": {
+        "status": 302,
+        "location_scheme": "demoapp",
+        "returned_params": [
+          "code",
+          "state"
+        ],
+        "error": null,
+        "state_echoed": true
+      },
+      "token": {
+        "status": 200,
+        "body_keys": [
+          "access_token",
+          "token_type"
+        ],
+        "error": null
+      },
+      "elapsed_ms": 16.218,
+      "secure_expected_outcome": "token_denied:invalid_grant",
+      "demonstration_expected_outcome": "token_issued",
+      "observed_outcome": "token_issued",
+      "matches_demonstration": true,
+      "boundary_holds": false
+    },
+    {
+      "id": "vulnerable/intercept-challenge-as-verifier",
+      "started_at": "2026-11-11T09:58:56.144825+00:00",
+      "client_start": "s256",
+      "redeemer_sends": "challenge",
+      "server": "http://127.0.0.1:50601",
+      "steps": [
+        {
+          "step": "authorize",
+          "command": [
+            "curl",
+            "--noproxy",
+            "*",
+            "--silent",
+            "--show-error",
+            "--include",
+            "--http1.1",
+            "--connect-timeout",
+            "1",
+            "--max-time",
+            "3",
+            "--request",
+            "GET",
+            "http://127.0.0.1:50601/authorize?response_type=code&client_id=demo-public-app&redirect_uri=demoapp%3A%2F%2Fcallback&state=demo-state-intercept-challenge-as-verifier&code_challenge=3dE7bxpvu-uIcvWO8dNUiOtSRxWf9ogbkp2c2W2AIIY&code_challenge_method=S256"
+          ],
+          "curl_exit_code": 0,
+          "stderr": "",
+          "status": 302,
+          "response_file": "vulnerable-intercept-challenge-as-verifier-authorize.http",
+          "response_sha256": "e68e5ac1e40f5144f4f753e14730cddc037de36568310b0b236a68bc171bc4d5"
+        },
+        {
+          "step": "token",
+          "command": [
+            "curl",
+            "--noproxy",
+            "*",
+            "--silent",
+            "--show-error",
+            "--include",
+            "--http1.1",
+            "--connect-timeout",
+            "1",
+            "--max-time",
+            "3",
+            "--request",
+            "POST",
+            "--data",
+            "grant_type=authorization_code&code=QGTZgmMFcbFbBeHwoxWHlw&client_id=demo-public-app&redirect_uri=demoapp%3A%2F%2Fcallback&code_verifier=3dE7bxpvu-uIcvWO8dNUiOtSRxWf9ogbkp2c2W2AIIY",
+            "http://127.0.0.1:50601/token"
+          ],
+          "curl_exit_code": 0,
+          "stderr": "",
+          "status": 200,
+          "response_file": "vulnerable-intercept-challenge-as-verifier-token.http",
+          "response_sha256": "da3c708fa6f95dba11f46068601e1452d33c8e0c91d95f8da904083f71ac11a3"
+        }
+      ],
+      "authorize": {
+        "status": 302,
+        "location_scheme": "demoapp",
+        "returned_params": [
+          "code",
+          "state"
+        ],
+        "error": null,
+        "state_echoed": true
+      },
+      "token": {
+        "status": 200,
+        "body_keys": [
+          "access_token",
+          "token_type"
+        ],
+        "error": null
+      },
+      "elapsed_ms": 16.657,
+      "secure_expected_outcome": "token_denied:invalid_grant",
+      "demonstration_expected_outcome": "token_issued",
+      "observed_outcome": "token_issued",
+      "matches_demonstration": true,
+      "boundary_holds": false
+    },
+    {
+      "id": "vulnerable/legacy-client-no-pkce",
+      "started_at": "2026-11-11T09:58:56.161523+00:00",
+      "client_start": "none",
+      "redeemer_sends": "none",
+      "server": "http://127.0.0.1:50601",
+      "steps": [
+        {
+          "step": "authorize",
+          "command": [
+            "curl",
+            "--noproxy",
+            "*",
+            "--silent",
+            "--show-error",
+            "--include",
+            "--http1.1",
+            "--connect-timeout",
+            "1",
+            "--max-time",
+            "3",
+            "--request",
+            "GET",
+            "http://127.0.0.1:50601/authorize?response_type=code&client_id=demo-public-app&redirect_uri=demoapp%3A%2F%2Fcallback&state=demo-state-legacy-client-no-pkce"
+          ],
+          "curl_exit_code": 0,
+          "stderr": "",
+          "status": 302,
+          "response_file": "vulnerable-legacy-client-no-pkce-authorize.http",
+          "response_sha256": "cfdcb5f541e1d4d262c0d651b454a9892cfaa06bf20f8cfe28f9aa3256695d22"
+        },
+        {
+          "step": "token",
+          "command": [
+            "curl",
+            "--noproxy",
+            "*",
+            "--silent",
+            "--show-error",
+            "--include",
+            "--http1.1",
+            "--connect-timeout",
+            "1",
+            "--max-time",
+            "3",
+            "--request",
+            "POST",
+            "--data",
+            "grant_type=authorization_code&code=AvdzT2CjL_7bh7rFw1jSpg&client_id=demo-public-app&redirect_uri=demoapp%3A%2F%2Fcallback",
+            "http://127.0.0.1:50601/token"
+          ],
+          "curl_exit_code": 0,
+          "stderr": "",
+          "status": 200,
+          "response_file": "vulnerable-legacy-client-no-pkce-token.http",
+          "response_sha256": "0f80255f18c69648c93bed91bb4d70ce0df59bc1a1f24bc38a2e05a63bf90786"
+        }
+      ],
+      "authorize": {
+        "status": 302,
+        "location_scheme": "demoapp",
+        "returned_params": [
+          "code",
+          "state"
+        ],
+        "error": null,
+        "state_echoed": true
+      },
+      "token": {
+        "status": 200,
+        "body_keys": [
+          "access_token",
+          "token_type"
+        ],
+        "error": null
+      },
+      "elapsed_ms": 15.171,
+      "secure_expected_outcome": "authorize_error:invalid_request",
+      "demonstration_expected_outcome": "token_issued",
+      "observed_outcome": "token_issued",
+      "matches_demonstration": true,
+      "boundary_holds": false
+    },
+    {
+      "id": "vulnerable/plain-method",
+      "started_at": "2026-11-11T09:58:56.176737+00:00",
+      "client_start": "plain",
+      "redeemer_sends": "verifier",
+      "server": "http://127.0.0.1:50601",
+      "steps": [
+        {
+          "step": "authorize",
+          "command": [
+            "curl",
+            "--noproxy",
+            "*",
+            "--silent",
+            "--show-error",
+            "--include",
+            "--http1.1",
+            "--connect-timeout",
+            "1",
+            "--max-time",
+            "3",
+            "--request",
+            "GET",
+            "http://127.0.0.1:50601/authorize?response_type=code&client_id=demo-public-app&redirect_uri=demoapp%3A%2F%2Fcallback&state=demo-state-plain-method&code_challenge=lzcHucZtsHd5fXNVF_cGpMS43QWmOslP8W8wiLQj1Dw&code_challenge_method=plain"
+          ],
+          "curl_exit_code": 0,
+          "stderr": "",
+          "status": 302,
+          "response_file": "vulnerable-plain-method-authorize.http",
+          "response_sha256": "02225f16b5e333c167e4fb9ea7427c3adcda1c1b9313f77b55426fc416742a43"
+        },
+        {
+          "step": "token",
+          "command": [
+            "curl",
+            "--noproxy",
+            "*",
+            "--silent",
+            "--show-error",
+            "--include",
+            "--http1.1",
+            "--connect-timeout",
+            "1",
+            "--max-time",
+            "3",
+            "--request",
+            "POST",
+            "--data",
+            "grant_type=authorization_code&code=utMsuyra8pimdl1KGkwREQ&client_id=demo-public-app&redirect_uri=demoapp%3A%2F%2Fcallback&code_verifier=lzcHucZtsHd5fXNVF_cGpMS43QWmOslP8W8wiLQj1Dw",
+            "http://127.0.0.1:50601/token"
+          ],
+          "curl_exit_code": 0,
+          "stderr": "",
+          "status": 200,
+          "response_file": "vulnerable-plain-method-token.http",
+          "response_sha256": "5500d45aceb8eaa7c55b83656f983363c70de13139fd08d8f7c5b0b5a677fb29"
+        }
+      ],
+      "authorize": {
+        "status": 302,
+        "location_scheme": "demoapp",
+        "returned_params": [
+          "code",
+          "state"
+        ],
+        "error": null,
+        "state_echoed": true
+      },
+      "token": {
+        "status": 200,
+        "body_keys": [
+          "access_token",
+          "token_type"
+        ],
+        "error": null
+      },
+      "elapsed_ms": 14.341,
+      "secure_expected_outcome": "authorize_error:invalid_request",
+      "demonstration_expected_outcome": "token_issued",
+      "observed_outcome": "token_issued",
+      "matches_demonstration": true,
+      "boundary_holds": false
+    },
+    {
+      "id": "fixed/legit-s256",
+      "started_at": "2026-11-11T09:58:56.229470+00:00",
+      "client_start": "s256",
+      "redeemer_sends": "verifier",
+      "server": "http://127.0.0.1:50617",
+      "steps": [
+        {
+          "step": "authorize",
+          "command": [
+            "curl",
+            "--noproxy",
+            "*",
+            "--silent",
+            "--show-error",
+            "--include",
+            "--http1.1",
+            "--connect-timeout",
+            "1",
+            "--max-time",
+            "3",
+            "--request",
+            "GET",
+            "http://127.0.0.1:50617/authorize?response_type=code&client_id=demo-public-app&redirect_uri=demoapp%3A%2F%2Fcallback&state=demo-state-legit-s256&code_challenge=QmoWZ6HslyiNqCzrg0f7PUhL8ttBSLLJPnoG58f2Tto&code_challenge_method=S256"
+          ],
+          "curl_exit_code": 0,
+          "stderr": "",
+          "status": 302,
+          "response_file": "fixed-legit-s256-authorize.http",
+          "response_sha256": "4e18be8da2db16f2a8f29f50cc215c7a8a401d71a1b84daee80e0b782a19b19a"
+        },
+        {
+          "step": "token",
+          "command": [
+            "curl",
+            "--noproxy",
+            "*",
+            "--silent",
+            "--show-error",
+            "--include",
+            "--http1.1",
+            "--connect-timeout",
+            "1",
+            "--max-time",
+            "3",
+            "--request",
+            "POST",
+            "--data",
+            "grant_type=authorization_code&code=eXJwT886SWQGTC9gOYCd7g&client_id=demo-public-app&redirect_uri=demoapp%3A%2F%2Fcallback&code_verifier=8kVfFbTnLTAUeKsC9RHfUw7wf_xJnb0Ql_gUKcBAjZ0",
+            "http://127.0.0.1:50617/token"
+          ],
+          "curl_exit_code": 0,
+          "stderr": "",
+          "status": 200,
+          "response_file": "fixed-legit-s256-token.http",
+          "response_sha256": "cf09b713d15ee9eb5bdef32b5e52846ac75bc5034521f6a5a264aea5fdacd66a"
+        }
+      ],
+      "authorize": {
+        "status": 302,
+        "location_scheme": "demoapp",
+        "returned_params": [
+          "code",
+          "state"
+        ],
+        "error": null,
+        "state_echoed": true
+      },
+      "token": {
+        "status": 200,
+        "body_keys": [
+          "access_token",
+          "token_type"
+        ],
+        "error": null
+      },
+      "elapsed_ms": 13.956,
+      "secure_expected_outcome": "token_issued",
+      "demonstration_expected_outcome": "token_issued",
+      "observed_outcome": "token_issued",
+      "matches_demonstration": true,
+      "boundary_holds": true
+    },
+    {
+      "id": "fixed/intercept-no-verifier",
+      "started_at": "2026-11-11T09:58:56.243471+00:00",
+      "client_start": "s256",
+      "redeemer_sends": "none",
+      "server": "http://127.0.0.1:50617",
+      "steps": [
+        {
+          "step": "authorize",
+          "command": [
+            "curl",
+            "--noproxy",
+            "*",
+            "--silent",
+            "--show-error",
+            "--include",
+            "--http1.1",
+            "--connect-timeout",
+            "1",
+            "--max-time",
+            "3",
+            "--request",
+            "GET",
+            "http://127.0.0.1:50617/authorize?response_type=code&client_id=demo-public-app&redirect_uri=demoapp%3A%2F%2Fcallback&state=demo-state-intercept-no-verifier&code_challenge=gdYvqu3J6J4cqBmMsnyePFpB8s1sY10UlqxuG4jw3CI&code_challenge_method=S256"
+          ],
+          "curl_exit_code": 0,
+          "stderr": "",
+          "status": 302,
+          "response_file": "fixed-intercept-no-verifier-authorize.http",
+          "response_sha256": "49d5f66274f231c71181b2dd282a34ab5d3d2436ccf1e6a4025af88cc0698e9c"
+        },
+        {
+          "step": "token",
+          "command": [
+            "curl",
+            "--noproxy",
+            "*",
+            "--silent",
+            "--show-error",
+            "--include",
+            "--http1.1",
+            "--connect-timeout",
+            "1",
+            "--max-time",
+            "3",
+            "--request",
+            "POST",
+            "--data",
+            "grant_type=authorization_code&code=92bsjlPjiQvHds3sVOunhg&client_id=demo-public-app&redirect_uri=demoapp%3A%2F%2Fcallback",
+            "http://127.0.0.1:50617/token"
+          ],
+          "curl_exit_code": 0,
+          "stderr": "",
+          "status": 400,
+          "response_file": "fixed-intercept-no-verifier-token.http",
+          "response_sha256": "8842fa27dd75668467307835a708675fa35b75d74c14e3b2b181a7ceecc6f859"
+        }
+      ],
+      "authorize": {
+        "status": 302,
+        "location_scheme": "demoapp",
+        "returned_params": [
+          "code",
+          "state"
+        ],
+        "error": null,
+        "state_echoed": true
+      },
+      "token": {
+        "status": 400,
+        "body_keys": [
+          "error"
+        ],
+        "error": "invalid_grant"
+      },
+      "elapsed_ms": 14.309,
+      "secure_expected_outcome": "token_denied:invalid_grant",
+      "demonstration_expected_outcome": "token_denied:invalid_grant",
+      "observed_outcome": "token_denied:invalid_grant",
+      "matches_demonstration": true,
+      "boundary_holds": true
+    },
+    {
+      "id": "fixed/intercept-guessed-verifier",
+      "started_at": "2026-11-11T09:58:56.257818+00:00",
+      "client_start": "s256",
+      "redeemer_sends": "guess",
+      "server": "http://127.0.0.1:50617",
+      "steps": [
+        {
+          "step": "authorize",
+          "command": [
+            "curl",
+            "--noproxy",
+            "*",
+            "--silent",
+            "--show-error",
+            "--include",
+            "--http1.1",
+            "--connect-timeout",
+            "1",
+            "--max-time",
+            "3",
+            "--request",
+            "GET",
+            "http://127.0.0.1:50617/authorize?response_type=code&client_id=demo-public-app&redirect_uri=demoapp%3A%2F%2Fcallback&state=demo-state-intercept-guessed-verifier&code_challenge=6pv5RoMwxk4WyYGlIj2hQ36rFjVmkbGxCArp7pP-6yE&code_challenge_method=S256"
+          ],
+          "curl_exit_code": 0,
+          "stderr": "",
+          "status": 302,
+          "response_file": "fixed-intercept-guessed-verifier-authorize.http",
+          "response_sha256": "598fff42c1f33e18dbebb21b74fc0e79d631f6358023385e3b25560714971f42"
+        },
+        {
+          "step": "token",
+          "command": [
+            "curl",
+            "--noproxy",
+            "*",
+            "--silent",
+            "--show-error",
+            "--include",
+            "--http1.1",
+            "--connect-timeout",
+            "1",
+            "--max-time",
+            "3",
+            "--request",
+            "POST",
+            "--data",
+            "grant_type=authorization_code&code=2aDBolnDw3hjXdhL5gn9pw&client_id=demo-public-app&redirect_uri=demoapp%3A%2F%2Fcallback&code_verifier=m4T8aC2QWcX-4NSV1wZxld2LO262m3QsjixJ2hEK5M8",
+            "http://127.0.0.1:50617/token"
+          ],
+          "curl_exit_code": 0,
+          "stderr": "",
+          "status": 400,
+          "response_file": "fixed-intercept-guessed-verifier-token.http",
+          "response_sha256": "8842fa27dd75668467307835a708675fa35b75d74c14e3b2b181a7ceecc6f859"
+        }
+      ],
+      "authorize": {
+        "status": 302,
+        "location_scheme": "demoapp",
+        "returned_params": [
+          "code",
+          "state"
+        ],
+        "error": null,
+        "state_echoed": true
+      },
+      "token": {
+        "status": 400,
+        "body_keys": [
+          "error"
+        ],
+        "error": "invalid_grant"
+      },
+      "elapsed_ms": 12.544,
+      "secure_expected_outcome": "token_denied:invalid_grant",
+      "demonstration_expected_outcome": "token_denied:invalid_grant",
+      "observed_outcome": "token_denied:invalid_grant",
+      "matches_demonstration": true,
+      "boundary_holds": true
+    },
+    {
+      "id": "fixed/intercept-challenge-as-verifier",
+      "started_at": "2026-11-11T09:58:56.270400+00:00",
+      "client_start": "s256",
+      "redeemer_sends": "challenge",
+      "server": "http://127.0.0.1:50617",
+      "steps": [
+        {
+          "step": "authorize",
+          "command": [
+            "curl",
+            "--noproxy",
+            "*",
+            "--silent",
+            "--show-error",
+            "--include",
+            "--http1.1",
+            "--connect-timeout",
+            "1",
+            "--max-time",
+            "3",
+            "--request",
+            "GET",
+            "http://127.0.0.1:50617/authorize?response_type=code&client_id=demo-public-app&redirect_uri=demoapp%3A%2F%2Fcallback&state=demo-state-intercept-challenge-as-verifier&code_challenge=9kb3qdDMYjl9Qf_HUk9HwrdxaZW9c4DiFmu7czGagsA&code_challenge_method=S256"
+          ],
+          "curl_exit_code": 0,
+          "stderr": "",
+          "status": 302,
+          "response_file": "fixed-intercept-challenge-as-verifier-authorize.http",
+          "response_sha256": "2fb2491c47054c28620df339c9c941c888ef7776951b95be09e3c5f1d5d51d33"
+        },
+        {
+          "step": "token",
+          "command": [
+            "curl",
+            "--noproxy",
+            "*",
+            "--silent",
+            "--show-error",
+            "--include",
+            "--http1.1",
+            "--connect-timeout",
+            "1",
+            "--max-time",
+            "3",
+            "--request",
+            "POST",
+            "--data",
+            "grant_type=authorization_code&code=bFQfkHgbCPgrhCeAhCRoXA&client_id=demo-public-app&redirect_uri=demoapp%3A%2F%2Fcallback&code_verifier=9kb3qdDMYjl9Qf_HUk9HwrdxaZW9c4DiFmu7czGagsA",
+            "http://127.0.0.1:50617/token"
+          ],
+          "curl_exit_code": 0,
+          "stderr": "",
+          "status": 400,
+          "response_file": "fixed-intercept-challenge-as-verifier-token.http",
+          "response_sha256": "8842fa27dd75668467307835a708675fa35b75d74c14e3b2b181a7ceecc6f859"
+        }
+      ],
+      "authorize": {
+        "status": 302,
+        "location_scheme": "demoapp",
+        "returned_params": [
+          "code",
+          "state"
+        ],
+        "error": null,
+        "state_echoed": true
+      },
+      "token": {
+        "status": 400,
+        "body_keys": [
+          "error"
+        ],
+        "error": "invalid_grant"
+      },
+      "elapsed_ms": 12.279,
+      "secure_expected_outcome": "token_denied:invalid_grant",
+      "demonstration_expected_outcome": "token_denied:invalid_grant",
+      "observed_outcome": "token_denied:invalid_grant",
+      "matches_demonstration": true,
+      "boundary_holds": true
+    },
+    {
+      "id": "fixed/legacy-client-no-pkce",
+      "started_at": "2026-11-11T09:58:56.282713+00:00",
+      "client_start": "none",
+      "redeemer_sends": "none",
+      "server": "http://127.0.0.1:50617",
+      "steps": [
+        {
+          "step": "authorize",
+          "command": [
+            "curl",
+            "--noproxy",
+            "*",
+            "--silent",
+            "--show-error",
+            "--include",
+            "--http1.1",
+            "--connect-timeout",
+            "1",
+            "--max-time",
+            "3",
+            "--request",
+            "GET",
+            "http://127.0.0.1:50617/authorize?response_type=code&client_id=demo-public-app&redirect_uri=demoapp%3A%2F%2Fcallback&state=demo-state-legacy-client-no-pkce"
+          ],
+          "curl_exit_code": 0,
+          "stderr": "",
+          "status": 302,
+          "response_file": "fixed-legacy-client-no-pkce-authorize.http",
+          "response_sha256": "c08542d8fa6ffc15ac92a833d26b762d182f511e6b00c8cf077162105dd7e80c"
+        }
+      ],
+      "authorize": {
+        "status": 302,
+        "location_scheme": "demoapp",
+        "returned_params": [
+          "error",
+          "error_description",
+          "state"
+        ],
+        "error": "invalid_request",
+        "state_echoed": true
+      },
+      "elapsed_ms": 6.191,
+      "secure_expected_outcome": "authorize_error:invalid_request",
+      "demonstration_expected_outcome": "authorize_error:invalid_request",
+      "observed_outcome": "authorize_error:invalid_request",
+      "matches_demonstration": true,
+      "boundary_holds": true
+    },
+    {
+      "id": "fixed/plain-method",
+      "started_at": "2026-11-11T09:58:56.288946+00:00",
+      "client_start": "plain",
+      "redeemer_sends": "verifier",
+      "server": "http://127.0.0.1:50617",
+      "steps": [
+        {
+          "step": "authorize",
+          "command": [
+            "curl",
+            "--noproxy",
+            "*",
+            "--silent",
+            "--show-error",
+            "--include",
+            "--http1.1",
+            "--connect-timeout",
+            "1",
+            "--max-time",
+            "3",
+            "--request",
+            "GET",
+            "http://127.0.0.1:50617/authorize?response_type=code&client_id=demo-public-app&redirect_uri=demoapp%3A%2F%2Fcallback&state=demo-state-plain-method&code_challenge=8mekNvGjY4aDA7J2AT9VhPbC1D9qhbG8wzledSBRoC0&code_challenge_method=plain"
+          ],
+          "curl_exit_code": 0,
+          "stderr": "",
+          "status": 302,
+          "response_file": "fixed-plain-method-authorize.http",
+          "response_sha256": "81b7f4889f990dbfbe3fb7156056ee395c8d6ed527cf030b866929559e972c82"
+        }
+      ],
+      "authorize": {
+        "status": 302,
+        "location_scheme": "demoapp",
+        "returned_params": [
+          "error",
+          "error_description",
+          "state"
+        ],
+        "error": "invalid_request",
+        "state_echoed": true
+      },
+      "elapsed_ms": 6.289,
+      "secure_expected_outcome": "authorize_error:invalid_request",
+      "demonstration_expected_outcome": "authorize_error:invalid_request",
+      "observed_outcome": "authorize_error:invalid_request",
+      "matches_demonstration": true,
+      "boundary_holds": true
+    }
+  ],
+  "failures": [],
+  "finished_at": "2026-11-11T09:58:56.296419+00:00",
+  "all_demonstration_checks_passed": true
+}

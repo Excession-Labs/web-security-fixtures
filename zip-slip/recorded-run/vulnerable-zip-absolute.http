@@ -1,0 +1,8 @@
+HTTP/1.0 200 OK
+Server: ArchiveFixture/1.0.0 
+Date: Wed, 11 Nov 2026 10:00:17 GMT
+Content-Type: application/json
+Content-Length: 163
+Cache-Control: no-store
+
+{"extracted": ["/private/var/folders/bv/1kt12mw94_sbpfvm9xw5lw380000gn/T/zipslip-run-j_xkxnp0/zipslip-vulnerable/outside/pwned-zip-absolute.txt"], "status": "ok"}

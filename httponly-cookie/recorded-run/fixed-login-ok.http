@@ -1,0 +1,9 @@
+HTTP/1.0 200 OK
+Server: CookieFixture/1.0.0 
+Date: Wed, 11 Nov 2026 10:10:45 GMT
+Content-Type: application/json
+Content-Length: 30
+Cache-Control: no-store
+Set-Cookie: __Host-sid=8884ed1ca9344caf19d0e0e691659c1b; Max-Age=3600; Path=/; Secure; HttpOnly; SameSite=Lax
+
+{"ok": true, "user": "alice"}

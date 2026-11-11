@@ -1,0 +1,14 @@
+exit code: 35
+stdout bytes: 0
+--- stderr ---
+* Added hsts.test:50578:127.0.0.1 to DNS cache
+* Switched from HTTP to HTTPS due to HSTS => https://hsts.test:50578/
+* Hostname hsts.test was found in DNS cache
+*   Trying 127.0.0.1:50578...
+* Connected to hsts.test (127.0.0.1) port 50578
+* ALPN: curl offers http/1.1
+* (304) (OUT), TLS handshake, Client hello (1):
+} [311 bytes data]
+* LibreSSL/3.3.6: error:1404B42E:SSL routines:ST_CONNECT:tlsv1 alert protocol version
+* Closing connection
+curl: (35) LibreSSL/3.3.6: error:1404B42E:SSL routines:ST_CONNECT:tlsv1 alert protocol version

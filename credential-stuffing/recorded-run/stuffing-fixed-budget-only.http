@@ -1,0 +1,1089 @@
+### attempt 1
+HTTP/1.0 401 Unauthorized
+Server: StuffingFixture/1.0.0 
+Date: Wed, 11 Nov 2026 10:00:58 GMT
+Content-Type: application/json
+Content-Length: 33
+Cache-Control: no-store
+
+{"error": "invalid_credentials"}
+
+### attempt 2
+HTTP/1.0 401 Unauthorized
+Server: StuffingFixture/1.0.0 
+Date: Wed, 11 Nov 2026 10:00:58 GMT
+Content-Type: application/json
+Content-Length: 33
+Cache-Control: no-store
+
+{"error": "invalid_credentials"}
+
+### attempt 3
+HTTP/1.0 401 Unauthorized
+Server: StuffingFixture/1.0.0 
+Date: Wed, 11 Nov 2026 10:00:58 GMT
+Content-Type: application/json
+Content-Length: 33
+Cache-Control: no-store
+
+{"error": "invalid_credentials"}
+
+### attempt 4
+HTTP/1.0 401 Unauthorized
+Server: StuffingFixture/1.0.0 
+Date: Wed, 11 Nov 2026 10:00:58 GMT
+Content-Type: application/json
+Content-Length: 33
+Cache-Control: no-store
+
+{"error": "invalid_credentials"}
+
+### attempt 5
+HTTP/1.0 401 Unauthorized
+Server: StuffingFixture/1.0.0 
+Date: Wed, 11 Nov 2026 10:00:58 GMT
+Content-Type: application/json
+Content-Length: 33
+Cache-Control: no-store
+
+{"error": "invalid_credentials"}
+
+### attempt 6
+HTTP/1.0 401 Unauthorized
+Server: StuffingFixture/1.0.0 
+Date: Wed, 11 Nov 2026 10:00:58 GMT
+Content-Type: application/json
+Content-Length: 33
+Cache-Control: no-store
+
+{"error": "invalid_credentials"}
+
+### attempt 7
+HTTP/1.0 401 Unauthorized
+Server: StuffingFixture/1.0.0 
+Date: Wed, 11 Nov 2026 10:00:58 GMT
+Content-Type: application/json
+Content-Length: 33
+Cache-Control: no-store
+
+{"error": "invalid_credentials"}
+
+### attempt 8
+HTTP/1.0 401 Unauthorized
+Server: StuffingFixture/1.0.0 
+Date: Wed, 11 Nov 2026 10:00:58 GMT
+Content-Type: application/json
+Content-Length: 33
+Cache-Control: no-store
+
+{"error": "invalid_credentials"}
+
+### attempt 9
+HTTP/1.0 401 Unauthorized
+Server: StuffingFixture/1.0.0 
+Date: Wed, 11 Nov 2026 10:00:58 GMT
+Content-Type: application/json
+Content-Length: 33
+Cache-Control: no-store
+
+{"error": "invalid_credentials"}
+
+### attempt 10
+HTTP/1.0 401 Unauthorized
+Server: StuffingFixture/1.0.0 
+Date: Wed, 11 Nov 2026 10:00:58 GMT
+Content-Type: application/json
+Content-Length: 33
+Cache-Control: no-store
+
+{"error": "invalid_credentials"}
+
+### attempt 11
+HTTP/1.0 429 Too Many Requests
+Server: StuffingFixture/1.0.0 
+Date: Wed, 11 Nov 2026 10:00:58 GMT
+Content-Type: application/json
+Content-Length: 31
+Cache-Control: no-store
+Retry-After: 60
+
+{"error": "too_many_attempts"}
+
+### attempt 12
+HTTP/1.0 429 Too Many Requests
+Server: StuffingFixture/1.0.0 
+Date: Wed, 11 Nov 2026 10:00:58 GMT
+Content-Type: application/json
+Content-Length: 31
+Cache-Control: no-store
+Retry-After: 60
+
+{"error": "too_many_attempts"}
+
+### attempt 13
+HTTP/1.0 429 Too Many Requests
+Server: StuffingFixture/1.0.0 
+Date: Wed, 11 Nov 2026 10:00:58 GMT
+Content-Type: application/json
+Content-Length: 31
+Cache-Control: no-store
+Retry-After: 60
+
+{"error": "too_many_attempts"}
+
+### attempt 14
+HTTP/1.0 429 Too Many Requests
+Server: StuffingFixture/1.0.0 
+Date: Wed, 11 Nov 2026 10:00:58 GMT
+Content-Type: application/json
+Content-Length: 31
+Cache-Control: no-store
+Retry-After: 60
+
+{"error": "too_many_attempts"}
+
+### attempt 15
+HTTP/1.0 429 Too Many Requests
+Server: StuffingFixture/1.0.0 
+Date: Wed, 11 Nov 2026 10:00:58 GMT
+Content-Type: application/json
+Content-Length: 31
+Cache-Control: no-store
+Retry-After: 60
+
+{"error": "too_many_attempts"}
+
+### attempt 16
+HTTP/1.0 429 Too Many Requests
+Server: StuffingFixture/1.0.0 
+Date: Wed, 11 Nov 2026 10:00:58 GMT
+Content-Type: application/json
+Content-Length: 31
+Cache-Control: no-store
+Retry-After: 60
+
+{"error": "too_many_attempts"}
+
+### attempt 17
+HTTP/1.0 429 Too Many Requests
+Server: StuffingFixture/1.0.0 
+Date: Wed, 11 Nov 2026 10:00:58 GMT
+Content-Type: application/json
+Content-Length: 31
+Cache-Control: no-store
+Retry-After: 60
+
+{"error": "too_many_attempts"}
+
+### attempt 18
+HTTP/1.0 429 Too Many Requests
+Server: StuffingFixture/1.0.0 
+Date: Wed, 11 Nov 2026 10:00:58 GMT
+Content-Type: application/json
+Content-Length: 31
+Cache-Control: no-store
+Retry-After: 60
+
+{"error": "too_many_attempts"}
+
+### attempt 19
+HTTP/1.0 429 Too Many Requests
+Server: StuffingFixture/1.0.0 
+Date: Wed, 11 Nov 2026 10:00:58 GMT
+Content-Type: application/json
+Content-Length: 31
+Cache-Control: no-store
+Retry-After: 60
+
+{"error": "too_many_attempts"}
+
+### attempt 20
+HTTP/1.0 429 Too Many Requests
+Server: StuffingFixture/1.0.0 
+Date: Wed, 11 Nov 2026 10:00:58 GMT
+Content-Type: application/json
+Content-Length: 31
+Cache-Control: no-store
+Retry-After: 60
+
+{"error": "too_many_attempts"}
+
+### attempt 21
+HTTP/1.0 429 Too Many Requests
+Server: StuffingFixture/1.0.0 
+Date: Wed, 11 Nov 2026 10:00:58 GMT
+Content-Type: application/json
+Content-Length: 31
+Cache-Control: no-store
+Retry-After: 60
+
+{"error": "too_many_attempts"}
+
+### attempt 22
+HTTP/1.0 429 Too Many Requests
+Server: StuffingFixture/1.0.0 
+Date: Wed, 11 Nov 2026 10:00:58 GMT
+Content-Type: application/json
+Content-Length: 31
+Cache-Control: no-store
+Retry-After: 60
+
+{"error": "too_many_attempts"}
+
+### attempt 23
+HTTP/1.0 429 Too Many Requests
+Server: StuffingFixture/1.0.0 
+Date: Wed, 11 Nov 2026 10:00:58 GMT
+Content-Type: application/json
+Content-Length: 31
+Cache-Control: no-store
+Retry-After: 60
+
+{"error": "too_many_attempts"}
+
+### attempt 24
+HTTP/1.0 429 Too Many Requests
+Server: StuffingFixture/1.0.0 
+Date: Wed, 11 Nov 2026 10:00:58 GMT
+Content-Type: application/json
+Content-Length: 31
+Cache-Control: no-store
+Retry-After: 60
+
+{"error": "too_many_attempts"}
+
+### attempt 25
+HTTP/1.0 429 Too Many Requests
+Server: StuffingFixture/1.0.0 
+Date: Wed, 11 Nov 2026 10:00:58 GMT
+Content-Type: application/json
+Content-Length: 31
+Cache-Control: no-store
+Retry-After: 60
+
+{"error": "too_many_attempts"}
+
+### attempt 26
+HTTP/1.0 429 Too Many Requests
+Server: StuffingFixture/1.0.0 
+Date: Wed, 11 Nov 2026 10:00:58 GMT
+Content-Type: application/json
+Content-Length: 31
+Cache-Control: no-store
+Retry-After: 60
+
+{"error": "too_many_attempts"}
+
+### attempt 27
+HTTP/1.0 429 Too Many Requests
+Server: StuffingFixture/1.0.0 
+Date: Wed, 11 Nov 2026 10:00:58 GMT
+Content-Type: application/json
+Content-Length: 31
+Cache-Control: no-store
+Retry-After: 60
+
+{"error": "too_many_attempts"}
+
+### attempt 28
+HTTP/1.0 429 Too Many Requests
+Server: StuffingFixture/1.0.0 
+Date: Wed, 11 Nov 2026 10:00:58 GMT
+Content-Type: application/json
+Content-Length: 31
+Cache-Control: no-store
+Retry-After: 60
+
+{"error": "too_many_attempts"}
+
+### attempt 29
+HTTP/1.0 429 Too Many Requests
+Server: StuffingFixture/1.0.0 
+Date: Wed, 11 Nov 2026 10:00:58 GMT
+Content-Type: application/json
+Content-Length: 31
+Cache-Control: no-store
+Retry-After: 60
+
+{"error": "too_many_attempts"}
+
+### attempt 30
+HTTP/1.0 429 Too Many Requests
+Server: StuffingFixture/1.0.0 
+Date: Wed, 11 Nov 2026 10:00:58 GMT
+Content-Type: application/json
+Content-Length: 31
+Cache-Control: no-store
+Retry-After: 60
+
+{"error": "too_many_attempts"}
+
+### attempt 31
+HTTP/1.0 429 Too Many Requests
+Server: StuffingFixture/1.0.0 
+Date: Wed, 11 Nov 2026 10:00:58 GMT
+Content-Type: application/json
+Content-Length: 31
+Cache-Control: no-store
+Retry-After: 60
+
+{"error": "too_many_attempts"}
+
+### attempt 32
+HTTP/1.0 429 Too Many Requests
+Server: StuffingFixture/1.0.0 
+Date: Wed, 11 Nov 2026 10:00:58 GMT
+Content-Type: application/json
+Content-Length: 31
+Cache-Control: no-store
+Retry-After: 60
+
+{"error": "too_many_attempts"}
+
+### attempt 33
+HTTP/1.0 429 Too Many Requests
+Server: StuffingFixture/1.0.0 
+Date: Wed, 11 Nov 2026 10:00:58 GMT
+Content-Type: application/json
+Content-Length: 31
+Cache-Control: no-store
+Retry-After: 60
+
+{"error": "too_many_attempts"}
+
+### attempt 34
+HTTP/1.0 429 Too Many Requests
+Server: StuffingFixture/1.0.0 
+Date: Wed, 11 Nov 2026 10:00:58 GMT
+Content-Type: application/json
+Content-Length: 31
+Cache-Control: no-store
+Retry-After: 60
+
+{"error": "too_many_attempts"}
+
+### attempt 35
+HTTP/1.0 429 Too Many Requests
+Server: StuffingFixture/1.0.0 
+Date: Wed, 11 Nov 2026 10:00:58 GMT
+Content-Type: application/json
+Content-Length: 31
+Cache-Control: no-store
+Retry-After: 60
+
+{"error": "too_many_attempts"}
+
+### attempt 36
+HTTP/1.0 429 Too Many Requests
+Server: StuffingFixture/1.0.0 
+Date: Wed, 11 Nov 2026 10:00:58 GMT
+Content-Type: application/json
+Content-Length: 31
+Cache-Control: no-store
+Retry-After: 60
+
+{"error": "too_many_attempts"}
+
+### attempt 37
+HTTP/1.0 429 Too Many Requests
+Server: StuffingFixture/1.0.0 
+Date: Wed, 11 Nov 2026 10:00:58 GMT
+Content-Type: application/json
+Content-Length: 31
+Cache-Control: no-store
+Retry-After: 60
+
+{"error": "too_many_attempts"}
+
+### attempt 38
+HTTP/1.0 429 Too Many Requests
+Server: StuffingFixture/1.0.0 
+Date: Wed, 11 Nov 2026 10:00:58 GMT
+Content-Type: application/json
+Content-Length: 31
+Cache-Control: no-store
+Retry-After: 60
+
+{"error": "too_many_attempts"}
+
+### attempt 39
+HTTP/1.0 429 Too Many Requests
+Server: StuffingFixture/1.0.0 
+Date: Wed, 11 Nov 2026 10:00:58 GMT
+Content-Type: application/json
+Content-Length: 31
+Cache-Control: no-store
+Retry-After: 60
+
+{"error": "too_many_attempts"}
+
+### attempt 40
+HTTP/1.0 429 Too Many Requests
+Server: StuffingFixture/1.0.0 
+Date: Wed, 11 Nov 2026 10:00:58 GMT
+Content-Type: application/json
+Content-Length: 31
+Cache-Control: no-store
+Retry-After: 60
+
+{"error": "too_many_attempts"}
+
+### attempt 41
+HTTP/1.0 429 Too Many Requests
+Server: StuffingFixture/1.0.0 
+Date: Wed, 11 Nov 2026 10:00:58 GMT
+Content-Type: application/json
+Content-Length: 31
+Cache-Control: no-store
+Retry-After: 60
+
+{"error": "too_many_attempts"}
+
+### attempt 42
+HTTP/1.0 429 Too Many Requests
+Server: StuffingFixture/1.0.0 
+Date: Wed, 11 Nov 2026 10:00:58 GMT
+Content-Type: application/json
+Content-Length: 31
+Cache-Control: no-store
+Retry-After: 60
+
+{"error": "too_many_attempts"}
+
+### attempt 43
+HTTP/1.0 429 Too Many Requests
+Server: StuffingFixture/1.0.0 
+Date: Wed, 11 Nov 2026 10:00:58 GMT
+Content-Type: application/json
+Content-Length: 31
+Cache-Control: no-store
+Retry-After: 60
+
+{"error": "too_many_attempts"}
+
+### attempt 44
+HTTP/1.0 429 Too Many Requests
+Server: StuffingFixture/1.0.0 
+Date: Wed, 11 Nov 2026 10:00:58 GMT
+Content-Type: application/json
+Content-Length: 31
+Cache-Control: no-store
+Retry-After: 60
+
+{"error": "too_many_attempts"}
+
+### attempt 45
+HTTP/1.0 429 Too Many Requests
+Server: StuffingFixture/1.0.0 
+Date: Wed, 11 Nov 2026 10:00:58 GMT
+Content-Type: application/json
+Content-Length: 31
+Cache-Control: no-store
+Retry-After: 60
+
+{"error": "too_many_attempts"}
+
+### attempt 46
+HTTP/1.0 429 Too Many Requests
+Server: StuffingFixture/1.0.0 
+Date: Wed, 11 Nov 2026 10:00:58 GMT
+Content-Type: application/json
+Content-Length: 31
+Cache-Control: no-store
+Retry-After: 60
+
+{"error": "too_many_attempts"}
+
+### attempt 47
+HTTP/1.0 429 Too Many Requests
+Server: StuffingFixture/1.0.0 
+Date: Wed, 11 Nov 2026 10:00:58 GMT
+Content-Type: application/json
+Content-Length: 31
+Cache-Control: no-store
+Retry-After: 60
+
+{"error": "too_many_attempts"}
+
+### attempt 48
+HTTP/1.0 429 Too Many Requests
+Server: StuffingFixture/1.0.0 
+Date: Wed, 11 Nov 2026 10:00:58 GMT
+Content-Type: application/json
+Content-Length: 31
+Cache-Control: no-store
+Retry-After: 60
+
+{"error": "too_many_attempts"}
+
+### attempt 49
+HTTP/1.0 429 Too Many Requests
+Server: StuffingFixture/1.0.0 
+Date: Wed, 11 Nov 2026 10:00:58 GMT
+Content-Type: application/json
+Content-Length: 31
+Cache-Control: no-store
+Retry-After: 60
+
+{"error": "too_many_attempts"}
+
+### attempt 50
+HTTP/1.0 429 Too Many Requests
+Server: StuffingFixture/1.0.0 
+Date: Wed, 11 Nov 2026 10:00:58 GMT
+Content-Type: application/json
+Content-Length: 31
+Cache-Control: no-store
+Retry-After: 60
+
+{"error": "too_many_attempts"}
+
+### attempt 51
+HTTP/1.0 429 Too Many Requests
+Server: StuffingFixture/1.0.0 
+Date: Wed, 11 Nov 2026 10:00:58 GMT
+Content-Type: application/json
+Content-Length: 31
+Cache-Control: no-store
+Retry-After: 60
+
+{"error": "too_many_attempts"}
+
+### attempt 52
+HTTP/1.0 429 Too Many Requests
+Server: StuffingFixture/1.0.0 
+Date: Wed, 11 Nov 2026 10:00:58 GMT
+Content-Type: application/json
+Content-Length: 31
+Cache-Control: no-store
+Retry-After: 60
+
+{"error": "too_many_attempts"}
+
+### attempt 53
+HTTP/1.0 429 Too Many Requests
+Server: StuffingFixture/1.0.0 
+Date: Wed, 11 Nov 2026 10:00:58 GMT
+Content-Type: application/json
+Content-Length: 31
+Cache-Control: no-store
+Retry-After: 60
+
+{"error": "too_many_attempts"}
+
+### attempt 54
+HTTP/1.0 429 Too Many Requests
+Server: StuffingFixture/1.0.0 
+Date: Wed, 11 Nov 2026 10:00:58 GMT
+Content-Type: application/json
+Content-Length: 31
+Cache-Control: no-store
+Retry-After: 60
+
+{"error": "too_many_attempts"}
+
+### attempt 55
+HTTP/1.0 429 Too Many Requests
+Server: StuffingFixture/1.0.0 
+Date: Wed, 11 Nov 2026 10:00:58 GMT
+Content-Type: application/json
+Content-Length: 31
+Cache-Control: no-store
+Retry-After: 60
+
+{"error": "too_many_attempts"}
+
+### attempt 56
+HTTP/1.0 429 Too Many Requests
+Server: StuffingFixture/1.0.0 
+Date: Wed, 11 Nov 2026 10:00:58 GMT
+Content-Type: application/json
+Content-Length: 31
+Cache-Control: no-store
+Retry-After: 60
+
+{"error": "too_many_attempts"}
+
+### attempt 57
+HTTP/1.0 429 Too Many Requests
+Server: StuffingFixture/1.0.0 
+Date: Wed, 11 Nov 2026 10:00:58 GMT
+Content-Type: application/json
+Content-Length: 31
+Cache-Control: no-store
+Retry-After: 60
+
+{"error": "too_many_attempts"}
+
+### attempt 58
+HTTP/1.0 429 Too Many Requests
+Server: StuffingFixture/1.0.0 
+Date: Wed, 11 Nov 2026 10:00:58 GMT
+Content-Type: application/json
+Content-Length: 31
+Cache-Control: no-store
+Retry-After: 60
+
+{"error": "too_many_attempts"}
+
+### attempt 59
+HTTP/1.0 429 Too Many Requests
+Server: StuffingFixture/1.0.0 
+Date: Wed, 11 Nov 2026 10:00:58 GMT
+Content-Type: application/json
+Content-Length: 31
+Cache-Control: no-store
+Retry-After: 60
+
+{"error": "too_many_attempts"}
+
+### attempt 60
+HTTP/1.0 429 Too Many Requests
+Server: StuffingFixture/1.0.0 
+Date: Wed, 11 Nov 2026 10:00:58 GMT
+Content-Type: application/json
+Content-Length: 31
+Cache-Control: no-store
+Retry-After: 60
+
+{"error": "too_many_attempts"}
+
+### attempt 61
+HTTP/1.0 429 Too Many Requests
+Server: StuffingFixture/1.0.0 
+Date: Wed, 11 Nov 2026 10:00:58 GMT
+Content-Type: application/json
+Content-Length: 31
+Cache-Control: no-store
+Retry-After: 60
+
+{"error": "too_many_attempts"}
+
+### attempt 62
+HTTP/1.0 429 Too Many Requests
+Server: StuffingFixture/1.0.0 
+Date: Wed, 11 Nov 2026 10:00:58 GMT
+Content-Type: application/json
+Content-Length: 31
+Cache-Control: no-store
+Retry-After: 60
+
+{"error": "too_many_attempts"}
+
+### attempt 63
+HTTP/1.0 429 Too Many Requests
+Server: StuffingFixture/1.0.0 
+Date: Wed, 11 Nov 2026 10:00:58 GMT
+Content-Type: application/json
+Content-Length: 31
+Cache-Control: no-store
+Retry-After: 60
+
+{"error": "too_many_attempts"}
+
+### attempt 64
+HTTP/1.0 429 Too Many Requests
+Server: StuffingFixture/1.0.0 
+Date: Wed, 11 Nov 2026 10:00:58 GMT
+Content-Type: application/json
+Content-Length: 31
+Cache-Control: no-store
+Retry-After: 60
+
+{"error": "too_many_attempts"}
+
+### attempt 65
+HTTP/1.0 429 Too Many Requests
+Server: StuffingFixture/1.0.0 
+Date: Wed, 11 Nov 2026 10:00:58 GMT
+Content-Type: application/json
+Content-Length: 31
+Cache-Control: no-store
+Retry-After: 60
+
+{"error": "too_many_attempts"}
+
+### attempt 66
+HTTP/1.0 429 Too Many Requests
+Server: StuffingFixture/1.0.0 
+Date: Wed, 11 Nov 2026 10:00:58 GMT
+Content-Type: application/json
+Content-Length: 31
+Cache-Control: no-store
+Retry-After: 60
+
+{"error": "too_many_attempts"}
+
+### attempt 67
+HTTP/1.0 429 Too Many Requests
+Server: StuffingFixture/1.0.0 
+Date: Wed, 11 Nov 2026 10:00:58 GMT
+Content-Type: application/json
+Content-Length: 31
+Cache-Control: no-store
+Retry-After: 60
+
+{"error": "too_many_attempts"}
+
+### attempt 68
+HTTP/1.0 429 Too Many Requests
+Server: StuffingFixture/1.0.0 
+Date: Wed, 11 Nov 2026 10:00:58 GMT
+Content-Type: application/json
+Content-Length: 31
+Cache-Control: no-store
+Retry-After: 60
+
+{"error": "too_many_attempts"}
+
+### attempt 69
+HTTP/1.0 429 Too Many Requests
+Server: StuffingFixture/1.0.0 
+Date: Wed, 11 Nov 2026 10:00:58 GMT
+Content-Type: application/json
+Content-Length: 31
+Cache-Control: no-store
+Retry-After: 60
+
+{"error": "too_many_attempts"}
+
+### attempt 70
+HTTP/1.0 429 Too Many Requests
+Server: StuffingFixture/1.0.0 
+Date: Wed, 11 Nov 2026 10:00:58 GMT
+Content-Type: application/json
+Content-Length: 31
+Cache-Control: no-store
+Retry-After: 60
+
+{"error": "too_many_attempts"}
+
+### attempt 71
+HTTP/1.0 429 Too Many Requests
+Server: StuffingFixture/1.0.0 
+Date: Wed, 11 Nov 2026 10:00:58 GMT
+Content-Type: application/json
+Content-Length: 31
+Cache-Control: no-store
+Retry-After: 60
+
+{"error": "too_many_attempts"}
+
+### attempt 72
+HTTP/1.0 429 Too Many Requests
+Server: StuffingFixture/1.0.0 
+Date: Wed, 11 Nov 2026 10:00:58 GMT
+Content-Type: application/json
+Content-Length: 31
+Cache-Control: no-store
+Retry-After: 60
+
+{"error": "too_many_attempts"}
+
+### attempt 73
+HTTP/1.0 429 Too Many Requests
+Server: StuffingFixture/1.0.0 
+Date: Wed, 11 Nov 2026 10:00:58 GMT
+Content-Type: application/json
+Content-Length: 31
+Cache-Control: no-store
+Retry-After: 60
+
+{"error": "too_many_attempts"}
+
+### attempt 74
+HTTP/1.0 429 Too Many Requests
+Server: StuffingFixture/1.0.0 
+Date: Wed, 11 Nov 2026 10:00:58 GMT
+Content-Type: application/json
+Content-Length: 31
+Cache-Control: no-store
+Retry-After: 60
+
+{"error": "too_many_attempts"}
+
+### attempt 75
+HTTP/1.0 429 Too Many Requests
+Server: StuffingFixture/1.0.0 
+Date: Wed, 11 Nov 2026 10:00:58 GMT
+Content-Type: application/json
+Content-Length: 31
+Cache-Control: no-store
+Retry-After: 60
+
+{"error": "too_many_attempts"}
+
+### attempt 76
+HTTP/1.0 429 Too Many Requests
+Server: StuffingFixture/1.0.0 
+Date: Wed, 11 Nov 2026 10:00:58 GMT
+Content-Type: application/json
+Content-Length: 31
+Cache-Control: no-store
+Retry-After: 60
+
+{"error": "too_many_attempts"}
+
+### attempt 77
+HTTP/1.0 429 Too Many Requests
+Server: StuffingFixture/1.0.0 
+Date: Wed, 11 Nov 2026 10:00:58 GMT
+Content-Type: application/json
+Content-Length: 31
+Cache-Control: no-store
+Retry-After: 60
+
+{"error": "too_many_attempts"}
+
+### attempt 78
+HTTP/1.0 429 Too Many Requests
+Server: StuffingFixture/1.0.0 
+Date: Wed, 11 Nov 2026 10:00:58 GMT
+Content-Type: application/json
+Content-Length: 31
+Cache-Control: no-store
+Retry-After: 60
+
+{"error": "too_many_attempts"}
+
+### attempt 79
+HTTP/1.0 429 Too Many Requests
+Server: StuffingFixture/1.0.0 
+Date: Wed, 11 Nov 2026 10:00:58 GMT
+Content-Type: application/json
+Content-Length: 31
+Cache-Control: no-store
+Retry-After: 60
+
+{"error": "too_many_attempts"}
+
+### attempt 80
+HTTP/1.0 429 Too Many Requests
+Server: StuffingFixture/1.0.0 
+Date: Wed, 11 Nov 2026 10:00:58 GMT
+Content-Type: application/json
+Content-Length: 31
+Cache-Control: no-store
+Retry-After: 60
+
+{"error": "too_many_attempts"}
+
+### attempt 81
+HTTP/1.0 429 Too Many Requests
+Server: StuffingFixture/1.0.0 
+Date: Wed, 11 Nov 2026 10:00:58 GMT
+Content-Type: application/json
+Content-Length: 31
+Cache-Control: no-store
+Retry-After: 60
+
+{"error": "too_many_attempts"}
+
+### attempt 82
+HTTP/1.0 429 Too Many Requests
+Server: StuffingFixture/1.0.0 
+Date: Wed, 11 Nov 2026 10:00:58 GMT
+Content-Type: application/json
+Content-Length: 31
+Cache-Control: no-store
+Retry-After: 60
+
+{"error": "too_many_attempts"}
+
+### attempt 83
+HTTP/1.0 429 Too Many Requests
+Server: StuffingFixture/1.0.0 
+Date: Wed, 11 Nov 2026 10:00:58 GMT
+Content-Type: application/json
+Content-Length: 31
+Cache-Control: no-store
+Retry-After: 60
+
+{"error": "too_many_attempts"}
+
+### attempt 84
+HTTP/1.0 429 Too Many Requests
+Server: StuffingFixture/1.0.0 
+Date: Wed, 11 Nov 2026 10:00:58 GMT
+Content-Type: application/json
+Content-Length: 31
+Cache-Control: no-store
+Retry-After: 60
+
+{"error": "too_many_attempts"}
+
+### attempt 85
+HTTP/1.0 429 Too Many Requests
+Server: StuffingFixture/1.0.0 
+Date: Wed, 11 Nov 2026 10:00:58 GMT
+Content-Type: application/json
+Content-Length: 31
+Cache-Control: no-store
+Retry-After: 60
+
+{"error": "too_many_attempts"}
+
+### attempt 86
+HTTP/1.0 429 Too Many Requests
+Server: StuffingFixture/1.0.0 
+Date: Wed, 11 Nov 2026 10:00:58 GMT
+Content-Type: application/json
+Content-Length: 31
+Cache-Control: no-store
+Retry-After: 60
+
+{"error": "too_many_attempts"}
+
+### attempt 87
+HTTP/1.0 429 Too Many Requests
+Server: StuffingFixture/1.0.0 
+Date: Wed, 11 Nov 2026 10:00:58 GMT
+Content-Type: application/json
+Content-Length: 31
+Cache-Control: no-store
+Retry-After: 60
+
+{"error": "too_many_attempts"}
+
+### attempt 88
+HTTP/1.0 429 Too Many Requests
+Server: StuffingFixture/1.0.0 
+Date: Wed, 11 Nov 2026 10:00:58 GMT
+Content-Type: application/json
+Content-Length: 31
+Cache-Control: no-store
+Retry-After: 60
+
+{"error": "too_many_attempts"}
+
+### attempt 89
+HTTP/1.0 429 Too Many Requests
+Server: StuffingFixture/1.0.0 
+Date: Wed, 11 Nov 2026 10:00:58 GMT
+Content-Type: application/json
+Content-Length: 31
+Cache-Control: no-store
+Retry-After: 60
+
+{"error": "too_many_attempts"}
+
+### attempt 90
+HTTP/1.0 429 Too Many Requests
+Server: StuffingFixture/1.0.0 
+Date: Wed, 11 Nov 2026 10:00:58 GMT
+Content-Type: application/json
+Content-Length: 31
+Cache-Control: no-store
+Retry-After: 60
+
+{"error": "too_many_attempts"}
+
+### attempt 91
+HTTP/1.0 429 Too Many Requests
+Server: StuffingFixture/1.0.0 
+Date: Wed, 11 Nov 2026 10:00:58 GMT
+Content-Type: application/json
+Content-Length: 31
+Cache-Control: no-store
+Retry-After: 60
+
+{"error": "too_many_attempts"}
+
+### attempt 92
+HTTP/1.0 429 Too Many Requests
+Server: StuffingFixture/1.0.0 
+Date: Wed, 11 Nov 2026 10:00:58 GMT
+Content-Type: application/json
+Content-Length: 31
+Cache-Control: no-store
+Retry-After: 60
+
+{"error": "too_many_attempts"}
+
+### attempt 93
+HTTP/1.0 429 Too Many Requests
+Server: StuffingFixture/1.0.0 
+Date: Wed, 11 Nov 2026 10:00:58 GMT
+Content-Type: application/json
+Content-Length: 31
+Cache-Control: no-store
+Retry-After: 60
+
+{"error": "too_many_attempts"}
+
+### attempt 94
+HTTP/1.0 429 Too Many Requests
+Server: StuffingFixture/1.0.0 
+Date: Wed, 11 Nov 2026 10:00:58 GMT
+Content-Type: application/json
+Content-Length: 31
+Cache-Control: no-store
+Retry-After: 60
+
+{"error": "too_many_attempts"}
+
+### attempt 95
+HTTP/1.0 429 Too Many Requests
+Server: StuffingFixture/1.0.0 
+Date: Wed, 11 Nov 2026 10:00:58 GMT
+Content-Type: application/json
+Content-Length: 31
+Cache-Control: no-store
+Retry-After: 60
+
+{"error": "too_many_attempts"}
+
+### attempt 96
+HTTP/1.0 429 Too Many Requests
+Server: StuffingFixture/1.0.0 
+Date: Wed, 11 Nov 2026 10:00:58 GMT
+Content-Type: application/json
+Content-Length: 31
+Cache-Control: no-store
+Retry-After: 60
+
+{"error": "too_many_attempts"}
+
+### attempt 97
+HTTP/1.0 429 Too Many Requests
+Server: StuffingFixture/1.0.0 
+Date: Wed, 11 Nov 2026 10:00:58 GMT
+Content-Type: application/json
+Content-Length: 31
+Cache-Control: no-store
+Retry-After: 60
+
+{"error": "too_many_attempts"}
+
+### attempt 98
+HTTP/1.0 429 Too Many Requests
+Server: StuffingFixture/1.0.0 
+Date: Wed, 11 Nov 2026 10:00:58 GMT
+Content-Type: application/json
+Content-Length: 31
+Cache-Control: no-store
+Retry-After: 60
+
+{"error": "too_many_attempts"}
+
+### attempt 99
+HTTP/1.0 429 Too Many Requests
+Server: StuffingFixture/1.0.0 
+Date: Wed, 11 Nov 2026 10:00:58 GMT
+Content-Type: application/json
+Content-Length: 31
+Cache-Control: no-store
+Retry-After: 60
+
+{"error": "too_many_attempts"}
+
+### attempt 100
+HTTP/1.0 429 Too Many Requests
+Server: StuffingFixture/1.0.0 
+Date: Wed, 11 Nov 2026 10:00:58 GMT
+Content-Type: application/json
+Content-Length: 31
+Cache-Control: no-store
+Retry-After: 60
+
+{"error": "too_many_attempts"}

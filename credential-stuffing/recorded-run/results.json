@@ -1,0 +1,555 @@
+{
+  "schema_version": 1,
+  "fixture_version": "1.0.0",
+  "started_at": "2026-11-11T10:00:56.357065+00:00",
+  "method": "Real curl subprocesses against locally spawned fixture servers",
+  "scope": {
+    "hosts": [
+      "127.0.0.1"
+    ],
+    "methods": [
+      "POST /login",
+      "GET /_stats"
+    ],
+    "data": "Synthetic accounts and a synthetic leaked-pair list generated from a fixed seed"
+  },
+  "data_summary": {
+    "accounts": 60,
+    "leaked_pairs": 100,
+    "pairs_valid_today": 12,
+    "pairs_unknown_user": 70,
+    "pairs_real_user_old_password": 18,
+    "corpus_digests": 127,
+    "valid_pairs_missing_from_corpus": 3,
+    "lockout_after_failures": 5,
+    "budget": {
+      "attempts": 10,
+      "window_seconds": 60
+    },
+    "seed": 20261111
+  },
+  "versions": {
+    "python": "3.15.2",
+    "os": "Darwin",
+    "architecture": "arm64",
+    "curl": "curl 8.7.1 (x86_64-apple-darwin24.0) libcurl/8.7.1 (SecureTransport) LibreSSL/3.3.6 zlib/1.2.12 nghttp2/1.64.0"
+  },
+  "sha256": {
+    "fixture.py": "ed31920f7e23ef65dda328a93e94b0c688af088194936fb4c1f1768b9a8946e5",
+    "verify.py": "8d82cce0d7964e3dd690d119b91a13b19ee0beddc1d8ecf141c30b7b38973488"
+  },
+  "reproduction_command": "python3 verify.py --output recorded-run",
+  "agent_execution": {
+    "executed": false,
+    "note": "HTTP verification was scripted; no model or Excession agent ran"
+  },
+  "checks": [
+    {
+      "id": "vulnerable/legit-signin",
+      "expected": 200,
+      "observed": 200,
+      "passed": true,
+      "positive_control": true
+    },
+    {
+      "id": "vulnerable/wrong-password",
+      "expected": 401,
+      "observed": 401,
+      "passed": true,
+      "negative_control": true
+    },
+    {
+      "id": "vulnerable/lockout-fires-on-one-account",
+      "expected": [
+        401,
+        401,
+        401,
+        401,
+        401,
+        423
+      ],
+      "observed": [
+        401,
+        401,
+        401,
+        401,
+        401,
+        423
+      ],
+      "passed": true,
+      "note": "repeated guesses on ONE account lock it, so the defense works for the case it was built for"
+    },
+    {
+      "id": "vulnerable/stuffing-run",
+      "expected": {
+        "attempts": 100,
+        "reached_password_check": 100,
+        "budget_denials": 0,
+        "sessions_opened": 12,
+        "pairs_confirmed": 12,
+        "leaked_denials": 0
+      },
+      "observed": {
+        "attempts": 100,
+        "reached_password_check": 100,
+        "budget_denials": 0,
+        "sessions_opened": 12,
+        "pairs_confirmed": 12,
+        "leaked_denials": 0
+      },
+      "passed": true,
+      "config": "vulnerable"
+    },
+    {
+      "id": "vulnerable/server-agrees-sessions",
+      "expected": 12,
+      "observed": 12,
+      "passed": true,
+      "config": "vulnerable"
+    },
+    {
+      "id": "vulnerable/lockout-never-fired",
+      "expected": {
+        "lockouts": 0,
+        "max_failures_on_one_account": 1
+      },
+      "observed": {
+        "lockouts": 0,
+        "max_failures_on_one_account": 1
+      },
+      "passed": true
+    },
+    {
+      "id": "fixed/legit-password-only",
+      "expected": [
+        401,
+        "second_factor_required"
+      ],
+      "observed": [
+        401,
+        "second_factor_required"
+      ],
+      "passed": true,
+      "positive_control": true
+    },
+    {
+      "id": "fixed/legit-signin-with-code",
+      "expected": 200,
+      "observed": 200,
+      "passed": true,
+      "positive_control": true
+    },
+    {
+      "id": "fixed/legit-wrong-code",
+      "expected": [
+        401,
+        "invalid_code"
+      ],
+      "observed": [
+        401,
+        "invalid_code"
+      ],
+      "passed": true,
+      "negative_control": true
+    },
+    {
+      "id": "fixed/wrong-password",
+      "expected": [
+        401,
+        "invalid_credentials"
+      ],
+      "observed": [
+        401,
+        "invalid_credentials"
+      ],
+      "passed": true,
+      "negative_control": true
+    },
+    {
+      "id": "fixed/owner-of-leaked-password-refused",
+      "expected": [
+        401,
+        "invalid_credentials"
+      ],
+      "observed": [
+        401,
+        "invalid_credentials"
+      ],
+      "passed": true,
+      "note": "the real owner of a reused, leaked password must reset it before signing in"
+    },
+    {
+      "id": "fixed/stuffing-run",
+      "expected": {
+        "attempts": 100,
+        "reached_password_check": 10,
+        "budget_denials": 90,
+        "sessions_opened": 0,
+        "pairs_confirmed": 0,
+        "leaked_denials": 0
+      },
+      "observed": {
+        "attempts": 100,
+        "reached_password_check": 10,
+        "budget_denials": 90,
+        "sessions_opened": 0,
+        "pairs_confirmed": 0,
+        "leaked_denials": 0
+      },
+      "passed": true,
+      "config": "fixed"
+    },
+    {
+      "id": "fixed/server-agrees-sessions",
+      "expected": 0,
+      "observed": 0,
+      "passed": true,
+      "config": "fixed"
+    },
+    {
+      "id": "fixed/legit-user-same-address-during-attack",
+      "expected": 429,
+      "observed": 429,
+      "passed": true,
+      "note": "known cost: the budget is keyed on the address, so a user behind the same address is refused too"
+    },
+    {
+      "id": "fixed-budget-only/stuffing-run",
+      "expected": {
+        "attempts": 100,
+        "reached_password_check": 10,
+        "budget_denials": 90,
+        "sessions_opened": 0,
+        "pairs_confirmed": 0,
+        "leaked_denials": 0
+      },
+      "observed": {
+        "attempts": 100,
+        "reached_password_check": 10,
+        "budget_denials": 90,
+        "sessions_opened": 0,
+        "pairs_confirmed": 0,
+        "leaked_denials": 0
+      },
+      "passed": true,
+      "config": "fixed-budget-only"
+    },
+    {
+      "id": "fixed-budget-only/server-agrees-sessions",
+      "expected": 0,
+      "observed": 0,
+      "passed": true,
+      "config": "fixed-budget-only"
+    },
+    {
+      "id": "fixed-budget-only-valid-first/stuffing-run",
+      "expected": {
+        "attempts": 100,
+        "reached_password_check": 10,
+        "budget_denials": 90,
+        "sessions_opened": 10,
+        "pairs_confirmed": 10,
+        "leaked_denials": 0
+      },
+      "observed": {
+        "attempts": 100,
+        "reached_password_check": 10,
+        "budget_denials": 90,
+        "sessions_opened": 10,
+        "pairs_confirmed": 10,
+        "leaked_denials": 0
+      },
+      "passed": true,
+      "config": "fixed-budget-only-valid-first"
+    },
+    {
+      "id": "fixed-budget-only-valid-first/server-agrees-sessions",
+      "expected": 10,
+      "observed": 10,
+      "passed": true,
+      "config": "fixed-budget-only-valid-first"
+    },
+    {
+      "id": "fixed-leaked-only/stuffing-run",
+      "expected": {
+        "attempts": 100,
+        "reached_password_check": 100,
+        "budget_denials": 0,
+        "sessions_opened": 3,
+        "pairs_confirmed": 3,
+        "leaked_denials": 9
+      },
+      "observed": {
+        "attempts": 100,
+        "reached_password_check": 100,
+        "budget_denials": 0,
+        "sessions_opened": 3,
+        "pairs_confirmed": 3,
+        "leaked_denials": 9
+      },
+      "passed": true,
+      "config": "fixed-leaked-only"
+    },
+    {
+      "id": "fixed-leaked-only/server-agrees-sessions",
+      "expected": 3,
+      "observed": 3,
+      "passed": true,
+      "config": "fixed-leaked-only"
+    },
+    {
+      "id": "fixed-mfa-only/stuffing-run",
+      "expected": {
+        "attempts": 100,
+        "reached_password_check": 100,
+        "budget_denials": 0,
+        "sessions_opened": 0,
+        "pairs_confirmed": 12,
+        "leaked_denials": 0
+      },
+      "observed": {
+        "attempts": 100,
+        "reached_password_check": 100,
+        "budget_denials": 0,
+        "sessions_opened": 0,
+        "pairs_confirmed": 12,
+        "leaked_denials": 0
+      },
+      "passed": true,
+      "config": "fixed-mfa-only"
+    },
+    {
+      "id": "fixed-mfa-only/server-agrees-sessions",
+      "expected": 0,
+      "observed": 0,
+      "passed": true,
+      "config": "fixed-mfa-only"
+    },
+    {
+      "id": "totp/rfc6238-sha1-vector-t59",
+      "expected": "94287082",
+      "observed": "94287082",
+      "passed": true
+    }
+  ],
+  "stuffing_runs": [
+    {
+      "config": "vulnerable",
+      "mode": "vulnerable",
+      "controls": [],
+      "list_order": "list",
+      "server": {
+        "fixture_version": "1.0.0",
+        "mode": "vulnerable",
+        "controls": [],
+        "base_url": "http://127.0.0.1:52542"
+      },
+      "started_at": "2026-11-11T10:00:56.520725+00:00",
+      "finished_at": "2026-11-11T10:00:57.190613+00:00",
+      "status_counts": {
+        "401": 88,
+        "200": 12
+      },
+      "server_stats": {
+        "attempts": 100,
+        "budget_denials": 0,
+        "controls": [],
+        "leaked_denials": 0,
+        "lockouts": 0,
+        "max_failures_on_one_account": 1,
+        "mfa_challenges": 0,
+        "sessions_issued": 12
+      },
+      "response_file": "stuffing-vulnerable.http",
+      "response_sha256": "93a0b8415da2ae246a061eb69c27d00bf4b02231b38a1bb7093216b927fb2260"
+    },
+    {
+      "config": "fixed",
+      "mode": "fixed",
+      "controls": [
+        "budget",
+        "leaked",
+        "mfa"
+      ],
+      "list_order": "list",
+      "server": {
+        "fixture_version": "1.0.0",
+        "mode": "fixed",
+        "controls": [
+          "budget",
+          "leaked",
+          "mfa"
+        ],
+        "base_url": "http://127.0.0.1:52650"
+      },
+      "started_at": "2026-11-11T10:00:57.311370+00:00",
+      "finished_at": "2026-11-11T10:00:57.950855+00:00",
+      "status_counts": {
+        "401": 10,
+        "429": 90
+      },
+      "server_stats": {
+        "attempts": 100,
+        "budget_denials": 90,
+        "controls": [
+          "budget",
+          "leaked",
+          "mfa"
+        ],
+        "leaked_denials": 0,
+        "lockouts": 0,
+        "max_failures_on_one_account": 1,
+        "mfa_challenges": 0,
+        "sessions_issued": 0
+      },
+      "response_file": "stuffing-fixed.http",
+      "response_sha256": "0ed401d47b718a90c62b61edb231779b0a832e696f3e7aaa8d72d9c7659d93ef"
+    },
+    {
+      "config": "fixed-budget-only",
+      "mode": "fixed",
+      "controls": [
+        "budget"
+      ],
+      "list_order": "list",
+      "server": {
+        "fixture_version": "1.0.0",
+        "mode": "fixed",
+        "controls": [
+          "budget"
+        ],
+        "base_url": "http://127.0.0.1:52757"
+      },
+      "started_at": "2026-11-11T10:00:58.003944+00:00",
+      "finished_at": "2026-11-11T10:00:58.657084+00:00",
+      "status_counts": {
+        "401": 10,
+        "429": 90
+      },
+      "server_stats": {
+        "attempts": 100,
+        "budget_denials": 90,
+        "controls": [
+          "budget"
+        ],
+        "leaked_denials": 0,
+        "lockouts": 0,
+        "max_failures_on_one_account": 1,
+        "mfa_challenges": 0,
+        "sessions_issued": 0
+      },
+      "response_file": "stuffing-fixed-budget-only.http",
+      "response_sha256": "ddd87562a5f157abd03494cb8422a216e42d7d2a055b3c785da4a09c25a8dbf3"
+    },
+    {
+      "config": "fixed-budget-only-valid-first",
+      "mode": "fixed",
+      "controls": [
+        "budget"
+      ],
+      "list_order": "valid-first",
+      "server": {
+        "fixture_version": "1.0.0",
+        "mode": "fixed",
+        "controls": [
+          "budget"
+        ],
+        "base_url": "http://127.0.0.1:52859"
+      },
+      "started_at": "2026-11-11T10:00:58.700551+00:00",
+      "finished_at": "2026-11-11T10:00:59.411456+00:00",
+      "status_counts": {
+        "200": 10,
+        "429": 90
+      },
+      "server_stats": {
+        "attempts": 100,
+        "budget_denials": 90,
+        "controls": [
+          "budget"
+        ],
+        "leaked_denials": 0,
+        "lockouts": 0,
+        "max_failures_on_one_account": 0,
+        "mfa_challenges": 0,
+        "sessions_issued": 10
+      },
+      "response_file": "stuffing-fixed-budget-only-valid-first.http",
+      "response_sha256": "8ffb9904a1774b201749056f0ad5728385594cd1243e2ee4561af6c95c0ef399"
+    },
+    {
+      "config": "fixed-leaked-only",
+      "mode": "fixed",
+      "controls": [
+        "leaked"
+      ],
+      "list_order": "list",
+      "server": {
+        "fixture_version": "1.0.0",
+        "mode": "fixed",
+        "controls": [
+          "leaked"
+        ],
+        "base_url": "http://127.0.0.1:52961"
+      },
+      "started_at": "2026-11-11T10:00:59.459366+00:00",
+      "finished_at": "2026-11-11T10:01:00.142440+00:00",
+      "status_counts": {
+        "401": 97,
+        "200": 3
+      },
+      "server_stats": {
+        "attempts": 100,
+        "budget_denials": 0,
+        "controls": [
+          "leaked"
+        ],
+        "leaked_denials": 9,
+        "lockouts": 0,
+        "max_failures_on_one_account": 1,
+        "mfa_challenges": 0,
+        "sessions_issued": 3
+      },
+      "response_file": "stuffing-fixed-leaked-only.http",
+      "response_sha256": "1d759113ed0ff6d920eb056081cdf06f9bca672c8a2882bf43d91f85d3d047c4"
+    },
+    {
+      "config": "fixed-mfa-only",
+      "mode": "fixed",
+      "controls": [
+        "mfa"
+      ],
+      "list_order": "list",
+      "server": {
+        "fixture_version": "1.0.0",
+        "mode": "fixed",
+        "controls": [
+          "mfa"
+        ],
+        "base_url": "http://127.0.0.1:53065"
+      },
+      "started_at": "2026-11-11T10:01:00.185338+00:00",
+      "finished_at": "2026-11-11T10:01:00.864916+00:00",
+      "status_counts": {
+        "401": 100
+      },
+      "server_stats": {
+        "attempts": 100,
+        "budget_denials": 0,
+        "controls": [
+          "mfa"
+        ],
+        "leaked_denials": 0,
+        "lockouts": 0,
+        "max_failures_on_one_account": 1,
+        "mfa_challenges": 12,
+        "sessions_issued": 0
+      },
+      "response_file": "stuffing-fixed-mfa-only.http",
+      "response_sha256": "23ee727af1ca6acd6120953801354a1e4650cdec33d8aff8232185b86e2af2fa"
+    }
+  ],
+  "failures": [],
+  "finished_at": "2026-11-11T10:01:00.865907+00:00",
+  "all_checks_passed": true
+}

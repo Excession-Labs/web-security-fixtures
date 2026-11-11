@@ -27,6 +27,12 @@ Small local fixtures that reproduce common web and API flaws, each with a vulner
 | Race condition | [`race-condition`](race-condition/) | 16 concurrent requests redeem one coupon up to 16 times; one atomic SQL update fixes it | [Write-up](https://excessionlabs.ai/blog/race-condition/) |
 | Host header injection | [`host-header-injection`](host-header-injection/) | a forged Host or X-Forwarded-Host puts the victim's reset token on an attacker domain | [Write-up](https://excessionlabs.ai/blog/host-header-injection/) |
 | API authorization testing | [`api-authorization-testing`](api-authorization-testing/) | a cross-account read with eight real requests, then the server-side check | [Write-up](https://excessionlabs.ai/blog/api-authorization-testing/) |
+| ReDoS | [`redos`](redos/) | a nested-quantifier regex takes about 3 seconds on 27 characters; a linear pattern and a length cap fix it | [Write-up](https://excessionlabs.ai/blog/redos/) |
+| HSTS | [`hsts`](hsts/) | four header setups checked with curl: none, short max-age, HTTP-only and correct | [Write-up](https://excessionlabs.ai/blog/hsts/) |
+| PKCE | [`pkce`](pkce/) | an intercepted authorization code redeems for tokens; requiring S256 denies it | [Write-up](https://excessionlabs.ai/blog/pkce/) |
+| Credential stuffing | [`credential-stuffing`](credential-stuffing/) | 100 invented leaked pairs open 12 of 60 synthetic accounts past a per-account lockout | [Write-up](https://excessionlabs.ai/blog/credential-stuffing/) |
+| HttpOnly cookie | [`httponly-cookie`](httponly-cookie/) | a session cookie without HttpOnly, Secure or SameSite fails a local audit five ways | [Write-up](https://excessionlabs.ai/blog/httponly-cookie/) |
+| Zip slip | [`zip-slip`](zip-slip/) | ../ names, absolute names and a tar symlink escape an extract folder; a resolved-path check holds | [Write-up](https://excessionlabs.ai/blog/zip-slip/) |
 
 The `security-txt` folder has no server. Its checker runs against defective and corrected files instead.
 

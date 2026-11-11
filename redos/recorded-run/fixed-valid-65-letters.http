@@ -1,0 +1,8 @@
+HTTP/1.0 413 Content Too Large
+Server: RedosFixture/1.0.0 
+Date: Wed, 11 Nov 2026 09:58:19 GMT
+Content-Type: application/json
+Content-Length: 45
+Cache-Control: no-store
+
+{"error": "name_too_long", "max_length": 64}

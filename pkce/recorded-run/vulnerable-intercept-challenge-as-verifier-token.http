@@ -1,0 +1,9 @@
+HTTP/1.0 200 OK
+Server: PkceFixture/1.0.0 
+Date: Wed, 11 Nov 2026 09:58:56 GMT
+Content-Type: application/json
+Content-Length: 69
+Cache-Control: no-store
+Pragma: no-cache
+
+{"access_token": "demo-access-c54fbe753942", "token_type": "Bearer"}

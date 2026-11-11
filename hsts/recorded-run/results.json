@@ -1,0 +1,420 @@
+{
+  "schema_version": 1,
+  "fixture_version": "1.0.0",
+  "started_at": "2026-11-11T09:58:54.743679+00:00",
+  "method": "Real curl subprocesses against fixture.py in four modes, plus a parser self-test",
+  "scope": {
+    "hosts": [
+      "127.0.0.1 (name hsts.test pinned with curl --resolve)"
+    ],
+    "methods": [
+      "GET"
+    ],
+    "paths": [
+      "/"
+    ],
+    "data": "One synthetic page; self-signed certificate made at run time"
+  },
+  "limits": "curl -k skips certificate checks. curl --hsts is curl's own cache, not a browser.",
+  "versions": {
+    "python": "3.15.2",
+    "os": "Darwin",
+    "architecture": "arm64",
+    "curl": "curl 8.7.1 (x86_64-apple-darwin24.0) libcurl/8.7.1 (SecureTransport) LibreSSL/3.3.6 zlib/1.2.12 nghttp2/1.64.0",
+    "openssl": "OpenSSL 4.1.0 23 Oct 2026 (Library: OpenSSL 4.1.0 23 Oct 2026)"
+  },
+  "sha256": {
+    "fixture.py": "5ec891958fb410b8f5626f8e84de1f7275d9a2d8b92484bbc71baad92350a970",
+    "verify.py": "56d6e1337a4f87594343bfa8b099dedbfeec9f1fbf79cc6fd9caf3dd6073c3f2"
+  },
+  "reproduction_command": "python3 verify.py --output recorded-run",
+  "agent_execution": {
+    "executed": false,
+    "note": "Scripted; no model or Excession agent ran"
+  },
+  "preload_min_max_age": 31536000,
+  "cases": [
+    {
+      "id": "vulnerable",
+      "server": {
+        "fixture_version": "1.0.0",
+        "mode": "vulnerable",
+        "host": "hsts.test",
+        "http_port": 50573,
+        "https_port": 50572
+      },
+      "expected": {
+        "https_status": 200,
+        "https_sts": null,
+        "http_status": 200,
+        "http_sts": null,
+        "findings": [
+          "missing-header",
+          "http-serves-content"
+        ],
+        "curl_cache_has_host": false,
+        "curl_cache_after_http_empty": true,
+        "curl_upgraded_http_request": false
+      },
+      "observed": {
+        "https_status": 200,
+        "https_sts": null,
+        "http_status": 200,
+        "http_sts": null,
+        "http_location": null,
+        "findings": [
+          "missing-header",
+          "http-serves-content"
+        ],
+        "curl_cache_after_https_entries": [],
+        "curl_cache_ttl_seconds": null,
+        "curl_cache_after_http_entries": [],
+        "curl_upgraded_http_request": false,
+        "curl_upgrade_response_bytes": 161
+      },
+      "checks": {
+        "https_status": true,
+        "https_sts": true,
+        "http_status": true,
+        "http_location": true,
+        "http_sts": true,
+        "findings": true,
+        "curl_cache_has_host": true,
+        "curl_cache_ttl_matches_max_age": true,
+        "curl_cache_after_http_empty": true,
+        "curl_upgraded_http_request": true,
+        "upgrade_sent_no_http_response": true
+      },
+      "matches": true,
+      "files": [
+        "vulnerable-https.http",
+        "vulnerable-http.http",
+        "vulnerable-http-with-cache.txt",
+        "vulnerable-curl-cache-after-https.txt",
+        "vulnerable-curl-cache-after-http.txt"
+      ]
+    },
+    {
+      "id": "short",
+      "server": {
+        "fixture_version": "1.0.0",
+        "mode": "short",
+        "host": "hsts.test",
+        "http_port": 50578,
+        "https_port": 50577
+      },
+      "expected": {
+        "https_status": 200,
+        "https_sts": "max-age=300",
+        "http_status": 301,
+        "http_sts": null,
+        "findings": [
+          "max-age-short",
+          "missing-includeSubDomains"
+        ],
+        "curl_cache_has_host": true,
+        "curl_cache_after_http_empty": true,
+        "curl_upgraded_http_request": true
+      },
+      "observed": {
+        "https_status": 200,
+        "https_sts": "max-age=300",
+        "http_status": 301,
+        "http_sts": null,
+        "http_location": "https://hsts.test:50577/",
+        "findings": [
+          "max-age-short",
+          "missing-includeSubDomains"
+        ],
+        "curl_cache_after_https_entries": [
+          "hsts.test"
+        ],
+        "curl_cache_ttl_seconds": 299,
+        "curl_cache_after_http_entries": [],
+        "curl_upgraded_http_request": true,
+        "curl_upgrade_response_bytes": 0
+      },
+      "checks": {
+        "https_status": true,
+        "https_sts": true,
+        "http_status": true,
+        "http_location": true,
+        "http_sts": true,
+        "findings": true,
+        "curl_cache_has_host": true,
+        "curl_cache_ttl_matches_max_age": true,
+        "curl_cache_after_http_empty": true,
+        "curl_upgraded_http_request": true,
+        "upgrade_sent_no_http_response": true
+      },
+      "matches": true,
+      "files": [
+        "short-https.http",
+        "short-http.http",
+        "short-http-with-cache.txt",
+        "short-curl-cache-after-https.txt",
+        "short-curl-cache-after-http.txt"
+      ]
+    },
+    {
+      "id": "misplaced",
+      "server": {
+        "fixture_version": "1.0.0",
+        "mode": "misplaced",
+        "host": "hsts.test",
+        "http_port": 50583,
+        "https_port": 50582
+      },
+      "expected": {
+        "https_status": 200,
+        "https_sts": null,
+        "http_status": 301,
+        "http_sts": "max-age=31536000; includeSubDomains",
+        "findings": [
+          "missing-header",
+          "header-over-http"
+        ],
+        "curl_cache_has_host": false,
+        "curl_cache_after_http_empty": true,
+        "curl_upgraded_http_request": false
+      },
+      "observed": {
+        "https_status": 200,
+        "https_sts": null,
+        "http_status": 301,
+        "http_sts": "max-age=31536000; includeSubDomains",
+        "http_location": "https://hsts.test:50582/",
+        "findings": [
+          "missing-header",
+          "header-over-http"
+        ],
+        "curl_cache_after_https_entries": [],
+        "curl_cache_ttl_seconds": null,
+        "curl_cache_after_http_entries": [],
+        "curl_upgraded_http_request": false,
+        "curl_upgrade_response_bytes": 211
+      },
+      "checks": {
+        "https_status": true,
+        "https_sts": true,
+        "http_status": true,
+        "http_location": true,
+        "http_sts": true,
+        "findings": true,
+        "curl_cache_has_host": true,
+        "curl_cache_ttl_matches_max_age": true,
+        "curl_cache_after_http_empty": true,
+        "curl_upgraded_http_request": true,
+        "upgrade_sent_no_http_response": true
+      },
+      "matches": true,
+      "files": [
+        "misplaced-https.http",
+        "misplaced-http.http",
+        "misplaced-http-with-cache.txt",
+        "misplaced-curl-cache-after-https.txt",
+        "misplaced-curl-cache-after-http.txt"
+      ]
+    },
+    {
+      "id": "fixed",
+      "server": {
+        "fixture_version": "1.0.0",
+        "mode": "fixed",
+        "host": "hsts.test",
+        "http_port": 50588,
+        "https_port": 50587
+      },
+      "expected": {
+        "https_status": 200,
+        "https_sts": "max-age=31536000; includeSubDomains",
+        "http_status": 301,
+        "http_sts": null,
+        "findings": [],
+        "curl_cache_has_host": true,
+        "curl_cache_after_http_empty": true,
+        "curl_upgraded_http_request": true
+      },
+      "observed": {
+        "https_status": 200,
+        "https_sts": "max-age=31536000; includeSubDomains",
+        "http_status": 301,
+        "http_sts": null,
+        "http_location": "https://hsts.test:50587/",
+        "findings": [],
+        "curl_cache_after_https_entries": [
+          ".hsts.test"
+        ],
+        "curl_cache_ttl_seconds": 31536000,
+        "curl_cache_after_http_entries": [],
+        "curl_upgraded_http_request": true,
+        "curl_upgrade_response_bytes": 0
+      },
+      "checks": {
+        "https_status": true,
+        "https_sts": true,
+        "http_status": true,
+        "http_location": true,
+        "http_sts": true,
+        "findings": true,
+        "curl_cache_has_host": true,
+        "curl_cache_ttl_matches_max_age": true,
+        "curl_cache_after_http_empty": true,
+        "curl_upgraded_http_request": true,
+        "upgrade_sent_no_http_response": true
+      },
+      "matches": true,
+      "files": [
+        "fixed-https.http",
+        "fixed-http.http",
+        "fixed-http-with-cache.txt",
+        "fixed-curl-cache-after-https.txt",
+        "fixed-curl-cache-after-http.txt"
+      ]
+    }
+  ],
+  "parser_cases": [
+    {
+      "header": "max-age=31536000; includeSubDomains",
+      "expected_valid": true,
+      "observed": {
+        "valid": true,
+        "max_age": 31536000,
+        "include_subdomains": true,
+        "preload": false,
+        "problems": []
+      },
+      "matches": true
+    },
+    {
+      "header": "max-age=31536000; includeSubDomains; preload",
+      "expected_valid": true,
+      "observed": {
+        "valid": true,
+        "max_age": 31536000,
+        "include_subdomains": true,
+        "preload": true,
+        "problems": []
+      },
+      "matches": true
+    },
+    {
+      "header": "Max-Age=31536000",
+      "expected_valid": true,
+      "observed": {
+        "valid": true,
+        "max_age": 31536000,
+        "include_subdomains": false,
+        "preload": false,
+        "problems": []
+      },
+      "matches": true
+    },
+    {
+      "header": "max-age=\"31536000\"",
+      "expected_valid": true,
+      "observed": {
+        "valid": true,
+        "max_age": 31536000,
+        "include_subdomains": false,
+        "preload": false,
+        "problems": []
+      },
+      "matches": true
+    },
+    {
+      "header": "max-age=300",
+      "expected_valid": true,
+      "observed": {
+        "valid": true,
+        "max_age": 300,
+        "include_subdomains": false,
+        "preload": false,
+        "problems": []
+      },
+      "matches": true
+    },
+    {
+      "header": "max-age=0",
+      "expected_valid": true,
+      "observed": {
+        "valid": true,
+        "max_age": 0,
+        "include_subdomains": false,
+        "preload": false,
+        "problems": []
+      },
+      "matches": true
+    },
+    {
+      "header": "max-age=31536000;",
+      "expected_valid": true,
+      "observed": {
+        "valid": true,
+        "max_age": 31536000,
+        "include_subdomains": false,
+        "preload": false,
+        "problems": []
+      },
+      "matches": true
+    },
+    {
+      "header": "max-age=31536000; unknown=1",
+      "expected_valid": true,
+      "observed": {
+        "valid": true,
+        "max_age": 31536000,
+        "include_subdomains": false,
+        "preload": false,
+        "problems": []
+      },
+      "matches": true
+    },
+    {
+      "header": "includeSubDomains",
+      "expected_valid": false,
+      "observed": {
+        "valid": false,
+        "max_age": null,
+        "include_subdomains": true,
+        "preload": false,
+        "problems": [
+          "max-age is missing"
+        ]
+      },
+      "matches": true
+    },
+    {
+      "header": "max-age=abc",
+      "expected_valid": false,
+      "observed": {
+        "valid": false,
+        "max_age": null,
+        "include_subdomains": false,
+        "preload": false,
+        "problems": [
+          "max-age is not a number"
+        ]
+      },
+      "matches": true
+    },
+    {
+      "header": "max-age=1; max-age=2",
+      "expected_valid": false,
+      "observed": {
+        "valid": false,
+        "max_age": null,
+        "include_subdomains": false,
+        "preload": false,
+        "problems": [
+          "directive max-age appears twice"
+        ]
+      },
+      "matches": true
+    }
+  ],
+  "failures": [],
+  "finished_at": "2026-11-11T09:58:55.133346+00:00",
+  "check_count": 55,
+  "all_checks_passed": true
+}

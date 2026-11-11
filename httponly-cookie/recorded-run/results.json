@@ -1,0 +1,741 @@
+{
+  "schema_version": 1,
+  "fixture_version": "1.0.0",
+  "started_at": "2026-11-11T10:10:45.136560+00:00",
+  "method": "Real curl subprocesses against two locally spawned fixture modes, then header audit and Python cookie-rule models",
+  "scope": {
+    "hosts": [
+      "127.0.0.1 (curl --resolve maps app.example.test to it)"
+    ],
+    "methods": [
+      "GET",
+      "POST"
+    ],
+    "paths": [
+      "/login",
+      "/account"
+    ],
+    "data": "One synthetic user and a random in-memory session id; the password is a public demo value"
+  },
+  "versions": {
+    "python": "3.15.2",
+    "os": "Darwin",
+    "architecture": "arm64",
+    "curl": "curl 8.7.1 (x86_64-apple-darwin24.0) libcurl/8.7.1 (SecureTransport) LibreSSL/3.3.6 zlib/1.2.12 nghttp2/1.64.0"
+  },
+  "sha256": {
+    "fixture.py": "7df0fb2f7359e79c741533053bce900533a7d4a8813c1853915279c763030812",
+    "verify.py": "3a81c247b0d82b19647db193c40f129b24f7f56533a7848699a1e272209ceb73"
+  },
+  "reproduction_command": "python3 verify.py --output recorded-run",
+  "agent_execution": {
+    "executed": false,
+    "note": "Verification was scripted; no model or Excession agent ran"
+  },
+  "cases": [
+    {
+      "id": "vulnerable/login-ok",
+      "kind": "curl",
+      "expected": {
+        "status": 200,
+        "body": {
+          "ok": true,
+          "user": "alice"
+        },
+        "set_cookie_count": 1
+      },
+      "observed": {
+        "status": 200,
+        "body": {
+          "ok": true,
+          "user": "alice"
+        },
+        "set_cookie_count": 1
+      },
+      "matches": true,
+      "started_at": "2026-11-11T10:10:45.185664+00:00",
+      "elapsed_ms": 9.777,
+      "server": {
+        "fixture_version": "1.0.0",
+        "mode": "vulnerable",
+        "base_url": "http://127.0.0.1:55868"
+      },
+      "command": [
+        "curl",
+        "--noproxy",
+        "*",
+        "--silent",
+        "--show-error",
+        "--include",
+        "--http1.1",
+        "--connect-timeout",
+        "1",
+        "--max-time",
+        "3",
+        "--resolve",
+        "app.example.test:55868:127.0.0.1",
+        "--request",
+        "POST",
+        "--data",
+        "username=alice&password=demo-password",
+        "http://app.example.test:55868/login"
+      ],
+      "curl_exit_code": 0,
+      "stderr": "",
+      "set_cookie_headers": [
+        "sid=2f265d07d6b69a252a14a1ada46cb791; Domain=example.test; Path=/"
+      ],
+      "response_file": "vulnerable-login-ok.http",
+      "response_sha256": "74677a8f6ebe5fa67f0a25dc720a9df7d3e40d84fd7e26120d06dcde5f9febf0"
+    },
+    {
+      "id": "vulnerable/login-bad-password",
+      "kind": "curl",
+      "expected": {
+        "status": 401,
+        "body": {
+          "error": "invalid_credentials"
+        },
+        "set_cookie_count": 0
+      },
+      "observed": {
+        "status": 401,
+        "body": {
+          "error": "invalid_credentials"
+        },
+        "set_cookie_count": 0
+      },
+      "matches": true,
+      "started_at": "2026-11-11T10:10:45.195504+00:00",
+      "elapsed_ms": 7.23,
+      "server": {
+        "fixture_version": "1.0.0",
+        "mode": "vulnerable",
+        "base_url": "http://127.0.0.1:55868"
+      },
+      "command": [
+        "curl",
+        "--noproxy",
+        "*",
+        "--silent",
+        "--show-error",
+        "--include",
+        "--http1.1",
+        "--connect-timeout",
+        "1",
+        "--max-time",
+        "3",
+        "--resolve",
+        "app.example.test:55868:127.0.0.1",
+        "--request",
+        "POST",
+        "--data",
+        "username=alice&password=wrong",
+        "http://app.example.test:55868/login"
+      ],
+      "curl_exit_code": 0,
+      "stderr": "",
+      "set_cookie_headers": [],
+      "response_file": "vulnerable-login-bad-password.http",
+      "response_sha256": "3e145508741dd9b5a574c6b089fbda9a44eebd045372de123396cb4f2b204fa7"
+    },
+    {
+      "id": "vulnerable/account-with-session",
+      "kind": "curl",
+      "expected": {
+        "status": 200,
+        "body": {
+          "user": "alice"
+        },
+        "set_cookie_count": 0
+      },
+      "observed": {
+        "status": 200,
+        "body": {
+          "user": "alice"
+        },
+        "set_cookie_count": 0
+      },
+      "matches": true,
+      "started_at": "2026-11-11T10:10:45.202801+00:00",
+      "elapsed_ms": 8.014,
+      "server": {
+        "fixture_version": "1.0.0",
+        "mode": "vulnerable",
+        "base_url": "http://127.0.0.1:55868"
+      },
+      "command": [
+        "curl",
+        "--noproxy",
+        "*",
+        "--silent",
+        "--show-error",
+        "--include",
+        "--http1.1",
+        "--connect-timeout",
+        "1",
+        "--max-time",
+        "3",
+        "--resolve",
+        "app.example.test:55868:127.0.0.1",
+        "--request",
+        "GET",
+        "--header",
+        "Cookie: sid=2f265d07d6b69a252a14a1ada46cb791",
+        "http://app.example.test:55868/account"
+      ],
+      "curl_exit_code": 0,
+      "stderr": "",
+      "set_cookie_headers": [],
+      "response_file": "vulnerable-account-with-session.http",
+      "response_sha256": "12ec54a9d18baac4f7c5a63a2f20ff3e4798fa1e92e4f44af01c7a75cb94cc2b"
+    },
+    {
+      "id": "vulnerable/account-no-cookie",
+      "kind": "curl",
+      "expected": {
+        "status": 401,
+        "body": {
+          "error": "authentication_required"
+        },
+        "set_cookie_count": 0
+      },
+      "observed": {
+        "status": 401,
+        "body": {
+          "error": "authentication_required"
+        },
+        "set_cookie_count": 0
+      },
+      "matches": true,
+      "started_at": "2026-11-11T10:10:45.210866+00:00",
+      "elapsed_ms": 6.729,
+      "server": {
+        "fixture_version": "1.0.0",
+        "mode": "vulnerable",
+        "base_url": "http://127.0.0.1:55868"
+      },
+      "command": [
+        "curl",
+        "--noproxy",
+        "*",
+        "--silent",
+        "--show-error",
+        "--include",
+        "--http1.1",
+        "--connect-timeout",
+        "1",
+        "--max-time",
+        "3",
+        "--resolve",
+        "app.example.test:55868:127.0.0.1",
+        "--request",
+        "GET",
+        "http://app.example.test:55868/account"
+      ],
+      "curl_exit_code": 0,
+      "stderr": "",
+      "set_cookie_headers": [],
+      "response_file": "vulnerable-account-no-cookie.http",
+      "response_sha256": "b3a42eea0adf3b8351b3987653136ec72fc3fc2844fc3dff9516361aa6156660"
+    },
+    {
+      "id": "vulnerable/account-forged-session",
+      "kind": "curl",
+      "expected": {
+        "status": 401,
+        "body": {
+          "error": "authentication_required"
+        },
+        "set_cookie_count": 0
+      },
+      "observed": {
+        "status": 401,
+        "body": {
+          "error": "authentication_required"
+        },
+        "set_cookie_count": 0
+      },
+      "matches": true,
+      "started_at": "2026-11-11T10:10:45.217646+00:00",
+      "elapsed_ms": 6.513,
+      "server": {
+        "fixture_version": "1.0.0",
+        "mode": "vulnerable",
+        "base_url": "http://127.0.0.1:55868"
+      },
+      "command": [
+        "curl",
+        "--noproxy",
+        "*",
+        "--silent",
+        "--show-error",
+        "--include",
+        "--http1.1",
+        "--connect-timeout",
+        "1",
+        "--max-time",
+        "3",
+        "--resolve",
+        "app.example.test:55868:127.0.0.1",
+        "--request",
+        "GET",
+        "--header",
+        "Cookie: sid=00000000000000000000000000000000",
+        "http://app.example.test:55868/account"
+      ],
+      "curl_exit_code": 0,
+      "stderr": "",
+      "set_cookie_headers": [],
+      "response_file": "vulnerable-account-forged-session.http",
+      "response_sha256": "b3a42eea0adf3b8351b3987653136ec72fc3fc2844fc3dff9516361aa6156660"
+    },
+    {
+      "id": "vulnerable/audit",
+      "kind": "audit",
+      "expected": {
+        "problems": [
+          "missing HttpOnly",
+          "missing Secure",
+          "SameSite not set",
+          "Domain=example.test shares cookie with subdomains",
+          "no __Host- prefix"
+        ]
+      },
+      "observed": {
+        "problems": [
+          "missing HttpOnly",
+          "missing Secure",
+          "SameSite not set",
+          "Domain=example.test shares cookie with subdomains",
+          "no __Host- prefix"
+        ]
+      },
+      "matches": true,
+      "set_cookie_header_with_value_masked": "sid=<session-id>; Domain=example.test; Path=/",
+      "attributes": {
+        "domain": "example.test",
+        "path": "/"
+      }
+    },
+    {
+      "id": "vulnerable/parser-crosscheck",
+      "kind": "audit",
+      "expected": {
+        "httponly": false,
+        "secure": false,
+        "samesite": "",
+        "domain": "example.test"
+      },
+      "observed": {
+        "httponly": false,
+        "secure": false,
+        "samesite": "",
+        "domain": "example.test"
+      },
+      "matches": true
+    },
+    {
+      "id": "vulnerable/cookiejar-model",
+      "kind": "model",
+      "expected": {
+        "same-host-http": true,
+        "same-host-https": true,
+        "sibling-host-https": true,
+        "unrelated-host-https": false
+      },
+      "observed": {
+        "same-host-http": true,
+        "same-host-https": true,
+        "sibling-host-https": true,
+        "unrelated-host-https": false
+      },
+      "matches": true,
+      "note": "Python http.cookiejar applies Domain and Secure send rules (Netscape-style, per the Python docs); it is not a browser",
+      "cookie_header_masked": {
+        "same-host-http": "sid=<session-id>",
+        "same-host-https": "sid=<session-id>",
+        "sibling-host-https": "sid=<session-id>",
+        "unrelated-host-https": null
+      }
+    },
+    {
+      "id": "vulnerable/script-visible-model",
+      "kind": "model",
+      "expected": [
+        "sid"
+      ],
+      "observed": [
+        "sid"
+      ],
+      "matches": true,
+      "note": "Our model of RFC 6265 section 4.1.2.6; only a browser enforces document.cookie"
+    },
+    {
+      "id": "fixed/login-ok",
+      "kind": "curl",
+      "expected": {
+        "status": 200,
+        "body": {
+          "ok": true,
+          "user": "alice"
+        },
+        "set_cookie_count": 1
+      },
+      "observed": {
+        "status": 200,
+        "body": {
+          "ok": true,
+          "user": "alice"
+        },
+        "set_cookie_count": 1
+      },
+      "matches": true,
+      "started_at": "2026-11-11T10:10:45.262567+00:00",
+      "elapsed_ms": 7.522,
+      "server": {
+        "fixture_version": "1.0.0",
+        "mode": "fixed",
+        "base_url": "http://127.0.0.1:55875"
+      },
+      "command": [
+        "curl",
+        "--noproxy",
+        "*",
+        "--silent",
+        "--show-error",
+        "--include",
+        "--http1.1",
+        "--connect-timeout",
+        "1",
+        "--max-time",
+        "3",
+        "--resolve",
+        "app.example.test:55875:127.0.0.1",
+        "--request",
+        "POST",
+        "--data",
+        "username=alice&password=demo-password",
+        "http://app.example.test:55875/login"
+      ],
+      "curl_exit_code": 0,
+      "stderr": "",
+      "set_cookie_headers": [
+        "__Host-sid=8884ed1ca9344caf19d0e0e691659c1b; Max-Age=3600; Path=/; Secure; HttpOnly; SameSite=Lax"
+      ],
+      "response_file": "fixed-login-ok.http",
+      "response_sha256": "6f8ecdb59863ed57922f362986b8cdf8bd63dd2ae695e9c48a101301a85a774d"
+    },
+    {
+      "id": "fixed/login-bad-password",
+      "kind": "curl",
+      "expected": {
+        "status": 401,
+        "body": {
+          "error": "invalid_credentials"
+        },
+        "set_cookie_count": 0
+      },
+      "observed": {
+        "status": 401,
+        "body": {
+          "error": "invalid_credentials"
+        },
+        "set_cookie_count": 0
+      },
+      "matches": true,
+      "started_at": "2026-11-11T10:10:45.270158+00:00",
+      "elapsed_ms": 7.994,
+      "server": {
+        "fixture_version": "1.0.0",
+        "mode": "fixed",
+        "base_url": "http://127.0.0.1:55875"
+      },
+      "command": [
+        "curl",
+        "--noproxy",
+        "*",
+        "--silent",
+        "--show-error",
+        "--include",
+        "--http1.1",
+        "--connect-timeout",
+        "1",
+        "--max-time",
+        "3",
+        "--resolve",
+        "app.example.test:55875:127.0.0.1",
+        "--request",
+        "POST",
+        "--data",
+        "username=alice&password=wrong",
+        "http://app.example.test:55875/login"
+      ],
+      "curl_exit_code": 0,
+      "stderr": "",
+      "set_cookie_headers": [],
+      "response_file": "fixed-login-bad-password.http",
+      "response_sha256": "3e145508741dd9b5a574c6b089fbda9a44eebd045372de123396cb4f2b204fa7"
+    },
+    {
+      "id": "fixed/account-with-session",
+      "kind": "curl",
+      "expected": {
+        "status": 200,
+        "body": {
+          "user": "alice"
+        },
+        "set_cookie_count": 0
+      },
+      "observed": {
+        "status": 200,
+        "body": {
+          "user": "alice"
+        },
+        "set_cookie_count": 0
+      },
+      "matches": true,
+      "started_at": "2026-11-11T10:10:45.278214+00:00",
+      "elapsed_ms": 9.223,
+      "server": {
+        "fixture_version": "1.0.0",
+        "mode": "fixed",
+        "base_url": "http://127.0.0.1:55875"
+      },
+      "command": [
+        "curl",
+        "--noproxy",
+        "*",
+        "--silent",
+        "--show-error",
+        "--include",
+        "--http1.1",
+        "--connect-timeout",
+        "1",
+        "--max-time",
+        "3",
+        "--resolve",
+        "app.example.test:55875:127.0.0.1",
+        "--request",
+        "GET",
+        "--header",
+        "Cookie: __Host-sid=8884ed1ca9344caf19d0e0e691659c1b",
+        "http://app.example.test:55875/account"
+      ],
+      "curl_exit_code": 0,
+      "stderr": "",
+      "set_cookie_headers": [],
+      "response_file": "fixed-account-with-session.http",
+      "response_sha256": "12ec54a9d18baac4f7c5a63a2f20ff3e4798fa1e92e4f44af01c7a75cb94cc2b"
+    },
+    {
+      "id": "fixed/account-no-cookie",
+      "kind": "curl",
+      "expected": {
+        "status": 401,
+        "body": {
+          "error": "authentication_required"
+        },
+        "set_cookie_count": 0
+      },
+      "observed": {
+        "status": 401,
+        "body": {
+          "error": "authentication_required"
+        },
+        "set_cookie_count": 0
+      },
+      "matches": true,
+      "started_at": "2026-11-11T10:10:45.287498+00:00",
+      "elapsed_ms": 6.971,
+      "server": {
+        "fixture_version": "1.0.0",
+        "mode": "fixed",
+        "base_url": "http://127.0.0.1:55875"
+      },
+      "command": [
+        "curl",
+        "--noproxy",
+        "*",
+        "--silent",
+        "--show-error",
+        "--include",
+        "--http1.1",
+        "--connect-timeout",
+        "1",
+        "--max-time",
+        "3",
+        "--resolve",
+        "app.example.test:55875:127.0.0.1",
+        "--request",
+        "GET",
+        "http://app.example.test:55875/account"
+      ],
+      "curl_exit_code": 0,
+      "stderr": "",
+      "set_cookie_headers": [],
+      "response_file": "fixed-account-no-cookie.http",
+      "response_sha256": "b3a42eea0adf3b8351b3987653136ec72fc3fc2844fc3dff9516361aa6156660"
+    },
+    {
+      "id": "fixed/account-forged-session",
+      "kind": "curl",
+      "expected": {
+        "status": 401,
+        "body": {
+          "error": "authentication_required"
+        },
+        "set_cookie_count": 0
+      },
+      "observed": {
+        "status": 401,
+        "body": {
+          "error": "authentication_required"
+        },
+        "set_cookie_count": 0
+      },
+      "matches": true,
+      "started_at": "2026-11-11T10:10:45.294525+00:00",
+      "elapsed_ms": 8.485,
+      "server": {
+        "fixture_version": "1.0.0",
+        "mode": "fixed",
+        "base_url": "http://127.0.0.1:55875"
+      },
+      "command": [
+        "curl",
+        "--noproxy",
+        "*",
+        "--silent",
+        "--show-error",
+        "--include",
+        "--http1.1",
+        "--connect-timeout",
+        "1",
+        "--max-time",
+        "3",
+        "--resolve",
+        "app.example.test:55875:127.0.0.1",
+        "--request",
+        "GET",
+        "--header",
+        "Cookie: __Host-sid=00000000000000000000000000000000",
+        "http://app.example.test:55875/account"
+      ],
+      "curl_exit_code": 0,
+      "stderr": "",
+      "set_cookie_headers": [],
+      "response_file": "fixed-account-forged-session.http",
+      "response_sha256": "b3a42eea0adf3b8351b3987653136ec72fc3fc2844fc3dff9516361aa6156660"
+    },
+    {
+      "id": "fixed/audit",
+      "kind": "audit",
+      "expected": {
+        "problems": []
+      },
+      "observed": {
+        "problems": []
+      },
+      "matches": true,
+      "set_cookie_header_with_value_masked": "__Host-sid=<session-id>; Max-Age=3600; Path=/; Secure; HttpOnly; SameSite=Lax",
+      "attributes": {
+        "max-age": "3600",
+        "path": "/",
+        "secure": "",
+        "httponly": "",
+        "samesite": "Lax"
+      }
+    },
+    {
+      "id": "fixed/parser-crosscheck",
+      "kind": "audit",
+      "expected": {
+        "httponly": true,
+        "secure": true,
+        "samesite": "Lax",
+        "domain": ""
+      },
+      "observed": {
+        "httponly": true,
+        "secure": true,
+        "samesite": "Lax",
+        "domain": ""
+      },
+      "matches": true
+    },
+    {
+      "id": "fixed/cookiejar-model",
+      "kind": "model",
+      "expected": {
+        "same-host-http": false,
+        "same-host-https": true,
+        "sibling-host-https": false,
+        "unrelated-host-https": false
+      },
+      "observed": {
+        "same-host-http": false,
+        "same-host-https": true,
+        "sibling-host-https": false,
+        "unrelated-host-https": false
+      },
+      "matches": true,
+      "note": "Python http.cookiejar applies Domain and Secure send rules (Netscape-style, per the Python docs); it is not a browser",
+      "cookie_header_masked": {
+        "same-host-http": null,
+        "same-host-https": "__Host-sid=<session-id>",
+        "sibling-host-https": null,
+        "unrelated-host-https": null
+      }
+    },
+    {
+      "id": "fixed/script-visible-model",
+      "kind": "model",
+      "expected": [],
+      "observed": [],
+      "matches": true,
+      "note": "Our model of RFC 6265 section 4.1.2.6; only a browser enforces document.cookie"
+    },
+    {
+      "id": "audit-selftest",
+      "kind": "selftest",
+      "expected": [
+        "__Host- needs Path=/",
+        "__Host- forbids Domain",
+        "prefix needs Secure",
+        null
+      ],
+      "observed": [
+        "__Host- needs Path=/",
+        "__Host- forbids Domain",
+        "prefix needs Secure",
+        null
+      ],
+      "matches": true,
+      "vectors": [
+        "__Host-id=1; Secure",
+        "__Host-id=1; Secure; Path=/; Domain=example.test",
+        "__Secure-id=1",
+        "__Host-id=1; Secure; Path=/"
+      ],
+      "note": "Headers modelled on the MDN Set-Cookie prefix examples"
+    },
+    {
+      "id": "cookiejar-ignores-prefix",
+      "kind": "model",
+      "expected": {
+        "sent_to_sibling": true,
+        "audit_rejects": true
+      },
+      "observed": {
+        "sent_to_sibling": true,
+        "audit_rejects": true
+      },
+      "matches": true,
+      "note": "http.cookiejar keeps a __Host- cookie that has a Domain attribute; only the audit and a prefix-aware browser reject it"
+    }
+  ],
+  "failures": [],
+  "finished_at": "2026-11-11T10:10:45.304388+00:00",
+  "all_demonstration_checks_passed": true
+}

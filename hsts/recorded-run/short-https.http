@@ -1,0 +1,8 @@
+HTTP/1.0 200 OK
+Server: HstsFixture/1.0.0 
+Date: Wed, 11 Nov 2026 09:58:54 GMT
+Content-Type: text/plain
+Content-Length: 37
+Strict-Transport-Security: max-age=300
+
+hsts fixture page: synthetic content

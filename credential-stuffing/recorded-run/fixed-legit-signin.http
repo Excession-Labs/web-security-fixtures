@@ -1,0 +1,8 @@
+HTTP/1.0 200 OK
+Server: StuffingFixture/1.0.0 
+Date: Wed, 11 Nov 2026 10:00:57 GMT
+Content-Type: application/json
+Content-Length: 83
+Cache-Control: no-store
+
+{"session": "d2f1dffe66181108", "status": "ok", "username": "user01@example.test"}

@@ -1,0 +1,729 @@
+{
+  "schema_version": 1,
+  "fixture_version": "1.0.0",
+  "started_at": "2026-11-11T09:58:14.674667+00:00",
+  "method": "Real curl subprocesses against two locally spawned fixture modes",
+  "timing_note": "Timings are observed wall-clock values from one machine and one run. They vary by machine and by run.",
+  "scope": {
+    "hosts": [
+      "127.0.0.1"
+    ],
+    "methods": [
+      "GET"
+    ],
+    "paths": [
+      "/validate"
+    ],
+    "data": "Synthetic display names built from the letter a and fixed demo words"
+  },
+  "versions": {
+    "python": "3.15.2",
+    "os": "Darwin",
+    "architecture": "arm64",
+    "curl": "curl 8.7.1 (x86_64-apple-darwin24.0) libcurl/8.7.1 (SecureTransport) LibreSSL/3.3.6 zlib/1.2.12 nghttp2/1.64.0"
+  },
+  "sha256": {
+    "fixture.py": "dd9e57259fa89cbc67d72c42f23d9c5dc2941dd129140e21f0764b71b380e0f2",
+    "verify.py": "44b5f3372a902ef89ab662f7f08100136e72668eab9941720daff6c873e4a407"
+  },
+  "patterns": {
+    "vulnerable": "^(\\w+\\s?)*$",
+    "fixed": "^\\w+(?: \\w+)*$",
+    "fixed_max_length": 64
+  },
+  "reproduction_command": "python3 verify.py --output recorded-run",
+  "agent_execution": {
+    "executed": false,
+    "note": "HTTP verification was scripted; no model or agent ran"
+  },
+  "cases": [
+    {
+      "id": "vulnerable/valid-name",
+      "group": "positive",
+      "started_at": "2026-11-11T09:58:14.715640+00:00",
+      "input_length": 12,
+      "expected_status": 200,
+      "observed_status": 200,
+      "observed_body": {
+        "length": 12,
+        "valid": true
+      },
+      "elapsed_ms": 7.9,
+      "server_regex_ms": 0.002,
+      "curl_exit_code": 0,
+      "timed_out": false,
+      "stderr": "",
+      "matches_expected": true,
+      "response_file": "vulnerable-valid-name.http",
+      "response_sha256": "f160d9ec2853a44a98ad2d0e705433d414f85bbe40c579359b16111d639e06a9"
+    },
+    {
+      "id": "vulnerable/valid-longer-name",
+      "group": "positive",
+      "started_at": "2026-11-11T09:58:14.723795+00:00",
+      "input_length": 40,
+      "expected_status": 200,
+      "observed_status": 200,
+      "observed_body": {
+        "length": 40,
+        "valid": true
+      },
+      "elapsed_ms": 6.3,
+      "server_regex_ms": 0.002,
+      "curl_exit_code": 0,
+      "timed_out": false,
+      "stderr": "",
+      "matches_expected": true,
+      "response_file": "vulnerable-valid-longer-name.http",
+      "response_sha256": "abb082e608530a978838d1624c85c9554d4d8153b5fb7db7de7983c23369b4e0"
+    },
+    {
+      "id": "vulnerable/valid-26-letters",
+      "group": "positive",
+      "started_at": "2026-11-11T09:58:14.730303+00:00",
+      "input_length": 26,
+      "expected_status": 200,
+      "observed_status": 200,
+      "observed_body": {
+        "length": 26,
+        "valid": true
+      },
+      "elapsed_ms": 6.1,
+      "server_regex_ms": 0.001,
+      "curl_exit_code": 0,
+      "timed_out": false,
+      "stderr": "",
+      "matches_expected": true,
+      "response_file": "vulnerable-valid-26-letters.http",
+      "response_sha256": "63245a12b789b5f8df7c04c24d5f12d693c05ca58e776d7cebd826d99e2b45f8"
+    },
+    {
+      "id": "vulnerable/invalid-character",
+      "group": "negative",
+      "started_at": "2026-11-11T09:58:14.736644+00:00",
+      "input_length": 4,
+      "expected_status": 400,
+      "observed_status": 400,
+      "observed_body": {
+        "length": 4,
+        "valid": false
+      },
+      "elapsed_ms": 5.9,
+      "server_regex_ms": 0.002,
+      "curl_exit_code": 0,
+      "timed_out": false,
+      "stderr": "",
+      "matches_expected": true,
+      "response_file": "vulnerable-invalid-character.http",
+      "response_sha256": "44252969208a378e6e04e52b27295b465d8a250f4db62260b548bc9d4e204363"
+    },
+    {
+      "id": "vulnerable/invalid-double-space",
+      "group": "negative",
+      "started_at": "2026-11-11T09:58:14.742722+00:00",
+      "input_length": 13,
+      "expected_status": 400,
+      "observed_status": 400,
+      "observed_body": {
+        "length": 13,
+        "valid": false
+      },
+      "elapsed_ms": 5.7,
+      "server_regex_ms": 0.002,
+      "curl_exit_code": 0,
+      "timed_out": false,
+      "stderr": "",
+      "matches_expected": true,
+      "response_file": "vulnerable-invalid-double-space.http",
+      "response_sha256": "203633c821000e64419f72a857fc166d45b4a889c0bc63cafed7281c2f615db8"
+    },
+    {
+      "id": "vulnerable/tab-separator",
+      "group": "behaviour-change",
+      "started_at": "2026-11-11T09:58:14.748686+00:00",
+      "input_length": 12,
+      "expected_status": 200,
+      "observed_status": 200,
+      "observed_body": {
+        "length": 12,
+        "valid": true
+      },
+      "elapsed_ms": 6.2,
+      "server_regex_ms": 0.001,
+      "curl_exit_code": 0,
+      "timed_out": false,
+      "stderr": "",
+      "matches_expected": true,
+      "response_file": "vulnerable-tab-separator.http",
+      "response_sha256": "116cb533bcaf2163f94ded8692864d3af159998a9d4cfdcf7013dd0dc02b6781"
+    },
+    {
+      "id": "vulnerable/valid-64-letters",
+      "group": "positive",
+      "started_at": "2026-11-11T09:58:14.755119+00:00",
+      "input_length": 64,
+      "expected_status": 200,
+      "observed_status": 200,
+      "observed_body": {
+        "length": 64,
+        "valid": true
+      },
+      "elapsed_ms": 6.0,
+      "server_regex_ms": 0.001,
+      "curl_exit_code": 0,
+      "timed_out": false,
+      "stderr": "",
+      "matches_expected": true,
+      "response_file": "vulnerable-valid-64-letters.http",
+      "response_sha256": "44f24c01eab6e9cac52ece5cd5ab7d1343e542693f62e3f7f016723402e4847e"
+    },
+    {
+      "id": "vulnerable/valid-65-letters",
+      "group": "behaviour-change",
+      "started_at": "2026-11-11T09:58:14.761352+00:00",
+      "input_length": 65,
+      "expected_status": 200,
+      "observed_status": 200,
+      "observed_body": {
+        "length": 65,
+        "valid": true
+      },
+      "elapsed_ms": 6.3,
+      "server_regex_ms": 0.001,
+      "curl_exit_code": 0,
+      "timed_out": false,
+      "stderr": "",
+      "matches_expected": true,
+      "response_file": "vulnerable-valid-65-letters.http",
+      "response_sha256": "2eb8af66a3cbe298dead19206f01c25e19713a124074f8722f8b7c0fb7ac3174"
+    },
+    {
+      "id": "vulnerable/attack-ladder-16",
+      "group": "attack",
+      "started_at": "2026-11-11T09:58:14.767948+00:00",
+      "input_length": 17,
+      "expected_status": 400,
+      "observed_status": 400,
+      "observed_body": {
+        "length": 17,
+        "valid": false
+      },
+      "elapsed_ms": 8.6,
+      "server_regex_ms": 2.882,
+      "curl_exit_code": 0,
+      "timed_out": false,
+      "stderr": "",
+      "matches_expected": true,
+      "response_file": "vulnerable-attack-ladder-16.http",
+      "response_sha256": "89c2a5759f50cd9f0723a6868f3ed19e1bf7299aa7e70e83e30f38ba0a739db9"
+    },
+    {
+      "id": "vulnerable/attack-ladder-18",
+      "group": "attack",
+      "started_at": "2026-11-11T09:58:14.776724+00:00",
+      "input_length": 19,
+      "expected_status": 400,
+      "observed_status": 400,
+      "observed_body": {
+        "length": 19,
+        "valid": false
+      },
+      "elapsed_ms": 17.8,
+      "server_regex_ms": 11.547,
+      "curl_exit_code": 0,
+      "timed_out": false,
+      "stderr": "",
+      "matches_expected": true,
+      "response_file": "vulnerable-attack-ladder-18.http",
+      "response_sha256": "c518dddff6230a646e2d7728b7e63a2dd7154bcef1dfea62859dbac438f0a90d"
+    },
+    {
+      "id": "vulnerable/attack-ladder-20",
+      "group": "attack",
+      "started_at": "2026-11-11T09:58:14.794811+00:00",
+      "input_length": 21,
+      "expected_status": 400,
+      "observed_status": 400,
+      "observed_body": {
+        "length": 21,
+        "valid": false
+      },
+      "elapsed_ms": 53.4,
+      "server_regex_ms": 47.207,
+      "curl_exit_code": 0,
+      "timed_out": false,
+      "stderr": "",
+      "matches_expected": true,
+      "response_file": "vulnerable-attack-ladder-20.http",
+      "response_sha256": "77dab40376f2eee40a3a8dac51935e6518588793e1a22bb2245c4c8ffe46bcc1"
+    },
+    {
+      "id": "vulnerable/attack-ladder-22",
+      "group": "attack",
+      "started_at": "2026-11-11T09:58:14.848516+00:00",
+      "input_length": 23,
+      "expected_status": 400,
+      "observed_status": 400,
+      "observed_body": {
+        "length": 23,
+        "valid": false
+      },
+      "elapsed_ms": 196.5,
+      "server_regex_ms": 189.792,
+      "curl_exit_code": 0,
+      "timed_out": false,
+      "stderr": "",
+      "matches_expected": true,
+      "response_file": "vulnerable-attack-ladder-22.http",
+      "response_sha256": "be00cfa2b76856dfb62045bf596a2ef1823a391f81b52afa24c26115004972da"
+    },
+    {
+      "id": "vulnerable/attack-ladder-24",
+      "group": "attack",
+      "started_at": "2026-11-11T09:58:15.045494+00:00",
+      "input_length": 25,
+      "expected_status": 400,
+      "observed_status": 400,
+      "observed_body": {
+        "length": 25,
+        "valid": false
+      },
+      "elapsed_ms": 806.8,
+      "server_regex_ms": 800.161,
+      "curl_exit_code": 0,
+      "timed_out": false,
+      "stderr": "",
+      "matches_expected": true,
+      "response_file": "vulnerable-attack-ladder-24.http",
+      "response_sha256": "5d836b12b8c16d9cb73f1b2115c224ede100061d4fbd727ff7801e1a7b0496ff"
+    },
+    {
+      "id": "vulnerable/attack-ladder-26",
+      "group": "attack",
+      "started_at": "2026-11-11T09:58:15.852534+00:00",
+      "input_length": 27,
+      "expected_status": 400,
+      "observed_status": 400,
+      "observed_body": {
+        "length": 27,
+        "valid": false
+      },
+      "elapsed_ms": 3125.5,
+      "server_regex_ms": 3119.118,
+      "curl_exit_code": 0,
+      "timed_out": false,
+      "stderr": "",
+      "matches_expected": true,
+      "response_file": "vulnerable-attack-ladder-26.http",
+      "response_sha256": "806944d4b63c3456830fce4a79b84a2182b805cc1c6318c6d1214e9ab2a47588"
+    },
+    {
+      "id": "vulnerable/collateral-valid-during-attack",
+      "group": "collateral",
+      "started_at": "2026-11-11T09:58:19.189684+00:00",
+      "input_length": 12,
+      "expected_status": 200,
+      "observed_status": 200,
+      "observed_body": {
+        "length": 12,
+        "valid": true
+      },
+      "elapsed_ms": 567.5,
+      "server_regex_ms": 0.001,
+      "curl_exit_code": 0,
+      "timed_out": false,
+      "stderr": "",
+      "matches_expected": true,
+      "response_file": "vulnerable-collateral-valid-during-attack.http",
+      "response_sha256": "b7ad0fa6d38020a065a13b2e9f417a0db50ca3815ad66ba97e5a216770149133"
+    },
+    {
+      "id": "fixed/valid-name",
+      "group": "positive",
+      "started_at": "2026-11-11T09:58:19.792816+00:00",
+      "input_length": 12,
+      "expected_status": 200,
+      "observed_status": 200,
+      "observed_body": {
+        "length": 12,
+        "valid": true
+      },
+      "elapsed_ms": 7.1,
+      "server_regex_ms": 0.001,
+      "curl_exit_code": 0,
+      "timed_out": false,
+      "stderr": "",
+      "matches_expected": true,
+      "response_file": "fixed-valid-name.http",
+      "response_sha256": "b7ad0fa6d38020a065a13b2e9f417a0db50ca3815ad66ba97e5a216770149133"
+    },
+    {
+      "id": "fixed/valid-longer-name",
+      "group": "positive",
+      "started_at": "2026-11-11T09:58:19.800133+00:00",
+      "input_length": 40,
+      "expected_status": 200,
+      "observed_status": 200,
+      "observed_body": {
+        "length": 40,
+        "valid": true
+      },
+      "elapsed_ms": 6.3,
+      "server_regex_ms": 0.001,
+      "curl_exit_code": 0,
+      "timed_out": false,
+      "stderr": "",
+      "matches_expected": true,
+      "response_file": "fixed-valid-longer-name.http",
+      "response_sha256": "3fa7315205434e4627e2b5bd94fd260ae62e01373650c9c201dd5b802ba55e7b"
+    },
+    {
+      "id": "fixed/valid-26-letters",
+      "group": "positive",
+      "started_at": "2026-11-11T09:58:19.806730+00:00",
+      "input_length": 26,
+      "expected_status": 200,
+      "observed_status": 200,
+      "observed_body": {
+        "length": 26,
+        "valid": true
+      },
+      "elapsed_ms": 6.5,
+      "server_regex_ms": 0.001,
+      "curl_exit_code": 0,
+      "timed_out": false,
+      "stderr": "",
+      "matches_expected": true,
+      "response_file": "fixed-valid-26-letters.http",
+      "response_sha256": "314c3aef657ff0b15db417c0935653c113ed8bb32965bcafd1e3c4d17287440e"
+    },
+    {
+      "id": "fixed/invalid-character",
+      "group": "negative",
+      "started_at": "2026-11-11T09:58:19.813460+00:00",
+      "input_length": 4,
+      "expected_status": 400,
+      "observed_status": 400,
+      "observed_body": {
+        "length": 4,
+        "valid": false
+      },
+      "elapsed_ms": 6.3,
+      "server_regex_ms": 0.001,
+      "curl_exit_code": 0,
+      "timed_out": false,
+      "stderr": "",
+      "matches_expected": true,
+      "response_file": "fixed-invalid-character.http",
+      "response_sha256": "416296109fbdc8c60d16d7ac4e2a00e2b8d25f7088775bb5d63470ee014cc77c"
+    },
+    {
+      "id": "fixed/invalid-double-space",
+      "group": "negative",
+      "started_at": "2026-11-11T09:58:19.819999+00:00",
+      "input_length": 13,
+      "expected_status": 400,
+      "observed_status": 400,
+      "observed_body": {
+        "length": 13,
+        "valid": false
+      },
+      "elapsed_ms": 6.1,
+      "server_regex_ms": 0.001,
+      "curl_exit_code": 0,
+      "timed_out": false,
+      "stderr": "",
+      "matches_expected": true,
+      "response_file": "fixed-invalid-double-space.http",
+      "response_sha256": "8e6fde3ffcb925cafae735d0b14bace4d033f1b1e5c96be674667c34304009f1"
+    },
+    {
+      "id": "fixed/tab-separator",
+      "group": "behaviour-change",
+      "started_at": "2026-11-11T09:58:19.826323+00:00",
+      "input_length": 12,
+      "expected_status": 400,
+      "observed_status": 400,
+      "observed_body": {
+        "length": 12,
+        "valid": false
+      },
+      "elapsed_ms": 6.0,
+      "server_regex_ms": 0.001,
+      "curl_exit_code": 0,
+      "timed_out": false,
+      "stderr": "",
+      "matches_expected": true,
+      "response_file": "fixed-tab-separator.http",
+      "response_sha256": "bb99b0cccbc143c0075bb4a4aecfb9fe925bd814ef23eee2ac200cf41292b4c3"
+    },
+    {
+      "id": "fixed/valid-64-letters",
+      "group": "positive",
+      "started_at": "2026-11-11T09:58:19.832541+00:00",
+      "input_length": 64,
+      "expected_status": 200,
+      "observed_status": 200,
+      "observed_body": {
+        "length": 64,
+        "valid": true
+      },
+      "elapsed_ms": 6.7,
+      "server_regex_ms": 0.001,
+      "curl_exit_code": 0,
+      "timed_out": false,
+      "stderr": "",
+      "matches_expected": true,
+      "response_file": "fixed-valid-64-letters.http",
+      "response_sha256": "1366a234166b0affe198cea95d1e06e5092d749025c2d0e804a44974fb2b9317"
+    },
+    {
+      "id": "fixed/valid-65-letters",
+      "group": "behaviour-change",
+      "started_at": "2026-11-11T09:58:19.839447+00:00",
+      "input_length": 65,
+      "expected_status": 413,
+      "observed_status": 413,
+      "observed_body": {
+        "error": "name_too_long",
+        "max_length": 64
+      },
+      "elapsed_ms": 7.1,
+      "server_regex_ms": null,
+      "curl_exit_code": 0,
+      "timed_out": false,
+      "stderr": "",
+      "matches_expected": true,
+      "response_file": "fixed-valid-65-letters.http",
+      "response_sha256": "6a6655359052ad89be86ebde8ee88cc229612062a30f999229016e1a84e99b5a"
+    },
+    {
+      "id": "fixed/attack-64-at-cap",
+      "group": "negative",
+      "started_at": "2026-11-11T09:58:19.846808+00:00",
+      "input_length": 64,
+      "expected_status": 400,
+      "observed_status": 400,
+      "observed_body": {
+        "length": 64,
+        "valid": false
+      },
+      "elapsed_ms": 6.8,
+      "server_regex_ms": 0.002,
+      "curl_exit_code": 0,
+      "timed_out": false,
+      "stderr": "",
+      "matches_expected": true,
+      "response_file": "fixed-attack-64-at-cap.http",
+      "response_sha256": "23ca6abd663f156e87f50e37140cc5e6b0571bc1f5e6f970c4b8ad62e2aa7dfa"
+    },
+    {
+      "id": "fixed/attack-1000",
+      "group": "negative",
+      "started_at": "2026-11-11T09:58:19.853873+00:00",
+      "input_length": 1000,
+      "expected_status": 413,
+      "observed_status": 413,
+      "observed_body": {
+        "error": "name_too_long",
+        "max_length": 64
+      },
+      "elapsed_ms": 6.2,
+      "server_regex_ms": null,
+      "curl_exit_code": 0,
+      "timed_out": false,
+      "stderr": "",
+      "matches_expected": true,
+      "response_file": "fixed-attack-1000.http",
+      "response_sha256": "6a6655359052ad89be86ebde8ee88cc229612062a30f999229016e1a84e99b5a"
+    },
+    {
+      "id": "fixed/attack-ladder-16",
+      "group": "attack",
+      "started_at": "2026-11-11T09:58:19.860313+00:00",
+      "input_length": 17,
+      "expected_status": 400,
+      "observed_status": 400,
+      "observed_body": {
+        "length": 17,
+        "valid": false
+      },
+      "elapsed_ms": 6.4,
+      "server_regex_ms": 0.001,
+      "curl_exit_code": 0,
+      "timed_out": false,
+      "stderr": "",
+      "matches_expected": true,
+      "response_file": "fixed-attack-ladder-16.http",
+      "response_sha256": "43f4198a44a67d9a2064905a5c8230b9b31207aab954088de1fc68fc7c261b9c"
+    },
+    {
+      "id": "fixed/attack-ladder-18",
+      "group": "attack",
+      "started_at": "2026-11-11T09:58:19.866983+00:00",
+      "input_length": 19,
+      "expected_status": 400,
+      "observed_status": 400,
+      "observed_body": {
+        "length": 19,
+        "valid": false
+      },
+      "elapsed_ms": 6.4,
+      "server_regex_ms": 0.001,
+      "curl_exit_code": 0,
+      "timed_out": false,
+      "stderr": "",
+      "matches_expected": true,
+      "response_file": "fixed-attack-ladder-18.http",
+      "response_sha256": "6c9ae39c570e57828b190fc46a09f7e6bbcdf10f19054b5e21660c713dd45718"
+    },
+    {
+      "id": "fixed/attack-ladder-20",
+      "group": "attack",
+      "started_at": "2026-11-11T09:58:19.873802+00:00",
+      "input_length": 21,
+      "expected_status": 400,
+      "observed_status": 400,
+      "observed_body": {
+        "length": 21,
+        "valid": false
+      },
+      "elapsed_ms": 6.5,
+      "server_regex_ms": 0.001,
+      "curl_exit_code": 0,
+      "timed_out": false,
+      "stderr": "",
+      "matches_expected": true,
+      "response_file": "fixed-attack-ladder-20.http",
+      "response_sha256": "f380af6cdeb766cb8c0f66d438b88cc9e5b3688aae40b1396b7d356729a5f0da"
+    },
+    {
+      "id": "fixed/attack-ladder-22",
+      "group": "attack",
+      "started_at": "2026-11-11T09:58:19.880744+00:00",
+      "input_length": 23,
+      "expected_status": 400,
+      "observed_status": 400,
+      "observed_body": {
+        "length": 23,
+        "valid": false
+      },
+      "elapsed_ms": 6.9,
+      "server_regex_ms": 0.002,
+      "curl_exit_code": 0,
+      "timed_out": false,
+      "stderr": "",
+      "matches_expected": true,
+      "response_file": "fixed-attack-ladder-22.http",
+      "response_sha256": "b7d84ce52fa83831fefddf482c86e790ce53f4269f128f7373ffb7696aa362bb"
+    },
+    {
+      "id": "fixed/attack-ladder-24",
+      "group": "attack",
+      "started_at": "2026-11-11T09:58:19.887937+00:00",
+      "input_length": 25,
+      "expected_status": 400,
+      "observed_status": 400,
+      "observed_body": {
+        "length": 25,
+        "valid": false
+      },
+      "elapsed_ms": 6.2,
+      "server_regex_ms": 0.002,
+      "curl_exit_code": 0,
+      "timed_out": false,
+      "stderr": "",
+      "matches_expected": true,
+      "response_file": "fixed-attack-ladder-24.http",
+      "response_sha256": "641714ac683f963ec9c23d2722a654f63404c75e8e9a906678cbe9b6a93479fb"
+    },
+    {
+      "id": "fixed/attack-ladder-26",
+      "group": "attack",
+      "started_at": "2026-11-11T09:58:19.894433+00:00",
+      "input_length": 27,
+      "expected_status": 400,
+      "observed_status": 400,
+      "observed_body": {
+        "length": 27,
+        "valid": false
+      },
+      "elapsed_ms": 6.6,
+      "server_regex_ms": 0.002,
+      "curl_exit_code": 0,
+      "timed_out": false,
+      "stderr": "",
+      "matches_expected": true,
+      "response_file": "fixed-attack-ladder-26.http",
+      "response_sha256": "657a51013d670927e7cd4f50598480b8f62e00ddef5da9309b35e7d4ff48c6ca"
+    },
+    {
+      "id": "fixed/collateral-valid-during-attack",
+      "group": "collateral",
+      "started_at": "2026-11-11T09:58:20.112375+00:00",
+      "input_length": 12,
+      "expected_status": 200,
+      "observed_status": 200,
+      "observed_body": {
+        "length": 12,
+        "valid": true
+      },
+      "elapsed_ms": 9.0,
+      "server_regex_ms": 0.001,
+      "curl_exit_code": 0,
+      "timed_out": false,
+      "stderr": "",
+      "matches_expected": true,
+      "response_file": "fixed-collateral-valid-during-attack.http",
+      "response_sha256": "acc9f8064dbe3f9f0ebf3cbb676f8ac989d3e3f84227d4014b9e280259f2f823"
+    }
+  ],
+  "claims": [
+    {
+      "claim": "vulnerable attack time grows with input length",
+      "passed": true,
+      "detail": {
+        "min_ms": 8.6,
+        "max_ms": 3125.5
+      }
+    },
+    {
+      "claim": "fixed attack time stays under 500 ms",
+      "passed": true,
+      "detail": {
+        "max_ms": 6.9
+      }
+    },
+    {
+      "claim": "vulnerable server delays a valid request queued behind an attack",
+      "passed": true,
+      "detail": {
+        "baseline_ms": 7.9,
+        "during_attack_ms": 567.5
+      }
+    },
+    {
+      "claim": "fixed server does not delay a valid request",
+      "passed": true,
+      "detail": {
+        "baseline_ms": 7.1,
+        "during_attack_ms": 9.0
+      }
+    },
+    {
+      "claim": "fixed pattern alone rejects a 50,001 character attack input in under 1 s",
+      "passed": true,
+      "detail": {
+        "elapsed_ms": 0.817
+      }
+    }
+  ],
+  "failures": [],
+  "in_process_fixed_pattern": {
+    "input_length": 50001,
+    "matched": false,
+    "elapsed_ms": 0.817
+  },
+  "finished_at": "2026-11-11T09:58:20.123651+00:00",
+  "all_checks_passed": true
+}

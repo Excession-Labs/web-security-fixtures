@@ -1,0 +1,999 @@
+### attempt 1
+HTTP/1.0 401 Unauthorized
+Server: StuffingFixture/1.0.0 
+Date: Wed, 11 Nov 2026 10:00:56 GMT
+Content-Type: application/json
+Content-Length: 33
+Cache-Control: no-store
+
+{"error": "invalid_credentials"}
+
+### attempt 2
+HTTP/1.0 401 Unauthorized
+Server: StuffingFixture/1.0.0 
+Date: Wed, 11 Nov 2026 10:00:56 GMT
+Content-Type: application/json
+Content-Length: 33
+Cache-Control: no-store
+
+{"error": "invalid_credentials"}
+
+### attempt 3
+HTTP/1.0 401 Unauthorized
+Server: StuffingFixture/1.0.0 
+Date: Wed, 11 Nov 2026 10:00:56 GMT
+Content-Type: application/json
+Content-Length: 33
+Cache-Control: no-store
+
+{"error": "invalid_credentials"}
+
+### attempt 4
+HTTP/1.0 401 Unauthorized
+Server: StuffingFixture/1.0.0 
+Date: Wed, 11 Nov 2026 10:00:56 GMT
+Content-Type: application/json
+Content-Length: 33
+Cache-Control: no-store
+
+{"error": "invalid_credentials"}
+
+### attempt 5
+HTTP/1.0 401 Unauthorized
+Server: StuffingFixture/1.0.0 
+Date: Wed, 11 Nov 2026 10:00:56 GMT
+Content-Type: application/json
+Content-Length: 33
+Cache-Control: no-store
+
+{"error": "invalid_credentials"}
+
+### attempt 6
+HTTP/1.0 401 Unauthorized
+Server: StuffingFixture/1.0.0 
+Date: Wed, 11 Nov 2026 10:00:56 GMT
+Content-Type: application/json
+Content-Length: 33
+Cache-Control: no-store
+
+{"error": "invalid_credentials"}
+
+### attempt 7
+HTTP/1.0 401 Unauthorized
+Server: StuffingFixture/1.0.0 
+Date: Wed, 11 Nov 2026 10:00:56 GMT
+Content-Type: application/json
+Content-Length: 33
+Cache-Control: no-store
+
+{"error": "invalid_credentials"}
+
+### attempt 8
+HTTP/1.0 401 Unauthorized
+Server: StuffingFixture/1.0.0 
+Date: Wed, 11 Nov 2026 10:00:56 GMT
+Content-Type: application/json
+Content-Length: 33
+Cache-Control: no-store
+
+{"error": "invalid_credentials"}
+
+### attempt 9
+HTTP/1.0 401 Unauthorized
+Server: StuffingFixture/1.0.0 
+Date: Wed, 11 Nov 2026 10:00:56 GMT
+Content-Type: application/json
+Content-Length: 33
+Cache-Control: no-store
+
+{"error": "invalid_credentials"}
+
+### attempt 10
+HTTP/1.0 401 Unauthorized
+Server: StuffingFixture/1.0.0 
+Date: Wed, 11 Nov 2026 10:00:56 GMT
+Content-Type: application/json
+Content-Length: 33
+Cache-Control: no-store
+
+{"error": "invalid_credentials"}
+
+### attempt 11
+HTTP/1.0 401 Unauthorized
+Server: StuffingFixture/1.0.0 
+Date: Wed, 11 Nov 2026 10:00:56 GMT
+Content-Type: application/json
+Content-Length: 33
+Cache-Control: no-store
+
+{"error": "invalid_credentials"}
+
+### attempt 12
+HTTP/1.0 401 Unauthorized
+Server: StuffingFixture/1.0.0 
+Date: Wed, 11 Nov 2026 10:00:56 GMT
+Content-Type: application/json
+Content-Length: 33
+Cache-Control: no-store
+
+{"error": "invalid_credentials"}
+
+### attempt 13
+HTTP/1.0 401 Unauthorized
+Server: StuffingFixture/1.0.0 
+Date: Wed, 11 Nov 2026 10:00:56 GMT
+Content-Type: application/json
+Content-Length: 33
+Cache-Control: no-store
+
+{"error": "invalid_credentials"}
+
+### attempt 14
+HTTP/1.0 200 OK
+Server: StuffingFixture/1.0.0 
+Date: Wed, 11 Nov 2026 10:00:56 GMT
+Content-Type: application/json
+Content-Length: 83
+Cache-Control: no-store
+
+{"session": "eb8354e5a7e9a133", "status": "ok", "username": "user31@example.test"}
+
+### attempt 15
+HTTP/1.0 401 Unauthorized
+Server: StuffingFixture/1.0.0 
+Date: Wed, 11 Nov 2026 10:00:56 GMT
+Content-Type: application/json
+Content-Length: 33
+Cache-Control: no-store
+
+{"error": "invalid_credentials"}
+
+### attempt 16
+HTTP/1.0 401 Unauthorized
+Server: StuffingFixture/1.0.0 
+Date: Wed, 11 Nov 2026 10:00:56 GMT
+Content-Type: application/json
+Content-Length: 33
+Cache-Control: no-store
+
+{"error": "invalid_credentials"}
+
+### attempt 17
+HTTP/1.0 401 Unauthorized
+Server: StuffingFixture/1.0.0 
+Date: Wed, 11 Nov 2026 10:00:56 GMT
+Content-Type: application/json
+Content-Length: 33
+Cache-Control: no-store
+
+{"error": "invalid_credentials"}
+
+### attempt 18
+HTTP/1.0 200 OK
+Server: StuffingFixture/1.0.0 
+Date: Wed, 11 Nov 2026 10:00:56 GMT
+Content-Type: application/json
+Content-Length: 83
+Cache-Control: no-store
+
+{"session": "3c873c3498817663", "status": "ok", "username": "user55@example.test"}
+
+### attempt 19
+HTTP/1.0 401 Unauthorized
+Server: StuffingFixture/1.0.0 
+Date: Wed, 11 Nov 2026 10:00:56 GMT
+Content-Type: application/json
+Content-Length: 33
+Cache-Control: no-store
+
+{"error": "invalid_credentials"}
+
+### attempt 20
+HTTP/1.0 401 Unauthorized
+Server: StuffingFixture/1.0.0 
+Date: Wed, 11 Nov 2026 10:00:56 GMT
+Content-Type: application/json
+Content-Length: 33
+Cache-Control: no-store
+
+{"error": "invalid_credentials"}
+
+### attempt 21
+HTTP/1.0 401 Unauthorized
+Server: StuffingFixture/1.0.0 
+Date: Wed, 11 Nov 2026 10:00:56 GMT
+Content-Type: application/json
+Content-Length: 33
+Cache-Control: no-store
+
+{"error": "invalid_credentials"}
+
+### attempt 22
+HTTP/1.0 401 Unauthorized
+Server: StuffingFixture/1.0.0 
+Date: Wed, 11 Nov 2026 10:00:56 GMT
+Content-Type: application/json
+Content-Length: 33
+Cache-Control: no-store
+
+{"error": "invalid_credentials"}
+
+### attempt 23
+HTTP/1.0 401 Unauthorized
+Server: StuffingFixture/1.0.0 
+Date: Wed, 11 Nov 2026 10:00:56 GMT
+Content-Type: application/json
+Content-Length: 33
+Cache-Control: no-store
+
+{"error": "invalid_credentials"}
+
+### attempt 24
+HTTP/1.0 401 Unauthorized
+Server: StuffingFixture/1.0.0 
+Date: Wed, 11 Nov 2026 10:00:56 GMT
+Content-Type: application/json
+Content-Length: 33
+Cache-Control: no-store
+
+{"error": "invalid_credentials"}
+
+### attempt 25
+HTTP/1.0 401 Unauthorized
+Server: StuffingFixture/1.0.0 
+Date: Wed, 11 Nov 2026 10:00:56 GMT
+Content-Type: application/json
+Content-Length: 33
+Cache-Control: no-store
+
+{"error": "invalid_credentials"}
+
+### attempt 26
+HTTP/1.0 401 Unauthorized
+Server: StuffingFixture/1.0.0 
+Date: Wed, 11 Nov 2026 10:00:56 GMT
+Content-Type: application/json
+Content-Length: 33
+Cache-Control: no-store
+
+{"error": "invalid_credentials"}
+
+### attempt 27
+HTTP/1.0 401 Unauthorized
+Server: StuffingFixture/1.0.0 
+Date: Wed, 11 Nov 2026 10:00:56 GMT
+Content-Type: application/json
+Content-Length: 33
+Cache-Control: no-store
+
+{"error": "invalid_credentials"}
+
+### attempt 28
+HTTP/1.0 401 Unauthorized
+Server: StuffingFixture/1.0.0 
+Date: Wed, 11 Nov 2026 10:00:56 GMT
+Content-Type: application/json
+Content-Length: 33
+Cache-Control: no-store
+
+{"error": "invalid_credentials"}
+
+### attempt 29
+HTTP/1.0 200 OK
+Server: StuffingFixture/1.0.0 
+Date: Wed, 11 Nov 2026 10:00:56 GMT
+Content-Type: application/json
+Content-Length: 83
+Cache-Control: no-store
+
+{"session": "5ac1c2acc82f86a7", "status": "ok", "username": "user32@example.test"}
+
+### attempt 30
+HTTP/1.0 401 Unauthorized
+Server: StuffingFixture/1.0.0 
+Date: Wed, 11 Nov 2026 10:00:56 GMT
+Content-Type: application/json
+Content-Length: 33
+Cache-Control: no-store
+
+{"error": "invalid_credentials"}
+
+### attempt 31
+HTTP/1.0 401 Unauthorized
+Server: StuffingFixture/1.0.0 
+Date: Wed, 11 Nov 2026 10:00:56 GMT
+Content-Type: application/json
+Content-Length: 33
+Cache-Control: no-store
+
+{"error": "invalid_credentials"}
+
+### attempt 32
+HTTP/1.0 200 OK
+Server: StuffingFixture/1.0.0 
+Date: Wed, 11 Nov 2026 10:00:56 GMT
+Content-Type: application/json
+Content-Length: 83
+Cache-Control: no-store
+
+{"session": "c7f2412bdec775eb", "status": "ok", "username": "user11@example.test"}
+
+### attempt 33
+HTTP/1.0 401 Unauthorized
+Server: StuffingFixture/1.0.0 
+Date: Wed, 11 Nov 2026 10:00:56 GMT
+Content-Type: application/json
+Content-Length: 33
+Cache-Control: no-store
+
+{"error": "invalid_credentials"}
+
+### attempt 34
+HTTP/1.0 401 Unauthorized
+Server: StuffingFixture/1.0.0 
+Date: Wed, 11 Nov 2026 10:00:56 GMT
+Content-Type: application/json
+Content-Length: 33
+Cache-Control: no-store
+
+{"error": "invalid_credentials"}
+
+### attempt 35
+HTTP/1.0 401 Unauthorized
+Server: StuffingFixture/1.0.0 
+Date: Wed, 11 Nov 2026 10:00:56 GMT
+Content-Type: application/json
+Content-Length: 33
+Cache-Control: no-store
+
+{"error": "invalid_credentials"}
+
+### attempt 36
+HTTP/1.0 200 OK
+Server: StuffingFixture/1.0.0 
+Date: Wed, 11 Nov 2026 10:00:56 GMT
+Content-Type: application/json
+Content-Length: 83
+Cache-Control: no-store
+
+{"session": "9c6185e1816071bc", "status": "ok", "username": "user09@example.test"}
+
+### attempt 37
+HTTP/1.0 401 Unauthorized
+Server: StuffingFixture/1.0.0 
+Date: Wed, 11 Nov 2026 10:00:56 GMT
+Content-Type: application/json
+Content-Length: 33
+Cache-Control: no-store
+
+{"error": "invalid_credentials"}
+
+### attempt 38
+HTTP/1.0 401 Unauthorized
+Server: StuffingFixture/1.0.0 
+Date: Wed, 11 Nov 2026 10:00:56 GMT
+Content-Type: application/json
+Content-Length: 33
+Cache-Control: no-store
+
+{"error": "invalid_credentials"}
+
+### attempt 39
+HTTP/1.0 401 Unauthorized
+Server: StuffingFixture/1.0.0 
+Date: Wed, 11 Nov 2026 10:00:56 GMT
+Content-Type: application/json
+Content-Length: 33
+Cache-Control: no-store
+
+{"error": "invalid_credentials"}
+
+### attempt 40
+HTTP/1.0 200 OK
+Server: StuffingFixture/1.0.0 
+Date: Wed, 11 Nov 2026 10:00:56 GMT
+Content-Type: application/json
+Content-Length: 83
+Cache-Control: no-store
+
+{"session": "335ded78fedf0136", "status": "ok", "username": "user47@example.test"}
+
+### attempt 41
+HTTP/1.0 401 Unauthorized
+Server: StuffingFixture/1.0.0 
+Date: Wed, 11 Nov 2026 10:00:56 GMT
+Content-Type: application/json
+Content-Length: 33
+Cache-Control: no-store
+
+{"error": "invalid_credentials"}
+
+### attempt 42
+HTTP/1.0 401 Unauthorized
+Server: StuffingFixture/1.0.0 
+Date: Wed, 11 Nov 2026 10:00:56 GMT
+Content-Type: application/json
+Content-Length: 33
+Cache-Control: no-store
+
+{"error": "invalid_credentials"}
+
+### attempt 43
+HTTP/1.0 401 Unauthorized
+Server: StuffingFixture/1.0.0 
+Date: Wed, 11 Nov 2026 10:00:56 GMT
+Content-Type: application/json
+Content-Length: 33
+Cache-Control: no-store
+
+{"error": "invalid_credentials"}
+
+### attempt 44
+HTTP/1.0 401 Unauthorized
+Server: StuffingFixture/1.0.0 
+Date: Wed, 11 Nov 2026 10:00:56 GMT
+Content-Type: application/json
+Content-Length: 33
+Cache-Control: no-store
+
+{"error": "invalid_credentials"}
+
+### attempt 45
+HTTP/1.0 401 Unauthorized
+Server: StuffingFixture/1.0.0 
+Date: Wed, 11 Nov 2026 10:00:56 GMT
+Content-Type: application/json
+Content-Length: 33
+Cache-Control: no-store
+
+{"error": "invalid_credentials"}
+
+### attempt 46
+HTTP/1.0 401 Unauthorized
+Server: StuffingFixture/1.0.0 
+Date: Wed, 11 Nov 2026 10:00:56 GMT
+Content-Type: application/json
+Content-Length: 33
+Cache-Control: no-store
+
+{"error": "invalid_credentials"}
+
+### attempt 47
+HTTP/1.0 401 Unauthorized
+Server: StuffingFixture/1.0.0 
+Date: Wed, 11 Nov 2026 10:00:56 GMT
+Content-Type: application/json
+Content-Length: 33
+Cache-Control: no-store
+
+{"error": "invalid_credentials"}
+
+### attempt 48
+HTTP/1.0 200 OK
+Server: StuffingFixture/1.0.0 
+Date: Wed, 11 Nov 2026 10:00:56 GMT
+Content-Type: application/json
+Content-Length: 83
+Cache-Control: no-store
+
+{"session": "bcc3d831598f1da1", "status": "ok", "username": "user46@example.test"}
+
+### attempt 49
+HTTP/1.0 401 Unauthorized
+Server: StuffingFixture/1.0.0 
+Date: Wed, 11 Nov 2026 10:00:56 GMT
+Content-Type: application/json
+Content-Length: 33
+Cache-Control: no-store
+
+{"error": "invalid_credentials"}
+
+### attempt 50
+HTTP/1.0 401 Unauthorized
+Server: StuffingFixture/1.0.0 
+Date: Wed, 11 Nov 2026 10:00:56 GMT
+Content-Type: application/json
+Content-Length: 33
+Cache-Control: no-store
+
+{"error": "invalid_credentials"}
+
+### attempt 51
+HTTP/1.0 401 Unauthorized
+Server: StuffingFixture/1.0.0 
+Date: Wed, 11 Nov 2026 10:00:56 GMT
+Content-Type: application/json
+Content-Length: 33
+Cache-Control: no-store
+
+{"error": "invalid_credentials"}
+
+### attempt 52
+HTTP/1.0 401 Unauthorized
+Server: StuffingFixture/1.0.0 
+Date: Wed, 11 Nov 2026 10:00:56 GMT
+Content-Type: application/json
+Content-Length: 33
+Cache-Control: no-store
+
+{"error": "invalid_credentials"}
+
+### attempt 53
+HTTP/1.0 401 Unauthorized
+Server: StuffingFixture/1.0.0 
+Date: Wed, 11 Nov 2026 10:00:56 GMT
+Content-Type: application/json
+Content-Length: 33
+Cache-Control: no-store
+
+{"error": "invalid_credentials"}
+
+### attempt 54
+HTTP/1.0 401 Unauthorized
+Server: StuffingFixture/1.0.0 
+Date: Wed, 11 Nov 2026 10:00:56 GMT
+Content-Type: application/json
+Content-Length: 33
+Cache-Control: no-store
+
+{"error": "invalid_credentials"}
+
+### attempt 55
+HTTP/1.0 401 Unauthorized
+Server: StuffingFixture/1.0.0 
+Date: Wed, 11 Nov 2026 10:00:56 GMT
+Content-Type: application/json
+Content-Length: 33
+Cache-Control: no-store
+
+{"error": "invalid_credentials"}
+
+### attempt 56
+HTTP/1.0 401 Unauthorized
+Server: StuffingFixture/1.0.0 
+Date: Wed, 11 Nov 2026 10:00:56 GMT
+Content-Type: application/json
+Content-Length: 33
+Cache-Control: no-store
+
+{"error": "invalid_credentials"}
+
+### attempt 57
+HTTP/1.0 401 Unauthorized
+Server: StuffingFixture/1.0.0 
+Date: Wed, 11 Nov 2026 10:00:56 GMT
+Content-Type: application/json
+Content-Length: 33
+Cache-Control: no-store
+
+{"error": "invalid_credentials"}
+
+### attempt 58
+HTTP/1.0 401 Unauthorized
+Server: StuffingFixture/1.0.0 
+Date: Wed, 11 Nov 2026 10:00:56 GMT
+Content-Type: application/json
+Content-Length: 33
+Cache-Control: no-store
+
+{"error": "invalid_credentials"}
+
+### attempt 59
+HTTP/1.0 401 Unauthorized
+Server: StuffingFixture/1.0.0 
+Date: Wed, 11 Nov 2026 10:00:56 GMT
+Content-Type: application/json
+Content-Length: 33
+Cache-Control: no-store
+
+{"error": "invalid_credentials"}
+
+### attempt 60
+HTTP/1.0 401 Unauthorized
+Server: StuffingFixture/1.0.0 
+Date: Wed, 11 Nov 2026 10:00:56 GMT
+Content-Type: application/json
+Content-Length: 33
+Cache-Control: no-store
+
+{"error": "invalid_credentials"}
+
+### attempt 61
+HTTP/1.0 401 Unauthorized
+Server: StuffingFixture/1.0.0 
+Date: Wed, 11 Nov 2026 10:00:56 GMT
+Content-Type: application/json
+Content-Length: 33
+Cache-Control: no-store
+
+{"error": "invalid_credentials"}
+
+### attempt 62
+HTTP/1.0 401 Unauthorized
+Server: StuffingFixture/1.0.0 
+Date: Wed, 11 Nov 2026 10:00:56 GMT
+Content-Type: application/json
+Content-Length: 33
+Cache-Control: no-store
+
+{"error": "invalid_credentials"}
+
+### attempt 63
+HTTP/1.0 401 Unauthorized
+Server: StuffingFixture/1.0.0 
+Date: Wed, 11 Nov 2026 10:00:56 GMT
+Content-Type: application/json
+Content-Length: 33
+Cache-Control: no-store
+
+{"error": "invalid_credentials"}
+
+### attempt 64
+HTTP/1.0 401 Unauthorized
+Server: StuffingFixture/1.0.0 
+Date: Wed, 11 Nov 2026 10:00:56 GMT
+Content-Type: application/json
+Content-Length: 33
+Cache-Control: no-store
+
+{"error": "invalid_credentials"}
+
+### attempt 65
+HTTP/1.0 401 Unauthorized
+Server: StuffingFixture/1.0.0 
+Date: Wed, 11 Nov 2026 10:00:56 GMT
+Content-Type: application/json
+Content-Length: 33
+Cache-Control: no-store
+
+{"error": "invalid_credentials"}
+
+### attempt 66
+HTTP/1.0 401 Unauthorized
+Server: StuffingFixture/1.0.0 
+Date: Wed, 11 Nov 2026 10:00:56 GMT
+Content-Type: application/json
+Content-Length: 33
+Cache-Control: no-store
+
+{"error": "invalid_credentials"}
+
+### attempt 67
+HTTP/1.0 200 OK
+Server: StuffingFixture/1.0.0 
+Date: Wed, 11 Nov 2026 10:00:56 GMT
+Content-Type: application/json
+Content-Length: 83
+Cache-Control: no-store
+
+{"session": "532cb7bb8fd03997", "status": "ok", "username": "user12@example.test"}
+
+### attempt 68
+HTTP/1.0 401 Unauthorized
+Server: StuffingFixture/1.0.0 
+Date: Wed, 11 Nov 2026 10:00:56 GMT
+Content-Type: application/json
+Content-Length: 33
+Cache-Control: no-store
+
+{"error": "invalid_credentials"}
+
+### attempt 69
+HTTP/1.0 401 Unauthorized
+Server: StuffingFixture/1.0.0 
+Date: Wed, 11 Nov 2026 10:00:56 GMT
+Content-Type: application/json
+Content-Length: 33
+Cache-Control: no-store
+
+{"error": "invalid_credentials"}
+
+### attempt 70
+HTTP/1.0 401 Unauthorized
+Server: StuffingFixture/1.0.0 
+Date: Wed, 11 Nov 2026 10:00:56 GMT
+Content-Type: application/json
+Content-Length: 33
+Cache-Control: no-store
+
+{"error": "invalid_credentials"}
+
+### attempt 71
+HTTP/1.0 401 Unauthorized
+Server: StuffingFixture/1.0.0 
+Date: Wed, 11 Nov 2026 10:00:56 GMT
+Content-Type: application/json
+Content-Length: 33
+Cache-Control: no-store
+
+{"error": "invalid_credentials"}
+
+### attempt 72
+HTTP/1.0 200 OK
+Server: StuffingFixture/1.0.0 
+Date: Wed, 11 Nov 2026 10:00:57 GMT
+Content-Type: application/json
+Content-Length: 83
+Cache-Control: no-store
+
+{"session": "c36e698be0734cbb", "status": "ok", "username": "user45@example.test"}
+
+### attempt 73
+HTTP/1.0 401 Unauthorized
+Server: StuffingFixture/1.0.0 
+Date: Wed, 11 Nov 2026 10:00:57 GMT
+Content-Type: application/json
+Content-Length: 33
+Cache-Control: no-store
+
+{"error": "invalid_credentials"}
+
+### attempt 74
+HTTP/1.0 401 Unauthorized
+Server: StuffingFixture/1.0.0 
+Date: Wed, 11 Nov 2026 10:00:57 GMT
+Content-Type: application/json
+Content-Length: 33
+Cache-Control: no-store
+
+{"error": "invalid_credentials"}
+
+### attempt 75
+HTTP/1.0 401 Unauthorized
+Server: StuffingFixture/1.0.0 
+Date: Wed, 11 Nov 2026 10:00:57 GMT
+Content-Type: application/json
+Content-Length: 33
+Cache-Control: no-store
+
+{"error": "invalid_credentials"}
+
+### attempt 76
+HTTP/1.0 401 Unauthorized
+Server: StuffingFixture/1.0.0 
+Date: Wed, 11 Nov 2026 10:00:57 GMT
+Content-Type: application/json
+Content-Length: 33
+Cache-Control: no-store
+
+{"error": "invalid_credentials"}
+
+### attempt 77
+HTTP/1.0 401 Unauthorized
+Server: StuffingFixture/1.0.0 
+Date: Wed, 11 Nov 2026 10:00:57 GMT
+Content-Type: application/json
+Content-Length: 33
+Cache-Control: no-store
+
+{"error": "invalid_credentials"}
+
+### attempt 78
+HTTP/1.0 200 OK
+Server: StuffingFixture/1.0.0 
+Date: Wed, 11 Nov 2026 10:00:57 GMT
+Content-Type: application/json
+Content-Length: 83
+Cache-Control: no-store
+
+{"session": "2c1143110b53f802", "status": "ok", "username": "user13@example.test"}
+
+### attempt 79
+HTTP/1.0 401 Unauthorized
+Server: StuffingFixture/1.0.0 
+Date: Wed, 11 Nov 2026 10:00:57 GMT
+Content-Type: application/json
+Content-Length: 33
+Cache-Control: no-store
+
+{"error": "invalid_credentials"}
+
+### attempt 80
+HTTP/1.0 401 Unauthorized
+Server: StuffingFixture/1.0.0 
+Date: Wed, 11 Nov 2026 10:00:57 GMT
+Content-Type: application/json
+Content-Length: 33
+Cache-Control: no-store
+
+{"error": "invalid_credentials"}
+
+### attempt 81
+HTTP/1.0 401 Unauthorized
+Server: StuffingFixture/1.0.0 
+Date: Wed, 11 Nov 2026 10:00:57 GMT
+Content-Type: application/json
+Content-Length: 33
+Cache-Control: no-store
+
+{"error": "invalid_credentials"}
+
+### attempt 82
+HTTP/1.0 401 Unauthorized
+Server: StuffingFixture/1.0.0 
+Date: Wed, 11 Nov 2026 10:00:57 GMT
+Content-Type: application/json
+Content-Length: 33
+Cache-Control: no-store
+
+{"error": "invalid_credentials"}
+
+### attempt 83
+HTTP/1.0 200 OK
+Server: StuffingFixture/1.0.0 
+Date: Wed, 11 Nov 2026 10:00:57 GMT
+Content-Type: application/json
+Content-Length: 83
+Cache-Control: no-store
+
+{"session": "d412c23aba1c869f", "status": "ok", "username": "user27@example.test"}
+
+### attempt 84
+HTTP/1.0 401 Unauthorized
+Server: StuffingFixture/1.0.0 
+Date: Wed, 11 Nov 2026 10:00:57 GMT
+Content-Type: application/json
+Content-Length: 33
+Cache-Control: no-store
+
+{"error": "invalid_credentials"}
+
+### attempt 85
+HTTP/1.0 401 Unauthorized
+Server: StuffingFixture/1.0.0 
+Date: Wed, 11 Nov 2026 10:00:57 GMT
+Content-Type: application/json
+Content-Length: 33
+Cache-Control: no-store
+
+{"error": "invalid_credentials"}
+
+### attempt 86
+HTTP/1.0 200 OK
+Server: StuffingFixture/1.0.0 
+Date: Wed, 11 Nov 2026 10:00:57 GMT
+Content-Type: application/json
+Content-Length: 83
+Cache-Control: no-store
+
+{"session": "514c7a86ebd02188", "status": "ok", "username": "user23@example.test"}
+
+### attempt 87
+HTTP/1.0 401 Unauthorized
+Server: StuffingFixture/1.0.0 
+Date: Wed, 11 Nov 2026 10:00:57 GMT
+Content-Type: application/json
+Content-Length: 33
+Cache-Control: no-store
+
+{"error": "invalid_credentials"}
+
+### attempt 88
+HTTP/1.0 401 Unauthorized
+Server: StuffingFixture/1.0.0 
+Date: Wed, 11 Nov 2026 10:00:57 GMT
+Content-Type: application/json
+Content-Length: 33
+Cache-Control: no-store
+
+{"error": "invalid_credentials"}
+
+### attempt 89
+HTTP/1.0 401 Unauthorized
+Server: StuffingFixture/1.0.0 
+Date: Wed, 11 Nov 2026 10:00:57 GMT
+Content-Type: application/json
+Content-Length: 33
+Cache-Control: no-store
+
+{"error": "invalid_credentials"}
+
+### attempt 90
+HTTP/1.0 401 Unauthorized
+Server: StuffingFixture/1.0.0 
+Date: Wed, 11 Nov 2026 10:00:57 GMT
+Content-Type: application/json
+Content-Length: 33
+Cache-Control: no-store
+
+{"error": "invalid_credentials"}
+
+### attempt 91
+HTTP/1.0 401 Unauthorized
+Server: StuffingFixture/1.0.0 
+Date: Wed, 11 Nov 2026 10:00:57 GMT
+Content-Type: application/json
+Content-Length: 33
+Cache-Control: no-store
+
+{"error": "invalid_credentials"}
+
+### attempt 92
+HTTP/1.0 401 Unauthorized
+Server: StuffingFixture/1.0.0 
+Date: Wed, 11 Nov 2026 10:00:57 GMT
+Content-Type: application/json
+Content-Length: 33
+Cache-Control: no-store
+
+{"error": "invalid_credentials"}
+
+### attempt 93
+HTTP/1.0 401 Unauthorized
+Server: StuffingFixture/1.0.0 
+Date: Wed, 11 Nov 2026 10:00:57 GMT
+Content-Type: application/json
+Content-Length: 33
+Cache-Control: no-store
+
+{"error": "invalid_credentials"}
+
+### attempt 94
+HTTP/1.0 401 Unauthorized
+Server: StuffingFixture/1.0.0 
+Date: Wed, 11 Nov 2026 10:00:57 GMT
+Content-Type: application/json
+Content-Length: 33
+Cache-Control: no-store
+
+{"error": "invalid_credentials"}
+
+### attempt 95
+HTTP/1.0 401 Unauthorized
+Server: StuffingFixture/1.0.0 
+Date: Wed, 11 Nov 2026 10:00:57 GMT
+Content-Type: application/json
+Content-Length: 33
+Cache-Control: no-store
+
+{"error": "invalid_credentials"}
+
+### attempt 96
+HTTP/1.0 401 Unauthorized
+Server: StuffingFixture/1.0.0 
+Date: Wed, 11 Nov 2026 10:00:57 GMT
+Content-Type: application/json
+Content-Length: 33
+Cache-Control: no-store
+
+{"error": "invalid_credentials"}
+
+### attempt 97
+HTTP/1.0 401 Unauthorized
+Server: StuffingFixture/1.0.0 
+Date: Wed, 11 Nov 2026 10:00:57 GMT
+Content-Type: application/json
+Content-Length: 33
+Cache-Control: no-store
+
+{"error": "invalid_credentials"}
+
+### attempt 98
+HTTP/1.0 401 Unauthorized
+Server: StuffingFixture/1.0.0 
+Date: Wed, 11 Nov 2026 10:00:57 GMT
+Content-Type: application/json
+Content-Length: 33
+Cache-Control: no-store
+
+{"error": "invalid_credentials"}
+
+### attempt 99
+HTTP/1.0 401 Unauthorized
+Server: StuffingFixture/1.0.0 
+Date: Wed, 11 Nov 2026 10:00:57 GMT
+Content-Type: application/json
+Content-Length: 33
+Cache-Control: no-store
+
+{"error": "invalid_credentials"}
+
+### attempt 100
+HTTP/1.0 401 Unauthorized
+Server: StuffingFixture/1.0.0 
+Date: Wed, 11 Nov 2026 10:00:57 GMT
+Content-Type: application/json
+Content-Length: 33
+Cache-Control: no-store
+
+{"error": "invalid_credentials"}

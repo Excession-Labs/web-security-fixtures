@@ -1,0 +1,22 @@
+exit code: 0
+stdout bytes: 161
+--- stderr ---
+* Added hsts.test:50573:127.0.0.1 to DNS cache
+* Hostname hsts.test was found in DNS cache
+*   Trying 127.0.0.1:50573...
+* Connected to hsts.test (127.0.0.1) port 50573
+> GET / HTTP/1.1
+> Host: hsts.test:50573
+> User-Agent: curl/8.7.1
+> Accept: */*
+> 
+* Request completely sent off
+* HTTP 1.0, assume close after body
+< HTTP/1.0 200 OK
+< Server: HstsFixture/1.0.0 
+< Date: Wed, 11 Nov 2026 09:58:54 GMT
+< Content-Type: text/plain
+< Content-Length: 37
+< 
+{ [37 bytes data]
+* Closing connection
