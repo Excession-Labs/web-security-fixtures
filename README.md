@@ -43,12 +43,11 @@ The verifier starts the fixture on loopback, sends the requests, writes the resp
 
 ## Requirements
 
-Most fixtures need Python 3.9 or newer (standard library only) and `curl` in your PATH. Four need more:
+Most fixtures need Python 3.9 or newer (standard library only) and `curl` in your PATH. Four folders need more:
 
 - `row-level-security` needs a local PostgreSQL install with `initdb`, `postgres`, `pg_isready` and `psql`. It was recorded with PostgreSQL 16.15. The verifier creates a throwaway cluster in a temp folder on a unix socket and deletes it at the end.
 - `graphql-introspection` builds a temporary virtual environment and installs `graphql-core==3.2.14` from PyPI, so it needs network access once. Nothing is installed globally.
 - `clickjacking` and `csrf-samesite` have an optional browser check. It needs Node.js, the Playwright package and a Chromium build, which these folders do not install. Without it, only the curl cases run. See each `README.txt` for the flags.
-- `security-txt` needs only Python.
 
 ## Safety
 
