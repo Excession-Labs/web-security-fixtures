@@ -1,0 +1,381 @@
+{
+  "schema_version": 1,
+  "fixture_version": "1.0.0",
+  "started_at": "2026-11-02T23:06:25.517437+00:00",
+  "method": "Real curl subprocesses against two locally spawned fixture modes",
+  "scope": {
+    "hosts": [
+      "127.0.0.1"
+    ],
+    "methods": [
+      "GET"
+    ],
+    "paths": [
+      "/objects/alice-note",
+      "/objects/bob-note"
+    ],
+    "data": "Two synthetic identities and notes; all tokens below are public demo values"
+  },
+  "versions": {
+    "python": "3.14.3",
+    "os": "Darwin",
+    "architecture": "arm64",
+    "curl": "curl 8.7.1 (x86_64-apple-darwin24.0) libcurl/8.7.1 (SecureTransport) LibreSSL/3.3.6 zlib/1.2.12 nghttp2/1.64.0"
+  },
+  "sha256": {
+    "fixture.py": "7f0f3d2153a1584562edb0323e1389872c6139c2409493aeee46e1e6f84c6d7b",
+    "verify.py": "335cfbd7be982f8c3db00200406d89c7d17b79fe3762d9938c1ff4bec74acf4c"
+  },
+  "reproduction_command": "python3 verify.py --output recorded-run",
+  "agent_execution": {
+    "executed": false,
+    "note": "HTTP verification was scripted; no model or Excession agent ran"
+  },
+  "cases": [
+    {
+      "id": "vulnerable/alice-own",
+      "started_at": "2026-11-02T23:06:25.585835+00:00",
+      "elapsed_ms": 8.788,
+      "server": {
+        "fixture_version": "1.0.0",
+        "mode": "vulnerable",
+        "base_url": "http://127.0.0.1:32818"
+      },
+      "command": [
+        "curl",
+        "--noproxy",
+        "*",
+        "--silent",
+        "--show-error",
+        "--include",
+        "--http1.1",
+        "--connect-timeout",
+        "1",
+        "--max-time",
+        "3",
+        "--request",
+        "GET",
+        "--header",
+        "Authorization: Bearer demo-alice-token",
+        "http://127.0.0.1:32818/objects/alice-note"
+      ],
+      "curl_exit_code": 0,
+      "stderr": "",
+      "identity": "alice",
+      "path": "/objects/alice-note",
+      "secure_expected_status": 200,
+      "demonstration_expected_status": 200,
+      "observed_status": 200,
+      "observed_body": {
+        "id": "alice-note",
+        "owner": "alice",
+        "text": "Alice synthetic note"
+      },
+      "matches_demonstration": true,
+      "authorization_boundary_holds": true,
+      "response_file": "vulnerable-alice-own.http",
+      "response_sha256": "2a5fd44192dd81e7d9fa2cc285d81dab9dd005ae1d3afb41361459b2a3d46f9e"
+    },
+    {
+      "id": "vulnerable/bob-own",
+      "started_at": "2026-11-02T23:06:25.594688+00:00",
+      "elapsed_ms": 7.271,
+      "server": {
+        "fixture_version": "1.0.0",
+        "mode": "vulnerable",
+        "base_url": "http://127.0.0.1:32818"
+      },
+      "command": [
+        "curl",
+        "--noproxy",
+        "*",
+        "--silent",
+        "--show-error",
+        "--include",
+        "--http1.1",
+        "--connect-timeout",
+        "1",
+        "--max-time",
+        "3",
+        "--request",
+        "GET",
+        "--header",
+        "Authorization: Bearer demo-bob-token",
+        "http://127.0.0.1:32818/objects/bob-note"
+      ],
+      "curl_exit_code": 0,
+      "stderr": "",
+      "identity": "bob",
+      "path": "/objects/bob-note",
+      "secure_expected_status": 200,
+      "demonstration_expected_status": 200,
+      "observed_status": 200,
+      "observed_body": {
+        "id": "bob-note",
+        "owner": "bob",
+        "text": "Bob synthetic note"
+      },
+      "matches_demonstration": true,
+      "authorization_boundary_holds": true,
+      "response_file": "vulnerable-bob-own.http",
+      "response_sha256": "a3f80ad89c68f650bb9d3602ad0e7e74cf3868e790ec8b9ed383477c019f94eb"
+    },
+    {
+      "id": "vulnerable/bob-reads-alice",
+      "started_at": "2026-11-02T23:06:25.602018+00:00",
+      "elapsed_ms": 6.746,
+      "server": {
+        "fixture_version": "1.0.0",
+        "mode": "vulnerable",
+        "base_url": "http://127.0.0.1:32818"
+      },
+      "command": [
+        "curl",
+        "--noproxy",
+        "*",
+        "--silent",
+        "--show-error",
+        "--include",
+        "--http1.1",
+        "--connect-timeout",
+        "1",
+        "--max-time",
+        "3",
+        "--request",
+        "GET",
+        "--header",
+        "Authorization: Bearer demo-bob-token",
+        "http://127.0.0.1:32818/objects/alice-note"
+      ],
+      "curl_exit_code": 0,
+      "stderr": "",
+      "identity": "bob",
+      "path": "/objects/alice-note",
+      "secure_expected_status": 403,
+      "demonstration_expected_status": 200,
+      "observed_status": 200,
+      "observed_body": {
+        "id": "alice-note",
+        "owner": "alice",
+        "text": "Alice synthetic note"
+      },
+      "matches_demonstration": true,
+      "authorization_boundary_holds": false,
+      "response_file": "vulnerable-bob-reads-alice.http",
+      "response_sha256": "2a5fd44192dd81e7d9fa2cc285d81dab9dd005ae1d3afb41361459b2a3d46f9e"
+    },
+    {
+      "id": "vulnerable/unauthenticated",
+      "started_at": "2026-11-02T23:06:25.608812+00:00",
+      "elapsed_ms": 6.71,
+      "server": {
+        "fixture_version": "1.0.0",
+        "mode": "vulnerable",
+        "base_url": "http://127.0.0.1:32818"
+      },
+      "command": [
+        "curl",
+        "--noproxy",
+        "*",
+        "--silent",
+        "--show-error",
+        "--include",
+        "--http1.1",
+        "--connect-timeout",
+        "1",
+        "--max-time",
+        "3",
+        "--request",
+        "GET",
+        "http://127.0.0.1:32818/objects/alice-note"
+      ],
+      "curl_exit_code": 0,
+      "stderr": "",
+      "identity": null,
+      "path": "/objects/alice-note",
+      "secure_expected_status": 401,
+      "demonstration_expected_status": 401,
+      "observed_status": 401,
+      "observed_body": {
+        "error": "authentication_required"
+      },
+      "matches_demonstration": true,
+      "authorization_boundary_holds": true,
+      "response_file": "vulnerable-unauthenticated.http",
+      "response_sha256": "36da56a73d98d5a039e43592c1bdd531b11f25d069b5c336ce7e1b7103667ebb"
+    },
+    {
+      "id": "fixed/alice-own",
+      "started_at": "2026-11-02T23:06:25.657979+00:00",
+      "elapsed_ms": 7.116,
+      "server": {
+        "fixture_version": "1.0.0",
+        "mode": "fixed",
+        "base_url": "http://127.0.0.1:32824"
+      },
+      "command": [
+        "curl",
+        "--noproxy",
+        "*",
+        "--silent",
+        "--show-error",
+        "--include",
+        "--http1.1",
+        "--connect-timeout",
+        "1",
+        "--max-time",
+        "3",
+        "--request",
+        "GET",
+        "--header",
+        "Authorization: Bearer demo-alice-token",
+        "http://127.0.0.1:32824/objects/alice-note"
+      ],
+      "curl_exit_code": 0,
+      "stderr": "",
+      "identity": "alice",
+      "path": "/objects/alice-note",
+      "secure_expected_status": 200,
+      "demonstration_expected_status": 200,
+      "observed_status": 200,
+      "observed_body": {
+        "id": "alice-note",
+        "owner": "alice",
+        "text": "Alice synthetic note"
+      },
+      "matches_demonstration": true,
+      "authorization_boundary_holds": true,
+      "response_file": "fixed-alice-own.http",
+      "response_sha256": "2a5fd44192dd81e7d9fa2cc285d81dab9dd005ae1d3afb41361459b2a3d46f9e"
+    },
+    {
+      "id": "fixed/bob-own",
+      "started_at": "2026-11-02T23:06:25.665147+00:00",
+      "elapsed_ms": 6.823,
+      "server": {
+        "fixture_version": "1.0.0",
+        "mode": "fixed",
+        "base_url": "http://127.0.0.1:32824"
+      },
+      "command": [
+        "curl",
+        "--noproxy",
+        "*",
+        "--silent",
+        "--show-error",
+        "--include",
+        "--http1.1",
+        "--connect-timeout",
+        "1",
+        "--max-time",
+        "3",
+        "--request",
+        "GET",
+        "--header",
+        "Authorization: Bearer demo-bob-token",
+        "http://127.0.0.1:32824/objects/bob-note"
+      ],
+      "curl_exit_code": 0,
+      "stderr": "",
+      "identity": "bob",
+      "path": "/objects/bob-note",
+      "secure_expected_status": 200,
+      "demonstration_expected_status": 200,
+      "observed_status": 200,
+      "observed_body": {
+        "id": "bob-note",
+        "owner": "bob",
+        "text": "Bob synthetic note"
+      },
+      "matches_demonstration": true,
+      "authorization_boundary_holds": true,
+      "response_file": "fixed-bob-own.http",
+      "response_sha256": "a3f80ad89c68f650bb9d3602ad0e7e74cf3868e790ec8b9ed383477c019f94eb"
+    },
+    {
+      "id": "fixed/bob-reads-alice",
+      "started_at": "2026-11-02T23:06:25.672019+00:00",
+      "elapsed_ms": 6.341,
+      "server": {
+        "fixture_version": "1.0.0",
+        "mode": "fixed",
+        "base_url": "http://127.0.0.1:32824"
+      },
+      "command": [
+        "curl",
+        "--noproxy",
+        "*",
+        "--silent",
+        "--show-error",
+        "--include",
+        "--http1.1",
+        "--connect-timeout",
+        "1",
+        "--max-time",
+        "3",
+        "--request",
+        "GET",
+        "--header",
+        "Authorization: Bearer demo-bob-token",
+        "http://127.0.0.1:32824/objects/alice-note"
+      ],
+      "curl_exit_code": 0,
+      "stderr": "",
+      "identity": "bob",
+      "path": "/objects/alice-note",
+      "secure_expected_status": 403,
+      "demonstration_expected_status": 403,
+      "observed_status": 403,
+      "observed_body": {
+        "error": "forbidden"
+      },
+      "matches_demonstration": true,
+      "authorization_boundary_holds": true,
+      "response_file": "fixed-bob-reads-alice.http",
+      "response_sha256": "44c1a8e5531a5857bf2b561cba92a5b889091d595722086bf362c3d15071349c"
+    },
+    {
+      "id": "fixed/unauthenticated",
+      "started_at": "2026-11-02T23:06:25.678409+00:00",
+      "elapsed_ms": 6.501,
+      "server": {
+        "fixture_version": "1.0.0",
+        "mode": "fixed",
+        "base_url": "http://127.0.0.1:32824"
+      },
+      "command": [
+        "curl",
+        "--noproxy",
+        "*",
+        "--silent",
+        "--show-error",
+        "--include",
+        "--http1.1",
+        "--connect-timeout",
+        "1",
+        "--max-time",
+        "3",
+        "--request",
+        "GET",
+        "http://127.0.0.1:32824/objects/alice-note"
+      ],
+      "curl_exit_code": 0,
+      "stderr": "",
+      "identity": null,
+      "path": "/objects/alice-note",
+      "secure_expected_status": 401,
+      "demonstration_expected_status": 401,
+      "observed_status": 401,
+      "observed_body": {
+        "error": "authentication_required"
+      },
+      "matches_demonstration": true,
+      "authorization_boundary_holds": true,
+      "response_file": "fixed-unauthenticated.http",
+      "response_sha256": "36da56a73d98d5a039e43592c1bdd531b11f25d069b5c336ce7e1b7103667ebb"
+    }
+  ],
+  "failures": [],
+  "finished_at": "2026-11-02T23:06:25.686241+00:00",
+  "all_demonstration_checks_passed": true
+}

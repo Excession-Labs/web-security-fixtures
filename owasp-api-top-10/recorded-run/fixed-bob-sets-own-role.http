@@ -1,0 +1,8 @@
+HTTP/1.0 400 Bad Request
+Server: ChecklistFixture/1.0.0 
+Date: Tue, 10 Nov 2026 22:47:14 GMT
+Content-Type: application/json
+Content-Length: 44
+Cache-Control: no-store
+
+{"error": "unknown_field", "field": "role"}

@@ -1,0 +1,11 @@
+{
+  "scenario": "framed",
+  "browser": "chromium 156.0.8078.4",
+  "frame_url": "http://127.0.0.1:53497/account",
+  "frame_has_delete_button": true,
+  "click_point": [
+    200,
+    125
+  ],
+  "console": []
+}

@@ -1,0 +1,10 @@
+NOTE  signature          RFC 9116 s2.3       File is not signed. A signature is RECOMMENDED, with a Canonical field.
+OK    contact-required   RFC 9116 s2.5.3     2 Contact field(s) present.
+OK    expires-format     RFC 9116 s2.5.5     Expires 2027-06-30T23:59:59Z is a valid date-time in the future.
+OK    uri                RFC 9116 s2.5       Acknowledgments on line 8: https://example.com/security/thanks
+OK    uri                RFC 9116 s2.5       Canonical on line 10: https://example.com/.well-known/security.txt
+OK    uri                RFC 9116 s2.5       Contact on line 3: mailto:security@example.com
+OK    uri                RFC 9116 s2.5       Contact on line 4: https://example.com/security/report
+OK    uri                RFC 9116 s2.5       Encryption on line 6: https://example.com/.well-known/pgp-key.txt
+OK    uri                RFC 9116 s2.5       Policy on line 7: https://example.com/security/policy
+RESULT: PASS (0 error(s))

@@ -1,0 +1,8 @@
+HTTP/1.0 200 OK
+Server: ProfileFixture/1.0.0 
+Date: Tue, 10 Nov 2026 22:47:02 GMT
+Content-Type: application/json
+Content-Length: 197
+Cache-Control: no-store
+
+{"bio": "Mixed attempt", "credit": 50, "email": "alice@example.test", "id": "alice", "is_admin": true, "name": "Alice Example", "password_hash": "demo-hash-not-a-real-hash-alice", "role": "admin"}

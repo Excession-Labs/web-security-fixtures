@@ -1,0 +1,4 @@
+SET app.tenant_id = 'acme';
+SET
+UPDATE invoices SET tenant_id = 'globex' WHERE id = 1;
+ERROR:  new row violates row-level security policy for table "invoices"

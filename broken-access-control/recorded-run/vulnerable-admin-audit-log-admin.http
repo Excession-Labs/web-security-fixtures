@@ -1,0 +1,8 @@
+HTTP/1.0 200 OK
+Server: RoleFixture/1.0.0 
+Date: Tue, 10 Nov 2026 22:47:08 GMT
+Content-Type: application/json
+Content-Length: 89
+Cache-Control: no-store
+
+{"events": [{"at": "2026-11-10T09:00:00Z", "event": "synthetic login", "who": "admin"}]}

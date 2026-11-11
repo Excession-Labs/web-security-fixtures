@@ -1,0 +1,7 @@
+WARN  https-transport    RFC 9116 s3, 5.7    Fetched over http on 127.0.0.1. RFC 9116 section 5.7 allows this for localhost only with extra human validation.
+OK    content-type       RFC 9116 s3, 4      Content-Type is 'text/plain; charset=utf-8'.
+NOTE  signature          RFC 9116 s2.3       File is not signed. A signature is RECOMMENDED, with a Canonical field.
+OK    contact-required   RFC 9116 s2.5.3     1 Contact field(s) present.
+OK    expires-format     RFC 9116 s2.5.5     Expires 2027-02-08T22:47:51Z is a valid date-time in the future.
+OK    uri                RFC 9116 s2.5       Contact on line 1: mailto:security@example.com
+RESULT: PASS (0 error(s))

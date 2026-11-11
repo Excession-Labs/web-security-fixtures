@@ -1,0 +1,13 @@
+{
+  "scenario": "framed",
+  "browser": "chromium 156.0.8078.4",
+  "frame_url": "chrome-error://chromewebdata/",
+  "frame_has_delete_button": false,
+  "click_point": [
+    200,
+    125
+  ],
+  "console": [
+    "Framing 'http://127.0.0.1:53518/' violates the following Content Security Policy directive: \"frame-ancestors 'none'\". The request has been blocked.\n"
+  ]
+}

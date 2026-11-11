@@ -1,0 +1,12 @@
+\set ON_ERROR_STOP on
+CREATE TABLE invoices (
+  id        integer PRIMARY KEY,
+  tenant_id text    NOT NULL,
+  amount    integer NOT NULL
+);
+CREATE TABLE
+INSERT INTO invoices VALUES (1, 'acme', 100), (2, 'acme', 250),
+                            (3, 'globex', 400), (4, 'globex', 75);
+INSERT 0 4
+GRANT SELECT, INSERT, UPDATE ON invoices TO app_user;
+GRANT

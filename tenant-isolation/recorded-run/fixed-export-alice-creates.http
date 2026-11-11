@@ -1,0 +1,7 @@
+HTTP/1.0 201 Created
+Server: TenantFixture/1.0.0 
+Date: Tue, 10 Nov 2026 22:47:40 GMT
+Content-Type: application/json
+Content-Length: 59
+
+{"job_id": "exp-0001", "status": "done", "tenant": "acme"}

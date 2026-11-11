@@ -1,0 +1,6 @@
+SELECT relrowsecurity, relforcerowsecurity FROM pg_class WHERE relname = 'invoices';
+ relrowsecurity | relforcerowsecurity 
+----------------+---------------------
+ t              | t
+(1 row)
+

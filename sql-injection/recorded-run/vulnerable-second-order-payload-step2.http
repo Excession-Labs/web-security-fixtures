@@ -1,0 +1,8 @@
+HTTP/1.0 200 OK
+Server: SqliFixture/1.0.0 
+Date: Tue, 10 Nov 2026 22:46:49 GMT
+Content-Type: application/json
+Content-Length: 106
+Cache-Control: no-store
+
+{"orders": ["synthetic order A-1", "synthetic order B-1", "synthetic order C-1"], "user": "x' OR '1'='1"}

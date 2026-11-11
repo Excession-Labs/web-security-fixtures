@@ -1,0 +1,8 @@
+HTTP/1.0 403 Forbidden
+Server: SsrfPreview/1.0.0 
+Date: Tue, 10 Nov 2026 22:50:57 GMT
+Content-Type: application/json
+Content-Length: 232
+Cache-Control: no-store
+
+{"blocked": true, "mode": "naive", "reason": "denylisted_host", "requested_host": "127.0.0.1", "requested_url": "http://127.0.0.1:55472/latest/meta-data/secret", "resolved_ip": null, "secret_leaked": false, "upstream_status": null}

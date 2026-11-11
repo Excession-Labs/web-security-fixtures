@@ -1,0 +1,10 @@
+CREATE ROLE app_owner LOGIN;
+CREATE ROLE
+CREATE ROLE app_user LOGIN;
+CREATE ROLE
+SELECT version();
+                                                           version                                                            
+------------------------------------------------------------------------------------------------------------------------------
+ PostgreSQL 16.15 (Homebrew) on aarch64-apple-darwin24.6.0, compiled by Apple clang version 17.0.0 (clang-1700.6.4.2), 64-bit
+(1 row)
+

@@ -1,0 +1,740 @@
+{
+  "schema_version": 1,
+  "fixture_version": "1.0.0",
+  "started_at": "2026-11-10T22:48:26.697327+00:00",
+  "method": "Real curl subprocesses, and real Chromium through Playwright when --node-modules is given",
+  "scope": {
+    "hosts": [
+      "127.0.0.1",
+      "localhost (attacker page only)"
+    ],
+    "data": "one synthetic user, synthetic email addresses"
+  },
+  "versions": {
+    "python": "3.15.2",
+    "os": "Darwin",
+    "architecture": "arm64",
+    "curl": "curl 8.7.1 (x86_64-apple-darwin24.0) libcurl/8.7.1 (SecureTransport) LibreSSL/3.3.6 zlib/1.2.12 nghttp2/1.64.0",
+    "browser": "chromium 156.0.8078.4"
+  },
+  "sha256": {
+    "fixture.py": "75b055833b54d9ef2728a93ffc2b0ff72650d0b772a09e4a439ba6a8d80b17d0",
+    "verify.py": "0af9e7acbb8fe1ec8d54ca20f77764a4bb5fc3419b3fc226ecbf6fa881cb1049",
+    "browser_test.cjs": "0d2ebbc3b099a31505c3b41daa8d0af966cfd3118201b69a144d47c9cbcd3b63"
+  },
+  "reproduction_command": "python3 verify.py --output recorded-run",
+  "agent_execution": {
+    "executed": false,
+    "note": "scripted; no model or agent ran"
+  },
+  "curl_cases": [
+    {
+      "mode": "vulnerable",
+      "case": "view-account",
+      "method": "GET",
+      "path": "/account",
+      "origin_header": null,
+      "cookie_sent": true,
+      "token": null,
+      "secure_expected": {
+        "status": 200,
+        "email_after": "alice@example.test"
+      },
+      "expected_in_this_mode": {
+        "status": 200,
+        "email_after": "alice@example.test"
+      },
+      "observed": {
+        "status": 200,
+        "email_after": "alice@example.test"
+      },
+      "matches_expectation": true,
+      "boundary_holds": true,
+      "response_file": "vulnerable-view-account.http",
+      "response_sha256": "87a9b51c07c89cd4b831a6043fd049e33e7befb9808dcbc0e3be0afc3cb1e6f1"
+    },
+    {
+      "mode": "vulnerable",
+      "case": "legit-post",
+      "method": "POST",
+      "path": "/account/email",
+      "origin_header": "http://127.0.0.1:54259",
+      "cookie_sent": true,
+      "token": "valid",
+      "secure_expected": {
+        "status": 200,
+        "email_after": "alice-new@example.test"
+      },
+      "expected_in_this_mode": {
+        "status": 200,
+        "email_after": "alice-new@example.test"
+      },
+      "observed": {
+        "status": 200,
+        "email_after": "alice-new@example.test"
+      },
+      "matches_expectation": true,
+      "boundary_holds": true,
+      "response_file": "vulnerable-legit-post.http",
+      "response_sha256": "e373ca352b923d14addcc4e7ff2b77e1c739d51df0c76f7869604fd29261d86c"
+    },
+    {
+      "mode": "vulnerable",
+      "case": "forged-post-no-token",
+      "method": "POST",
+      "path": "/account/email",
+      "origin_header": "http://localhost:9",
+      "cookie_sent": true,
+      "token": null,
+      "secure_expected": {
+        "status": 403,
+        "email_after": "alice@example.test"
+      },
+      "expected_in_this_mode": {
+        "status": 200,
+        "email_after": "attacker@evil.test"
+      },
+      "observed": {
+        "status": 200,
+        "email_after": "attacker@evil.test"
+      },
+      "matches_expectation": true,
+      "boundary_holds": false,
+      "response_file": "vulnerable-forged-post-no-token.http",
+      "response_sha256": "f153ca46e02ba4e3dd4205213a0c6b0289b662041f517e4720831d581e89f2ff"
+    },
+    {
+      "mode": "vulnerable",
+      "case": "forged-post-stolen-token",
+      "method": "POST",
+      "path": "/account/email",
+      "origin_header": "http://localhost:9",
+      "cookie_sent": true,
+      "token": "valid",
+      "secure_expected": {
+        "status": 403,
+        "email_after": "alice@example.test"
+      },
+      "expected_in_this_mode": {
+        "status": 200,
+        "email_after": "attacker@evil.test"
+      },
+      "observed": {
+        "status": 200,
+        "email_after": "attacker@evil.test"
+      },
+      "matches_expectation": true,
+      "boundary_holds": false,
+      "response_file": "vulnerable-forged-post-stolen-token.http",
+      "response_sha256": "f153ca46e02ba4e3dd4205213a0c6b0289b662041f517e4720831d581e89f2ff"
+    },
+    {
+      "mode": "vulnerable",
+      "case": "same-origin-no-token",
+      "method": "POST",
+      "path": "/account/email",
+      "origin_header": "http://127.0.0.1:54259",
+      "cookie_sent": true,
+      "token": null,
+      "secure_expected": {
+        "status": 403,
+        "email_after": "alice@example.test"
+      },
+      "expected_in_this_mode": {
+        "status": 200,
+        "email_after": "attacker@evil.test"
+      },
+      "observed": {
+        "status": 200,
+        "email_after": "attacker@evil.test"
+      },
+      "matches_expectation": true,
+      "boundary_holds": false,
+      "response_file": "vulnerable-same-origin-no-token.http",
+      "response_sha256": "f153ca46e02ba4e3dd4205213a0c6b0289b662041f517e4720831d581e89f2ff"
+    },
+    {
+      "mode": "vulnerable",
+      "case": "same-origin-wrong-token",
+      "method": "POST",
+      "path": "/account/email",
+      "origin_header": "http://127.0.0.1:54259",
+      "cookie_sent": true,
+      "token": "wrong",
+      "secure_expected": {
+        "status": 403,
+        "email_after": "alice@example.test"
+      },
+      "expected_in_this_mode": {
+        "status": 200,
+        "email_after": "attacker@evil.test"
+      },
+      "observed": {
+        "status": 200,
+        "email_after": "attacker@evil.test"
+      },
+      "matches_expectation": true,
+      "boundary_holds": false,
+      "response_file": "vulnerable-same-origin-wrong-token.http",
+      "response_sha256": "f153ca46e02ba4e3dd4205213a0c6b0289b662041f517e4720831d581e89f2ff"
+    },
+    {
+      "mode": "vulnerable",
+      "case": "forged-post-no-cookie",
+      "method": "POST",
+      "path": "/account/email",
+      "origin_header": "http://localhost:9",
+      "cookie_sent": false,
+      "token": null,
+      "secure_expected": {
+        "status": 401,
+        "email_after": "alice@example.test"
+      },
+      "expected_in_this_mode": {
+        "status": 401,
+        "email_after": "alice@example.test"
+      },
+      "observed": {
+        "status": 401,
+        "email_after": "alice@example.test"
+      },
+      "matches_expectation": true,
+      "boundary_holds": true,
+      "response_file": "vulnerable-forged-post-no-cookie.http",
+      "response_sha256": "e3a6dbe361fd6b7048d69663cb038a875bb0516dd0b99a2d1fe9de9dc39f36e5"
+    },
+    {
+      "mode": "vulnerable",
+      "case": "forged-get",
+      "method": "GET",
+      "path": "/account/email/change?email=attacker@evil.test",
+      "origin_header": null,
+      "cookie_sent": true,
+      "token": null,
+      "secure_expected": {
+        "status": 405,
+        "email_after": "alice@example.test"
+      },
+      "expected_in_this_mode": {
+        "status": 200,
+        "email_after": "attacker@evil.test"
+      },
+      "observed": {
+        "status": 200,
+        "email_after": "attacker@evil.test"
+      },
+      "matches_expectation": true,
+      "boundary_holds": false,
+      "response_file": "vulnerable-forged-get.http",
+      "response_sha256": "f153ca46e02ba4e3dd4205213a0c6b0289b662041f517e4720831d581e89f2ff"
+    },
+    {
+      "mode": "fixed",
+      "case": "view-account",
+      "method": "GET",
+      "path": "/account",
+      "origin_header": null,
+      "cookie_sent": true,
+      "token": null,
+      "secure_expected": {
+        "status": 200,
+        "email_after": "alice@example.test"
+      },
+      "expected_in_this_mode": {
+        "status": 200,
+        "email_after": "alice@example.test"
+      },
+      "observed": {
+        "status": 200,
+        "email_after": "alice@example.test"
+      },
+      "matches_expectation": true,
+      "boundary_holds": true,
+      "response_file": "fixed-view-account.http",
+      "response_sha256": "37cabdbda20d85b2c6b425e280415d62b6b5d678ffb10daa1d68b5fa848b669c"
+    },
+    {
+      "mode": "fixed",
+      "case": "legit-post",
+      "method": "POST",
+      "path": "/account/email",
+      "origin_header": "http://127.0.0.1:55269",
+      "cookie_sent": true,
+      "token": "valid",
+      "secure_expected": {
+        "status": 200,
+        "email_after": "alice-new@example.test"
+      },
+      "expected_in_this_mode": {
+        "status": 200,
+        "email_after": "alice-new@example.test"
+      },
+      "observed": {
+        "status": 200,
+        "email_after": "alice-new@example.test"
+      },
+      "matches_expectation": true,
+      "boundary_holds": true,
+      "response_file": "fixed-legit-post.http",
+      "response_sha256": "720b83ac66535c5f8b89371a2f426f1acff9ba1c769faf31a99825ae655cda17"
+    },
+    {
+      "mode": "fixed",
+      "case": "forged-post-no-token",
+      "method": "POST",
+      "path": "/account/email",
+      "origin_header": "http://localhost:9",
+      "cookie_sent": true,
+      "token": null,
+      "secure_expected": {
+        "status": 403,
+        "email_after": "alice@example.test"
+      },
+      "expected_in_this_mode": {
+        "status": 403,
+        "email_after": "alice@example.test"
+      },
+      "observed": {
+        "status": 403,
+        "email_after": "alice@example.test"
+      },
+      "matches_expectation": true,
+      "boundary_holds": true,
+      "response_file": "fixed-forged-post-no-token.http",
+      "response_sha256": "3d6f3267627a2af89444b9e619b7bd92161e4bd174209d5a19dc6da9a3b2c8d3"
+    },
+    {
+      "mode": "fixed",
+      "case": "forged-post-stolen-token",
+      "method": "POST",
+      "path": "/account/email",
+      "origin_header": "http://localhost:9",
+      "cookie_sent": true,
+      "token": "valid",
+      "secure_expected": {
+        "status": 403,
+        "email_after": "alice@example.test"
+      },
+      "expected_in_this_mode": {
+        "status": 403,
+        "email_after": "alice@example.test"
+      },
+      "observed": {
+        "status": 403,
+        "email_after": "alice@example.test"
+      },
+      "matches_expectation": true,
+      "boundary_holds": true,
+      "response_file": "fixed-forged-post-stolen-token.http",
+      "response_sha256": "3d6f3267627a2af89444b9e619b7bd92161e4bd174209d5a19dc6da9a3b2c8d3"
+    },
+    {
+      "mode": "fixed",
+      "case": "same-origin-no-token",
+      "method": "POST",
+      "path": "/account/email",
+      "origin_header": "http://127.0.0.1:55269",
+      "cookie_sent": true,
+      "token": null,
+      "secure_expected": {
+        "status": 403,
+        "email_after": "alice@example.test"
+      },
+      "expected_in_this_mode": {
+        "status": 403,
+        "email_after": "alice@example.test"
+      },
+      "observed": {
+        "status": 403,
+        "email_after": "alice@example.test"
+      },
+      "matches_expectation": true,
+      "boundary_holds": true,
+      "response_file": "fixed-same-origin-no-token.http",
+      "response_sha256": "59dbaacf973a90b18a9e32704188e4a4bbd02eac8c3e5a96fd2f5dfe40316fc5"
+    },
+    {
+      "mode": "fixed",
+      "case": "same-origin-wrong-token",
+      "method": "POST",
+      "path": "/account/email",
+      "origin_header": "http://127.0.0.1:55269",
+      "cookie_sent": true,
+      "token": "wrong",
+      "secure_expected": {
+        "status": 403,
+        "email_after": "alice@example.test"
+      },
+      "expected_in_this_mode": {
+        "status": 403,
+        "email_after": "alice@example.test"
+      },
+      "observed": {
+        "status": 403,
+        "email_after": "alice@example.test"
+      },
+      "matches_expectation": true,
+      "boundary_holds": true,
+      "response_file": "fixed-same-origin-wrong-token.http",
+      "response_sha256": "59dbaacf973a90b18a9e32704188e4a4bbd02eac8c3e5a96fd2f5dfe40316fc5"
+    },
+    {
+      "mode": "fixed",
+      "case": "forged-post-no-cookie",
+      "method": "POST",
+      "path": "/account/email",
+      "origin_header": "http://localhost:9",
+      "cookie_sent": false,
+      "token": null,
+      "secure_expected": {
+        "status": 401,
+        "email_after": "alice@example.test"
+      },
+      "expected_in_this_mode": {
+        "status": 401,
+        "email_after": "alice@example.test"
+      },
+      "observed": {
+        "status": 401,
+        "email_after": "alice@example.test"
+      },
+      "matches_expectation": true,
+      "boundary_holds": true,
+      "response_file": "fixed-forged-post-no-cookie.http",
+      "response_sha256": "2b6e49fceb954395de5ffb919346cd057124a71f004b943744e51964987873c6"
+    },
+    {
+      "mode": "fixed",
+      "case": "forged-get",
+      "method": "GET",
+      "path": "/account/email/change?email=attacker@evil.test",
+      "origin_header": null,
+      "cookie_sent": true,
+      "token": null,
+      "secure_expected": {
+        "status": 405,
+        "email_after": "alice@example.test"
+      },
+      "expected_in_this_mode": {
+        "status": 405,
+        "email_after": "alice@example.test"
+      },
+      "observed": {
+        "status": 405,
+        "email_after": "alice@example.test"
+      },
+      "matches_expectation": true,
+      "boundary_holds": true,
+      "response_file": "fixed-forged-get.http",
+      "response_sha256": "4b87dd2ef4f461f5718c0a92fbc0e1004e172a091c43ca291795cf8512951479"
+    }
+  ],
+  "browser": {
+    "vulnerable": {
+      "browser": "chromium 156.0.8078.4",
+      "mode": "vulnerable",
+      "cases": [
+        {
+          "attack": "post",
+          "requested_samesite": "none",
+          "stored_cookie": [
+            {
+              "name": "sid",
+              "sameSite": "None",
+              "secure": true,
+              "httpOnly": false
+            }
+          ],
+          "request_seen": {
+            "method": "POST",
+            "path": "/account/email",
+            "cookie_sent": true,
+            "origin": "http://localhost:54297",
+            "referer": "http://localhost:54297/",
+            "sec_fetch_site": "cross-site",
+            "sec_fetch_mode": "navigate"
+          },
+          "email_after": "attacker@evil.test",
+          "documented_cookie_sent": true,
+          "observed_cookie_sent": true,
+          "email_changed_by_attacker": true,
+          "matches_documented": true
+        },
+        {
+          "attack": "get",
+          "requested_samesite": "none",
+          "stored_cookie": [
+            {
+              "name": "sid",
+              "sameSite": "None",
+              "secure": true,
+              "httpOnly": false
+            }
+          ],
+          "request_seen": {
+            "method": "GET",
+            "path": "/account/email/change",
+            "cookie_sent": true,
+            "origin": null,
+            "referer": "http://localhost:54297/",
+            "sec_fetch_site": "cross-site",
+            "sec_fetch_mode": "navigate"
+          },
+          "email_after": "attacker@evil.test",
+          "documented_cookie_sent": true,
+          "observed_cookie_sent": true,
+          "email_changed_by_attacker": true,
+          "matches_documented": true
+        },
+        {
+          "attack": "post",
+          "requested_samesite": "lax",
+          "stored_cookie": [
+            {
+              "name": "sid",
+              "sameSite": "Lax",
+              "secure": false,
+              "httpOnly": false
+            }
+          ],
+          "request_seen": {
+            "method": "POST",
+            "path": "/account/email",
+            "cookie_sent": false,
+            "origin": "http://localhost:54297",
+            "referer": "http://localhost:54297/",
+            "sec_fetch_site": "cross-site",
+            "sec_fetch_mode": "navigate"
+          },
+          "email_after": "alice@example.test",
+          "documented_cookie_sent": false,
+          "observed_cookie_sent": false,
+          "email_changed_by_attacker": false,
+          "matches_documented": true
+        },
+        {
+          "attack": "get",
+          "requested_samesite": "lax",
+          "stored_cookie": [
+            {
+              "name": "sid",
+              "sameSite": "Lax",
+              "secure": false,
+              "httpOnly": false
+            }
+          ],
+          "request_seen": {
+            "method": "GET",
+            "path": "/account/email/change",
+            "cookie_sent": true,
+            "origin": null,
+            "referer": "http://localhost:54297/",
+            "sec_fetch_site": "cross-site",
+            "sec_fetch_mode": "navigate"
+          },
+          "email_after": "attacker@evil.test",
+          "documented_cookie_sent": true,
+          "observed_cookie_sent": true,
+          "email_changed_by_attacker": true,
+          "matches_documented": true
+        },
+        {
+          "attack": "post",
+          "requested_samesite": "strict",
+          "stored_cookie": [
+            {
+              "name": "sid",
+              "sameSite": "Strict",
+              "secure": false,
+              "httpOnly": false
+            }
+          ],
+          "request_seen": {
+            "method": "POST",
+            "path": "/account/email",
+            "cookie_sent": false,
+            "origin": "http://localhost:54297",
+            "referer": "http://localhost:54297/",
+            "sec_fetch_site": "cross-site",
+            "sec_fetch_mode": "navigate"
+          },
+          "email_after": "alice@example.test",
+          "documented_cookie_sent": false,
+          "observed_cookie_sent": false,
+          "email_changed_by_attacker": false,
+          "matches_documented": true
+        },
+        {
+          "attack": "get",
+          "requested_samesite": "strict",
+          "stored_cookie": [
+            {
+              "name": "sid",
+              "sameSite": "Strict",
+              "secure": false,
+              "httpOnly": false
+            }
+          ],
+          "request_seen": {
+            "method": "GET",
+            "path": "/account/email/change",
+            "cookie_sent": false,
+            "origin": null,
+            "referer": "http://localhost:54297/",
+            "sec_fetch_site": "cross-site",
+            "sec_fetch_mode": "navigate"
+          },
+          "email_after": "alice@example.test",
+          "documented_cookie_sent": false,
+          "observed_cookie_sent": false,
+          "email_changed_by_attacker": false,
+          "matches_documented": true
+        },
+        {
+          "attack": "post",
+          "requested_samesite": "unset",
+          "stored_cookie": [
+            {
+              "name": "sid",
+              "sameSite": "Lax",
+              "secure": false,
+              "httpOnly": false
+            }
+          ],
+          "request_seen": {
+            "method": "POST",
+            "path": "/account/email",
+            "cookie_sent": true,
+            "origin": "http://localhost:54297",
+            "referer": "http://localhost:54297/",
+            "sec_fetch_site": "cross-site",
+            "sec_fetch_mode": "navigate"
+          },
+          "email_after": "attacker@evil.test",
+          "documented_cookie_sent": null,
+          "observed_cookie_sent": true,
+          "email_changed_by_attacker": true,
+          "matches_documented": null
+        },
+        {
+          "attack": "get",
+          "requested_samesite": "unset",
+          "stored_cookie": [
+            {
+              "name": "sid",
+              "sameSite": "Lax",
+              "secure": false,
+              "httpOnly": false
+            }
+          ],
+          "request_seen": {
+            "method": "GET",
+            "path": "/account/email/change",
+            "cookie_sent": true,
+            "origin": null,
+            "referer": "http://localhost:54297/",
+            "sec_fetch_site": "cross-site",
+            "sec_fetch_mode": "navigate"
+          },
+          "email_after": "attacker@evil.test",
+          "documented_cookie_sent": null,
+          "observed_cookie_sent": true,
+          "email_changed_by_attacker": true,
+          "matches_documented": null
+        },
+        {
+          "attack": "post",
+          "requested_samesite": "unset",
+          "cookie_age_seconds": 125,
+          "request_seen": {
+            "method": "POST",
+            "path": "/account/email",
+            "cookie_sent": false,
+            "origin": "http://localhost:54297",
+            "referer": "http://localhost:54297/",
+            "sec_fetch_site": "cross-site",
+            "sec_fetch_mode": "navigate"
+          },
+          "email_after": "alice@example.test",
+          "documented_cookie_sent": false,
+          "observed_cookie_sent": false,
+          "email_changed_by_attacker": false,
+          "matches_documented": true
+        }
+      ],
+      "target_origin": "http://127.0.0.1:54259",
+      "attacker_origin": "http://localhost:54297"
+    },
+    "fixed": {
+      "browser": "chromium 156.0.8078.4",
+      "mode": "fixed",
+      "cases": [
+        {
+          "attack": "post",
+          "requested_samesite": "unset",
+          "stored_cookie": [
+            {
+              "name": "sid",
+              "sameSite": "Lax",
+              "secure": false,
+              "httpOnly": true
+            }
+          ],
+          "request_seen": {
+            "method": "POST",
+            "path": "/account/email",
+            "cookie_sent": false,
+            "origin": "http://localhost:55304",
+            "referer": "http://localhost:55304/",
+            "sec_fetch_site": "cross-site",
+            "sec_fetch_mode": "navigate"
+          },
+          "email_after": "alice@example.test",
+          "email_changed_by_attacker": false
+        },
+        {
+          "attack": "get",
+          "requested_samesite": "unset",
+          "stored_cookie": [
+            {
+              "name": "sid",
+              "sameSite": "Lax",
+              "secure": false,
+              "httpOnly": true
+            }
+          ],
+          "request_seen": {
+            "method": "GET",
+            "path": "/account/email/change",
+            "cookie_sent": true,
+            "origin": null,
+            "referer": "http://localhost:55304/",
+            "sec_fetch_site": "cross-site",
+            "sec_fetch_mode": "navigate"
+          },
+          "email_after": "alice@example.test",
+          "email_changed_by_attacker": false
+        },
+        {
+          "attack": "legitimate-form",
+          "requested_samesite": "lax",
+          "request_seen": {
+            "method": "POST",
+            "path": "/account/email",
+            "cookie_sent": true,
+            "origin": "http://127.0.0.1:55269",
+            "referer": "http://127.0.0.1:55269/account",
+            "sec_fetch_site": "same-origin",
+            "sec_fetch_mode": "navigate"
+          },
+          "email_after": "alice-new@example.test",
+          "email_changed_by_attacker": false
+        }
+      ],
+      "target_origin": "http://127.0.0.1:55269",
+      "attacker_origin": "http://localhost:55304"
+    }
+  },
+  "failures": [],
+  "finished_at": "2026-11-10T22:50:33.891317+00:00"
+}

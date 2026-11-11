@@ -1,0 +1,9 @@
+SET app.tenant_id = 'acme';
+SET
+SELECT id, tenant_id, amount FROM invoices WHERE tenant_id = 'acme' ORDER BY id;
+ id | tenant_id | amount 
+----+-----------+--------
+  1 | acme      |    100
+  2 | acme      |    250
+(2 rows)
+

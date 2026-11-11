@@ -1,0 +1,9 @@
+HTTP/1.0 200 OK
+Server: CsrfFixture/1.0 Python/3.15.2
+Date: Tue, 10 Nov 2026 22:50:33 GMT
+Content-Type: application/json
+Content-Length: 22
+Cache-Control: no-store
+Set-Cookie: sid=badd4d93554d15b9e9692d232b1b9f21; Path=/; HttpOnly; SameSite=Lax
+
+{"logged_in": "alice"}

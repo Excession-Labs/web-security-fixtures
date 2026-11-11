@@ -1,0 +1,7 @@
+SELECT policyname, cmd, with_check FROM pg_policies WHERE tablename = 'invoices' AND cmd <> 'SELECT' ORDER BY policyname;
+  policyname   |  cmd   |                                   with_check                                   
+---------------+--------+--------------------------------------------------------------------------------
+ tenant_insert | INSERT | ((tenant_id = current_setting('app.tenant_id'::text, true)) AND (amount >= 0))
+ tenant_update | UPDATE | ((tenant_id = current_setting('app.tenant_id'::text, true)) AND (amount >= 0))
+(2 rows)
+

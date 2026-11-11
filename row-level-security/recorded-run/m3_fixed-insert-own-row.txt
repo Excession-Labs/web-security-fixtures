@@ -1,0 +1,4 @@
+SET app.tenant_id = 'acme';
+SET
+INSERT INTO invoices VALUES (6, 'acme', 10);
+INSERT 0 1

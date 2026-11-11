@@ -1,0 +1,4 @@
+SET app.tenant_id = 'acme';
+SET
+UPDATE invoices SET tenant_id = 'globex';
+UPDATE 3

@@ -1,0 +1,7 @@
+HTTP/1.0 200 OK
+Server: TenantFixture/1.0.0 
+Date: Tue, 10 Nov 2026 22:47:40 GMT
+Content-Type: application/json
+Content-Length: 281
+
+{"created_by": "bob", "job_id": "exp-0002", "rows": [{"amount_cents": 45000, "customer": "Fabrikam Demo", "id": "globex-inv-1", "tenant": "globex"}, {"amount_cents": 3100, "customer": "Adatum Demo", "id": "globex-inv-2", "tenant": "globex"}], "status": "done", "tenant": "globex"}

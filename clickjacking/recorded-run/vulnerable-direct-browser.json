@@ -1,0 +1,6 @@
+{
+  "scenario": "direct",
+  "browser": "chromium 156.0.8078.4",
+  "top_level_has_delete_button": true,
+  "console": []
+}

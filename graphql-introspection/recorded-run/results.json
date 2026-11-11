@@ -1,0 +1,1384 @@
+{
+  "schema_version": 1,
+  "fixture_version": "1.0.0",
+  "started_at": "2026-11-10T22:46:59.003570+00:00",
+  "method": "Real curl POST requests against four locally spawned fixture configurations",
+  "scope": {
+    "hosts": [
+      "127.0.0.1"
+    ],
+    "methods": [
+      "POST"
+    ],
+    "paths": [
+      "/graphql"
+    ],
+    "data": "Three synthetic identities and records; all tokens are public demo values"
+  },
+  "versions": {
+    "python": "3.15.2",
+    "os": "Darwin",
+    "architecture": "arm64",
+    "graphql_core_pinned": "3.2.14",
+    "curl": "curl 8.7.1 (x86_64-apple-darwin24.0) libcurl/8.7.1 (SecureTransport) LibreSSL/3.3.6 zlib/1.2.12 nghttp2/1.64.0",
+    "graphql_core_installed": "3.2.14"
+  },
+  "sha256": {
+    "fixture.py": "9ce8367690438228b32b035c24b4e0ea0c2a9d9185dda76f64e604068f5312c6",
+    "verify.py": "13fc228270375b23fa6d911ef70ba95d932830a3b7027b96909e144d4f2feaa8"
+  },
+  "reproduction_command": "python3 verify.py --output recorded-run",
+  "agent_execution": {
+    "executed": false,
+    "note": "HTTP verification was scripted; no model or Excession agent ran"
+  },
+  "cases": [
+    {
+      "id": "A-vulnerable/introspect",
+      "started_at": "2026-11-10T22:46:59.091578+00:00",
+      "elapsed_ms": 8.578,
+      "server": {
+        "fixture_version": "1.0.0",
+        "introspection": "on",
+        "authz": "off",
+        "graphql_core": "3.2.14",
+        "base_url": "http://127.0.0.1:53285"
+      },
+      "command": [
+        "curl",
+        "--noproxy",
+        "*",
+        "--silent",
+        "--show-error",
+        "--include",
+        "--http1.1",
+        "--connect-timeout",
+        "1",
+        "--max-time",
+        "3",
+        "--request",
+        "POST",
+        "--header",
+        "Content-Type: application/json",
+        "--header",
+        "Authorization: Bearer demo-alice-token",
+        "--data",
+        "{\"query\": \"{ __schema { queryType { fields { name } } } }\"}",
+        "http://127.0.0.1:53285/graphql"
+      ],
+      "curl_exit_code": 0,
+      "stderr": "",
+      "identity": "alice",
+      "query": "{ __schema { queryType { fields { name } } } }",
+      "expected_outcome": "lists:adminUserRecord",
+      "observed_outcome": "lists:adminUserRecord",
+      "observed_http_status": 200,
+      "observed_body": {
+        "data": {
+          "__schema": {
+            "queryType": {
+              "fields": [
+                {
+                  "name": "me"
+                },
+                {
+                  "name": "adminUserRecord"
+                }
+              ]
+            }
+          }
+        }
+      },
+      "matches_demonstration": true,
+      "response_file": "A-vulnerable-introspect.http",
+      "response_sha256": "dfafc642328945d12188e69b39cab98369267969ddb95d6adffd6f26211ee1ed"
+    },
+    {
+      "id": "A-vulnerable/guess-typo",
+      "started_at": "2026-11-10T22:46:59.100225+00:00",
+      "elapsed_ms": 7.164,
+      "server": {
+        "fixture_version": "1.0.0",
+        "introspection": "on",
+        "authz": "off",
+        "graphql_core": "3.2.14",
+        "base_url": "http://127.0.0.1:53285"
+      },
+      "command": [
+        "curl",
+        "--noproxy",
+        "*",
+        "--silent",
+        "--show-error",
+        "--include",
+        "--http1.1",
+        "--connect-timeout",
+        "1",
+        "--max-time",
+        "3",
+        "--request",
+        "POST",
+        "--header",
+        "Content-Type: application/json",
+        "--header",
+        "Authorization: Bearer demo-alice-token",
+        "--data",
+        "{\"query\": \"{ adminUsrRecord(id: \\\"bob\\\") { id } }\"}",
+        "http://127.0.0.1:53285/graphql"
+      ],
+      "curl_exit_code": 0,
+      "stderr": "",
+      "identity": "alice",
+      "query": "{ adminUsrRecord(id: \"bob\") { id } }",
+      "expected_outcome": "suggests:adminUserRecord",
+      "observed_outcome": "suggests:adminUserRecord",
+      "observed_http_status": 200,
+      "observed_body": {
+        "errors": [
+          {
+            "message": "Cannot query field 'adminUsrRecord' on type 'Query'. Did you mean 'adminUserRecord'?",
+            "locations": [
+              {
+                "line": 1,
+                "column": 3
+              }
+            ]
+          }
+        ]
+      },
+      "matches_demonstration": true,
+      "response_file": "A-vulnerable-guess-typo.http",
+      "response_sha256": "b3cd2c9ced4b8162c6ca7437e528a6c46bcf7c1fd75bc9a4541476f70777ac4a"
+    },
+    {
+      "id": "A-vulnerable/call-by-name",
+      "started_at": "2026-11-10T22:46:59.107459+00:00",
+      "elapsed_ms": 9.582,
+      "server": {
+        "fixture_version": "1.0.0",
+        "introspection": "on",
+        "authz": "off",
+        "graphql_core": "3.2.14",
+        "base_url": "http://127.0.0.1:53285"
+      },
+      "command": [
+        "curl",
+        "--noproxy",
+        "*",
+        "--silent",
+        "--show-error",
+        "--include",
+        "--http1.1",
+        "--connect-timeout",
+        "1",
+        "--max-time",
+        "3",
+        "--request",
+        "POST",
+        "--header",
+        "Content-Type: application/json",
+        "--header",
+        "Authorization: Bearer demo-alice-token",
+        "--data",
+        "{\"query\": \"{ adminUserRecord(id: \\\"bob\\\") { id email ssn_last4 } }\"}",
+        "http://127.0.0.1:53285/graphql"
+      ],
+      "curl_exit_code": 0,
+      "stderr": "",
+      "identity": "alice",
+      "query": "{ adminUserRecord(id: \"bob\") { id email ssn_last4 } }",
+      "expected_outcome": "disclosed:bob@example.invalid",
+      "observed_outcome": "disclosed:bob@example.invalid",
+      "observed_http_status": 200,
+      "observed_body": {
+        "data": {
+          "adminUserRecord": {
+            "id": "bob",
+            "email": "bob@example.invalid",
+            "ssn_last4": "2222"
+          }
+        }
+      },
+      "matches_demonstration": true,
+      "response_file": "A-vulnerable-call-by-name.http",
+      "response_sha256": "b26203b90e50388fc0f1b71e8c2ad5de3226451c07b0339b6aede785fe048716",
+      "secure_expected_outcome": "forbidden",
+      "authorization_boundary_holds": false
+    },
+    {
+      "id": "A-vulnerable/own-profile",
+      "started_at": "2026-11-10T22:46:59.117108+00:00",
+      "elapsed_ms": 12.754,
+      "server": {
+        "fixture_version": "1.0.0",
+        "introspection": "on",
+        "authz": "off",
+        "graphql_core": "3.2.14",
+        "base_url": "http://127.0.0.1:53285"
+      },
+      "command": [
+        "curl",
+        "--noproxy",
+        "*",
+        "--silent",
+        "--show-error",
+        "--include",
+        "--http1.1",
+        "--connect-timeout",
+        "1",
+        "--max-time",
+        "3",
+        "--request",
+        "POST",
+        "--header",
+        "Content-Type: application/json",
+        "--header",
+        "Authorization: Bearer demo-alice-token",
+        "--data",
+        "{\"query\": \"{ me { id email } }\"}",
+        "http://127.0.0.1:53285/graphql"
+      ],
+      "curl_exit_code": 0,
+      "stderr": "",
+      "identity": "alice",
+      "query": "{ me { id email } }",
+      "expected_outcome": "own:alice@example.invalid",
+      "observed_outcome": "own:alice@example.invalid",
+      "observed_http_status": 200,
+      "observed_body": {
+        "data": {
+          "me": {
+            "id": "alice",
+            "email": "alice@example.invalid"
+          }
+        }
+      },
+      "matches_demonstration": true,
+      "response_file": "A-vulnerable-own-profile.http",
+      "response_sha256": "c9dfda358aa5054dff24ae6682a14ef803398a4205e3caf6c0ebd8e65d0c656d"
+    },
+    {
+      "id": "A-vulnerable/admin-call",
+      "started_at": "2026-11-10T22:46:59.129937+00:00",
+      "elapsed_ms": 10.72,
+      "server": {
+        "fixture_version": "1.0.0",
+        "introspection": "on",
+        "authz": "off",
+        "graphql_core": "3.2.14",
+        "base_url": "http://127.0.0.1:53285"
+      },
+      "command": [
+        "curl",
+        "--noproxy",
+        "*",
+        "--silent",
+        "--show-error",
+        "--include",
+        "--http1.1",
+        "--connect-timeout",
+        "1",
+        "--max-time",
+        "3",
+        "--request",
+        "POST",
+        "--header",
+        "Content-Type: application/json",
+        "--header",
+        "Authorization: Bearer demo-admin-token",
+        "--data",
+        "{\"query\": \"{ adminUserRecord(id: \\\"bob\\\") { id email ssn_last4 } }\"}",
+        "http://127.0.0.1:53285/graphql"
+      ],
+      "curl_exit_code": 0,
+      "stderr": "",
+      "identity": "admin",
+      "query": "{ adminUserRecord(id: \"bob\") { id email ssn_last4 } }",
+      "expected_outcome": "disclosed:bob@example.invalid",
+      "observed_outcome": "disclosed:bob@example.invalid",
+      "observed_http_status": 200,
+      "observed_body": {
+        "data": {
+          "adminUserRecord": {
+            "id": "bob",
+            "email": "bob@example.invalid",
+            "ssn_last4": "2222"
+          }
+        }
+      },
+      "matches_demonstration": true,
+      "response_file": "A-vulnerable-admin-call.http",
+      "response_sha256": "b26203b90e50388fc0f1b71e8c2ad5de3226451c07b0339b6aede785fe048716"
+    },
+    {
+      "id": "A-vulnerable/anonymous-call",
+      "started_at": "2026-11-10T22:46:59.140724+00:00",
+      "elapsed_ms": 14.601,
+      "server": {
+        "fixture_version": "1.0.0",
+        "introspection": "on",
+        "authz": "off",
+        "graphql_core": "3.2.14",
+        "base_url": "http://127.0.0.1:53285"
+      },
+      "command": [
+        "curl",
+        "--noproxy",
+        "*",
+        "--silent",
+        "--show-error",
+        "--include",
+        "--http1.1",
+        "--connect-timeout",
+        "1",
+        "--max-time",
+        "3",
+        "--request",
+        "POST",
+        "--header",
+        "Content-Type: application/json",
+        "--data",
+        "{\"query\": \"{ adminUserRecord(id: \\\"bob\\\") { id } }\"}",
+        "http://127.0.0.1:53285/graphql"
+      ],
+      "curl_exit_code": 0,
+      "stderr": "",
+      "identity": null,
+      "query": "{ adminUserRecord(id: \"bob\") { id } }",
+      "expected_outcome": "401",
+      "observed_outcome": "401",
+      "observed_http_status": 401,
+      "observed_body": {
+        "error": "authentication_required"
+      },
+      "matches_demonstration": true,
+      "response_file": "A-vulnerable-anonymous-call.http",
+      "response_sha256": "c5d7e0130389c0c66704ce24736abdc8810fbfe4f67dad94ed67cc262383eb89"
+    },
+    {
+      "id": "B-introspection-off/introspect",
+      "started_at": "2026-11-10T22:46:59.231462+00:00",
+      "elapsed_ms": 10.211,
+      "server": {
+        "fixture_version": "1.0.0",
+        "introspection": "off",
+        "authz": "off",
+        "graphql_core": "3.2.14",
+        "base_url": "http://127.0.0.1:53294"
+      },
+      "command": [
+        "curl",
+        "--noproxy",
+        "*",
+        "--silent",
+        "--show-error",
+        "--include",
+        "--http1.1",
+        "--connect-timeout",
+        "1",
+        "--max-time",
+        "3",
+        "--request",
+        "POST",
+        "--header",
+        "Content-Type: application/json",
+        "--header",
+        "Authorization: Bearer demo-alice-token",
+        "--data",
+        "{\"query\": \"{ __schema { queryType { fields { name } } } }\"}",
+        "http://127.0.0.1:53294/graphql"
+      ],
+      "curl_exit_code": 0,
+      "stderr": "",
+      "identity": "alice",
+      "query": "{ __schema { queryType { fields { name } } } }",
+      "expected_outcome": "blocked",
+      "observed_outcome": "blocked",
+      "observed_http_status": 200,
+      "observed_body": {
+        "errors": [
+          {
+            "message": "GraphQL introspection has been disabled, but the requested query contained the field '__schema'.",
+            "locations": [
+              {
+                "line": 1,
+                "column": 3
+              }
+            ]
+          },
+          {
+            "message": "GraphQL introspection has been disabled, but the requested query contained the field 'queryType'.",
+            "locations": [
+              {
+                "line": 1,
+                "column": 14
+              }
+            ]
+          },
+          {
+            "message": "GraphQL introspection has been disabled, but the requested query contained the field 'fields'.",
+            "locations": [
+              {
+                "line": 1,
+                "column": 26
+              }
+            ]
+          }
+        ]
+      },
+      "matches_demonstration": true,
+      "response_file": "B-introspection-off-introspect.http",
+      "response_sha256": "7c909d981c77470a08a9dc10c103416ea13334975a1912745931d9fb70eab6c6"
+    },
+    {
+      "id": "B-introspection-off/guess-typo",
+      "started_at": "2026-11-10T22:46:59.241750+00:00",
+      "elapsed_ms": 11.845,
+      "server": {
+        "fixture_version": "1.0.0",
+        "introspection": "off",
+        "authz": "off",
+        "graphql_core": "3.2.14",
+        "base_url": "http://127.0.0.1:53294"
+      },
+      "command": [
+        "curl",
+        "--noproxy",
+        "*",
+        "--silent",
+        "--show-error",
+        "--include",
+        "--http1.1",
+        "--connect-timeout",
+        "1",
+        "--max-time",
+        "3",
+        "--request",
+        "POST",
+        "--header",
+        "Content-Type: application/json",
+        "--header",
+        "Authorization: Bearer demo-alice-token",
+        "--data",
+        "{\"query\": \"{ adminUsrRecord(id: \\\"bob\\\") { id } }\"}",
+        "http://127.0.0.1:53294/graphql"
+      ],
+      "curl_exit_code": 0,
+      "stderr": "",
+      "identity": "alice",
+      "query": "{ adminUsrRecord(id: \"bob\") { id } }",
+      "expected_outcome": "suggests:adminUserRecord",
+      "observed_outcome": "suggests:adminUserRecord",
+      "observed_http_status": 200,
+      "observed_body": {
+        "errors": [
+          {
+            "message": "Cannot query field 'adminUsrRecord' on type 'Query'. Did you mean 'adminUserRecord'?",
+            "locations": [
+              {
+                "line": 1,
+                "column": 3
+              }
+            ]
+          }
+        ]
+      },
+      "matches_demonstration": true,
+      "response_file": "B-introspection-off-guess-typo.http",
+      "response_sha256": "b3cd2c9ced4b8162c6ca7437e528a6c46bcf7c1fd75bc9a4541476f70777ac4a"
+    },
+    {
+      "id": "B-introspection-off/call-by-name",
+      "started_at": "2026-11-10T22:46:59.253673+00:00",
+      "elapsed_ms": 11.606,
+      "server": {
+        "fixture_version": "1.0.0",
+        "introspection": "off",
+        "authz": "off",
+        "graphql_core": "3.2.14",
+        "base_url": "http://127.0.0.1:53294"
+      },
+      "command": [
+        "curl",
+        "--noproxy",
+        "*",
+        "--silent",
+        "--show-error",
+        "--include",
+        "--http1.1",
+        "--connect-timeout",
+        "1",
+        "--max-time",
+        "3",
+        "--request",
+        "POST",
+        "--header",
+        "Content-Type: application/json",
+        "--header",
+        "Authorization: Bearer demo-alice-token",
+        "--data",
+        "{\"query\": \"{ adminUserRecord(id: \\\"bob\\\") { id email ssn_last4 } }\"}",
+        "http://127.0.0.1:53294/graphql"
+      ],
+      "curl_exit_code": 0,
+      "stderr": "",
+      "identity": "alice",
+      "query": "{ adminUserRecord(id: \"bob\") { id email ssn_last4 } }",
+      "expected_outcome": "disclosed:bob@example.invalid",
+      "observed_outcome": "disclosed:bob@example.invalid",
+      "observed_http_status": 200,
+      "observed_body": {
+        "data": {
+          "adminUserRecord": {
+            "id": "bob",
+            "email": "bob@example.invalid",
+            "ssn_last4": "2222"
+          }
+        }
+      },
+      "matches_demonstration": true,
+      "response_file": "B-introspection-off-call-by-name.http",
+      "response_sha256": "b26203b90e50388fc0f1b71e8c2ad5de3226451c07b0339b6aede785fe048716",
+      "secure_expected_outcome": "forbidden",
+      "authorization_boundary_holds": false
+    },
+    {
+      "id": "B-introspection-off/own-profile",
+      "started_at": "2026-11-10T22:46:59.265420+00:00",
+      "elapsed_ms": 10.979,
+      "server": {
+        "fixture_version": "1.0.0",
+        "introspection": "off",
+        "authz": "off",
+        "graphql_core": "3.2.14",
+        "base_url": "http://127.0.0.1:53294"
+      },
+      "command": [
+        "curl",
+        "--noproxy",
+        "*",
+        "--silent",
+        "--show-error",
+        "--include",
+        "--http1.1",
+        "--connect-timeout",
+        "1",
+        "--max-time",
+        "3",
+        "--request",
+        "POST",
+        "--header",
+        "Content-Type: application/json",
+        "--header",
+        "Authorization: Bearer demo-alice-token",
+        "--data",
+        "{\"query\": \"{ me { id email } }\"}",
+        "http://127.0.0.1:53294/graphql"
+      ],
+      "curl_exit_code": 0,
+      "stderr": "",
+      "identity": "alice",
+      "query": "{ me { id email } }",
+      "expected_outcome": "own:alice@example.invalid",
+      "observed_outcome": "own:alice@example.invalid",
+      "observed_http_status": 200,
+      "observed_body": {
+        "data": {
+          "me": {
+            "id": "alice",
+            "email": "alice@example.invalid"
+          }
+        }
+      },
+      "matches_demonstration": true,
+      "response_file": "B-introspection-off-own-profile.http",
+      "response_sha256": "c9dfda358aa5054dff24ae6682a14ef803398a4205e3caf6c0ebd8e65d0c656d"
+    },
+    {
+      "id": "B-introspection-off/admin-call",
+      "started_at": "2026-11-10T22:46:59.276476+00:00",
+      "elapsed_ms": 9.941,
+      "server": {
+        "fixture_version": "1.0.0",
+        "introspection": "off",
+        "authz": "off",
+        "graphql_core": "3.2.14",
+        "base_url": "http://127.0.0.1:53294"
+      },
+      "command": [
+        "curl",
+        "--noproxy",
+        "*",
+        "--silent",
+        "--show-error",
+        "--include",
+        "--http1.1",
+        "--connect-timeout",
+        "1",
+        "--max-time",
+        "3",
+        "--request",
+        "POST",
+        "--header",
+        "Content-Type: application/json",
+        "--header",
+        "Authorization: Bearer demo-admin-token",
+        "--data",
+        "{\"query\": \"{ adminUserRecord(id: \\\"bob\\\") { id email ssn_last4 } }\"}",
+        "http://127.0.0.1:53294/graphql"
+      ],
+      "curl_exit_code": 0,
+      "stderr": "",
+      "identity": "admin",
+      "query": "{ adminUserRecord(id: \"bob\") { id email ssn_last4 } }",
+      "expected_outcome": "disclosed:bob@example.invalid",
+      "observed_outcome": "disclosed:bob@example.invalid",
+      "observed_http_status": 200,
+      "observed_body": {
+        "data": {
+          "adminUserRecord": {
+            "id": "bob",
+            "email": "bob@example.invalid",
+            "ssn_last4": "2222"
+          }
+        }
+      },
+      "matches_demonstration": true,
+      "response_file": "B-introspection-off-admin-call.http",
+      "response_sha256": "b26203b90e50388fc0f1b71e8c2ad5de3226451c07b0339b6aede785fe048716"
+    },
+    {
+      "id": "B-introspection-off/anonymous-call",
+      "started_at": "2026-11-10T22:46:59.286488+00:00",
+      "elapsed_ms": 7.512,
+      "server": {
+        "fixture_version": "1.0.0",
+        "introspection": "off",
+        "authz": "off",
+        "graphql_core": "3.2.14",
+        "base_url": "http://127.0.0.1:53294"
+      },
+      "command": [
+        "curl",
+        "--noproxy",
+        "*",
+        "--silent",
+        "--show-error",
+        "--include",
+        "--http1.1",
+        "--connect-timeout",
+        "1",
+        "--max-time",
+        "3",
+        "--request",
+        "POST",
+        "--header",
+        "Content-Type: application/json",
+        "--data",
+        "{\"query\": \"{ adminUserRecord(id: \\\"bob\\\") { id } }\"}",
+        "http://127.0.0.1:53294/graphql"
+      ],
+      "curl_exit_code": 0,
+      "stderr": "",
+      "identity": null,
+      "query": "{ adminUserRecord(id: \"bob\") { id } }",
+      "expected_outcome": "401",
+      "observed_outcome": "401",
+      "observed_http_status": 401,
+      "observed_body": {
+        "error": "authentication_required"
+      },
+      "matches_demonstration": true,
+      "response_file": "B-introspection-off-anonymous-call.http",
+      "response_sha256": "c5d7e0130389c0c66704ce24736abdc8810fbfe4f67dad94ed67cc262383eb89"
+    },
+    {
+      "id": "C-authz-only/introspect",
+      "started_at": "2026-11-10T22:46:59.364256+00:00",
+      "elapsed_ms": 10.097,
+      "server": {
+        "fixture_version": "1.0.0",
+        "introspection": "on",
+        "authz": "on",
+        "graphql_core": "3.2.14",
+        "base_url": "http://127.0.0.1:53302"
+      },
+      "command": [
+        "curl",
+        "--noproxy",
+        "*",
+        "--silent",
+        "--show-error",
+        "--include",
+        "--http1.1",
+        "--connect-timeout",
+        "1",
+        "--max-time",
+        "3",
+        "--request",
+        "POST",
+        "--header",
+        "Content-Type: application/json",
+        "--header",
+        "Authorization: Bearer demo-alice-token",
+        "--data",
+        "{\"query\": \"{ __schema { queryType { fields { name } } } }\"}",
+        "http://127.0.0.1:53302/graphql"
+      ],
+      "curl_exit_code": 0,
+      "stderr": "",
+      "identity": "alice",
+      "query": "{ __schema { queryType { fields { name } } } }",
+      "expected_outcome": "lists:adminUserRecord",
+      "observed_outcome": "lists:adminUserRecord",
+      "observed_http_status": 200,
+      "observed_body": {
+        "data": {
+          "__schema": {
+            "queryType": {
+              "fields": [
+                {
+                  "name": "me"
+                },
+                {
+                  "name": "adminUserRecord"
+                }
+              ]
+            }
+          }
+        }
+      },
+      "matches_demonstration": true,
+      "response_file": "C-authz-only-introspect.http",
+      "response_sha256": "dfafc642328945d12188e69b39cab98369267969ddb95d6adffd6f26211ee1ed"
+    },
+    {
+      "id": "C-authz-only/guess-typo",
+      "started_at": "2026-11-10T22:46:59.374422+00:00",
+      "elapsed_ms": 8.428,
+      "server": {
+        "fixture_version": "1.0.0",
+        "introspection": "on",
+        "authz": "on",
+        "graphql_core": "3.2.14",
+        "base_url": "http://127.0.0.1:53302"
+      },
+      "command": [
+        "curl",
+        "--noproxy",
+        "*",
+        "--silent",
+        "--show-error",
+        "--include",
+        "--http1.1",
+        "--connect-timeout",
+        "1",
+        "--max-time",
+        "3",
+        "--request",
+        "POST",
+        "--header",
+        "Content-Type: application/json",
+        "--header",
+        "Authorization: Bearer demo-alice-token",
+        "--data",
+        "{\"query\": \"{ adminUsrRecord(id: \\\"bob\\\") { id } }\"}",
+        "http://127.0.0.1:53302/graphql"
+      ],
+      "curl_exit_code": 0,
+      "stderr": "",
+      "identity": "alice",
+      "query": "{ adminUsrRecord(id: \"bob\") { id } }",
+      "expected_outcome": "suggests:adminUserRecord",
+      "observed_outcome": "suggests:adminUserRecord",
+      "observed_http_status": 200,
+      "observed_body": {
+        "errors": [
+          {
+            "message": "Cannot query field 'adminUsrRecord' on type 'Query'. Did you mean 'adminUserRecord'?",
+            "locations": [
+              {
+                "line": 1,
+                "column": 3
+              }
+            ]
+          }
+        ]
+      },
+      "matches_demonstration": true,
+      "response_file": "C-authz-only-guess-typo.http",
+      "response_sha256": "b3cd2c9ced4b8162c6ca7437e528a6c46bcf7c1fd75bc9a4541476f70777ac4a"
+    },
+    {
+      "id": "C-authz-only/call-by-name",
+      "started_at": "2026-11-10T22:46:59.382907+00:00",
+      "elapsed_ms": 7.766,
+      "server": {
+        "fixture_version": "1.0.0",
+        "introspection": "on",
+        "authz": "on",
+        "graphql_core": "3.2.14",
+        "base_url": "http://127.0.0.1:53302"
+      },
+      "command": [
+        "curl",
+        "--noproxy",
+        "*",
+        "--silent",
+        "--show-error",
+        "--include",
+        "--http1.1",
+        "--connect-timeout",
+        "1",
+        "--max-time",
+        "3",
+        "--request",
+        "POST",
+        "--header",
+        "Content-Type: application/json",
+        "--header",
+        "Authorization: Bearer demo-alice-token",
+        "--data",
+        "{\"query\": \"{ adminUserRecord(id: \\\"bob\\\") { id email ssn_last4 } }\"}",
+        "http://127.0.0.1:53302/graphql"
+      ],
+      "curl_exit_code": 0,
+      "stderr": "",
+      "identity": "alice",
+      "query": "{ adminUserRecord(id: \"bob\") { id email ssn_last4 } }",
+      "expected_outcome": "forbidden",
+      "observed_outcome": "forbidden",
+      "observed_http_status": 200,
+      "observed_body": {
+        "data": {
+          "adminUserRecord": null
+        },
+        "errors": [
+          {
+            "message": "forbidden",
+            "locations": [
+              {
+                "line": 1,
+                "column": 3
+              }
+            ],
+            "path": [
+              "adminUserRecord"
+            ],
+            "extensions": {
+              "code": "FORBIDDEN"
+            }
+          }
+        ]
+      },
+      "matches_demonstration": true,
+      "response_file": "C-authz-only-call-by-name.http",
+      "response_sha256": "79127bbc9b9badb017ca049d9b55bc72a2f7d512073d157455d53e715c65cb51",
+      "secure_expected_outcome": "forbidden",
+      "authorization_boundary_holds": true
+    },
+    {
+      "id": "C-authz-only/own-profile",
+      "started_at": "2026-11-10T22:46:59.390732+00:00",
+      "elapsed_ms": 9.093,
+      "server": {
+        "fixture_version": "1.0.0",
+        "introspection": "on",
+        "authz": "on",
+        "graphql_core": "3.2.14",
+        "base_url": "http://127.0.0.1:53302"
+      },
+      "command": [
+        "curl",
+        "--noproxy",
+        "*",
+        "--silent",
+        "--show-error",
+        "--include",
+        "--http1.1",
+        "--connect-timeout",
+        "1",
+        "--max-time",
+        "3",
+        "--request",
+        "POST",
+        "--header",
+        "Content-Type: application/json",
+        "--header",
+        "Authorization: Bearer demo-alice-token",
+        "--data",
+        "{\"query\": \"{ me { id email } }\"}",
+        "http://127.0.0.1:53302/graphql"
+      ],
+      "curl_exit_code": 0,
+      "stderr": "",
+      "identity": "alice",
+      "query": "{ me { id email } }",
+      "expected_outcome": "own:alice@example.invalid",
+      "observed_outcome": "own:alice@example.invalid",
+      "observed_http_status": 200,
+      "observed_body": {
+        "data": {
+          "me": {
+            "id": "alice",
+            "email": "alice@example.invalid"
+          }
+        }
+      },
+      "matches_demonstration": true,
+      "response_file": "C-authz-only-own-profile.http",
+      "response_sha256": "c9dfda358aa5054dff24ae6682a14ef803398a4205e3caf6c0ebd8e65d0c656d"
+    },
+    {
+      "id": "C-authz-only/admin-call",
+      "started_at": "2026-11-10T22:46:59.399891+00:00",
+      "elapsed_ms": 7.521,
+      "server": {
+        "fixture_version": "1.0.0",
+        "introspection": "on",
+        "authz": "on",
+        "graphql_core": "3.2.14",
+        "base_url": "http://127.0.0.1:53302"
+      },
+      "command": [
+        "curl",
+        "--noproxy",
+        "*",
+        "--silent",
+        "--show-error",
+        "--include",
+        "--http1.1",
+        "--connect-timeout",
+        "1",
+        "--max-time",
+        "3",
+        "--request",
+        "POST",
+        "--header",
+        "Content-Type: application/json",
+        "--header",
+        "Authorization: Bearer demo-admin-token",
+        "--data",
+        "{\"query\": \"{ adminUserRecord(id: \\\"bob\\\") { id email ssn_last4 } }\"}",
+        "http://127.0.0.1:53302/graphql"
+      ],
+      "curl_exit_code": 0,
+      "stderr": "",
+      "identity": "admin",
+      "query": "{ adminUserRecord(id: \"bob\") { id email ssn_last4 } }",
+      "expected_outcome": "disclosed:bob@example.invalid",
+      "observed_outcome": "disclosed:bob@example.invalid",
+      "observed_http_status": 200,
+      "observed_body": {
+        "data": {
+          "adminUserRecord": {
+            "id": "bob",
+            "email": "bob@example.invalid",
+            "ssn_last4": "2222"
+          }
+        }
+      },
+      "matches_demonstration": true,
+      "response_file": "C-authz-only-admin-call.http",
+      "response_sha256": "b26203b90e50388fc0f1b71e8c2ad5de3226451c07b0339b6aede785fe048716"
+    },
+    {
+      "id": "C-authz-only/anonymous-call",
+      "started_at": "2026-11-10T22:46:59.407469+00:00",
+      "elapsed_ms": 6.69,
+      "server": {
+        "fixture_version": "1.0.0",
+        "introspection": "on",
+        "authz": "on",
+        "graphql_core": "3.2.14",
+        "base_url": "http://127.0.0.1:53302"
+      },
+      "command": [
+        "curl",
+        "--noproxy",
+        "*",
+        "--silent",
+        "--show-error",
+        "--include",
+        "--http1.1",
+        "--connect-timeout",
+        "1",
+        "--max-time",
+        "3",
+        "--request",
+        "POST",
+        "--header",
+        "Content-Type: application/json",
+        "--data",
+        "{\"query\": \"{ adminUserRecord(id: \\\"bob\\\") { id } }\"}",
+        "http://127.0.0.1:53302/graphql"
+      ],
+      "curl_exit_code": 0,
+      "stderr": "",
+      "identity": null,
+      "query": "{ adminUserRecord(id: \"bob\") { id } }",
+      "expected_outcome": "401",
+      "observed_outcome": "401",
+      "observed_http_status": 401,
+      "observed_body": {
+        "error": "authentication_required"
+      },
+      "matches_demonstration": true,
+      "response_file": "C-authz-only-anonymous-call.http",
+      "response_sha256": "c5d7e0130389c0c66704ce24736abdc8810fbfe4f67dad94ed67cc262383eb89"
+    },
+    {
+      "id": "D-authz-and-introspection-off/introspect",
+      "started_at": "2026-11-10T22:46:59.488402+00:00",
+      "elapsed_ms": 12.875,
+      "server": {
+        "fixture_version": "1.0.0",
+        "introspection": "off",
+        "authz": "on",
+        "graphql_core": "3.2.14",
+        "base_url": "http://127.0.0.1:53312"
+      },
+      "command": [
+        "curl",
+        "--noproxy",
+        "*",
+        "--silent",
+        "--show-error",
+        "--include",
+        "--http1.1",
+        "--connect-timeout",
+        "1",
+        "--max-time",
+        "3",
+        "--request",
+        "POST",
+        "--header",
+        "Content-Type: application/json",
+        "--header",
+        "Authorization: Bearer demo-alice-token",
+        "--data",
+        "{\"query\": \"{ __schema { queryType { fields { name } } } }\"}",
+        "http://127.0.0.1:53312/graphql"
+      ],
+      "curl_exit_code": 0,
+      "stderr": "",
+      "identity": "alice",
+      "query": "{ __schema { queryType { fields { name } } } }",
+      "expected_outcome": "blocked",
+      "observed_outcome": "blocked",
+      "observed_http_status": 200,
+      "observed_body": {
+        "errors": [
+          {
+            "message": "GraphQL introspection has been disabled, but the requested query contained the field '__schema'.",
+            "locations": [
+              {
+                "line": 1,
+                "column": 3
+              }
+            ]
+          },
+          {
+            "message": "GraphQL introspection has been disabled, but the requested query contained the field 'queryType'.",
+            "locations": [
+              {
+                "line": 1,
+                "column": 14
+              }
+            ]
+          },
+          {
+            "message": "GraphQL introspection has been disabled, but the requested query contained the field 'fields'.",
+            "locations": [
+              {
+                "line": 1,
+                "column": 26
+              }
+            ]
+          }
+        ]
+      },
+      "matches_demonstration": true,
+      "response_file": "D-authz-and-introspection-off-introspect.http",
+      "response_sha256": "7c909d981c77470a08a9dc10c103416ea13334975a1912745931d9fb70eab6c6"
+    },
+    {
+      "id": "D-authz-and-introspection-off/guess-typo",
+      "started_at": "2026-11-10T22:46:59.501440+00:00",
+      "elapsed_ms": 9.738,
+      "server": {
+        "fixture_version": "1.0.0",
+        "introspection": "off",
+        "authz": "on",
+        "graphql_core": "3.2.14",
+        "base_url": "http://127.0.0.1:53312"
+      },
+      "command": [
+        "curl",
+        "--noproxy",
+        "*",
+        "--silent",
+        "--show-error",
+        "--include",
+        "--http1.1",
+        "--connect-timeout",
+        "1",
+        "--max-time",
+        "3",
+        "--request",
+        "POST",
+        "--header",
+        "Content-Type: application/json",
+        "--header",
+        "Authorization: Bearer demo-alice-token",
+        "--data",
+        "{\"query\": \"{ adminUsrRecord(id: \\\"bob\\\") { id } }\"}",
+        "http://127.0.0.1:53312/graphql"
+      ],
+      "curl_exit_code": 0,
+      "stderr": "",
+      "identity": "alice",
+      "query": "{ adminUsrRecord(id: \"bob\") { id } }",
+      "expected_outcome": "suggests:adminUserRecord",
+      "observed_outcome": "suggests:adminUserRecord",
+      "observed_http_status": 200,
+      "observed_body": {
+        "errors": [
+          {
+            "message": "Cannot query field 'adminUsrRecord' on type 'Query'. Did you mean 'adminUserRecord'?",
+            "locations": [
+              {
+                "line": 1,
+                "column": 3
+              }
+            ]
+          }
+        ]
+      },
+      "matches_demonstration": true,
+      "response_file": "D-authz-and-introspection-off-guess-typo.http",
+      "response_sha256": "b3cd2c9ced4b8162c6ca7437e528a6c46bcf7c1fd75bc9a4541476f70777ac4a"
+    },
+    {
+      "id": "D-authz-and-introspection-off/call-by-name",
+      "started_at": "2026-11-10T22:46:59.511239+00:00",
+      "elapsed_ms": 9.096,
+      "server": {
+        "fixture_version": "1.0.0",
+        "introspection": "off",
+        "authz": "on",
+        "graphql_core": "3.2.14",
+        "base_url": "http://127.0.0.1:53312"
+      },
+      "command": [
+        "curl",
+        "--noproxy",
+        "*",
+        "--silent",
+        "--show-error",
+        "--include",
+        "--http1.1",
+        "--connect-timeout",
+        "1",
+        "--max-time",
+        "3",
+        "--request",
+        "POST",
+        "--header",
+        "Content-Type: application/json",
+        "--header",
+        "Authorization: Bearer demo-alice-token",
+        "--data",
+        "{\"query\": \"{ adminUserRecord(id: \\\"bob\\\") { id email ssn_last4 } }\"}",
+        "http://127.0.0.1:53312/graphql"
+      ],
+      "curl_exit_code": 0,
+      "stderr": "",
+      "identity": "alice",
+      "query": "{ adminUserRecord(id: \"bob\") { id email ssn_last4 } }",
+      "expected_outcome": "forbidden",
+      "observed_outcome": "forbidden",
+      "observed_http_status": 200,
+      "observed_body": {
+        "data": {
+          "adminUserRecord": null
+        },
+        "errors": [
+          {
+            "message": "forbidden",
+            "locations": [
+              {
+                "line": 1,
+                "column": 3
+              }
+            ],
+            "path": [
+              "adminUserRecord"
+            ],
+            "extensions": {
+              "code": "FORBIDDEN"
+            }
+          }
+        ]
+      },
+      "matches_demonstration": true,
+      "response_file": "D-authz-and-introspection-off-call-by-name.http",
+      "response_sha256": "79127bbc9b9badb017ca049d9b55bc72a2f7d512073d157455d53e715c65cb51",
+      "secure_expected_outcome": "forbidden",
+      "authorization_boundary_holds": true
+    },
+    {
+      "id": "D-authz-and-introspection-off/own-profile",
+      "started_at": "2026-11-10T22:46:59.520396+00:00",
+      "elapsed_ms": 9.902,
+      "server": {
+        "fixture_version": "1.0.0",
+        "introspection": "off",
+        "authz": "on",
+        "graphql_core": "3.2.14",
+        "base_url": "http://127.0.0.1:53312"
+      },
+      "command": [
+        "curl",
+        "--noproxy",
+        "*",
+        "--silent",
+        "--show-error",
+        "--include",
+        "--http1.1",
+        "--connect-timeout",
+        "1",
+        "--max-time",
+        "3",
+        "--request",
+        "POST",
+        "--header",
+        "Content-Type: application/json",
+        "--header",
+        "Authorization: Bearer demo-alice-token",
+        "--data",
+        "{\"query\": \"{ me { id email } }\"}",
+        "http://127.0.0.1:53312/graphql"
+      ],
+      "curl_exit_code": 0,
+      "stderr": "",
+      "identity": "alice",
+      "query": "{ me { id email } }",
+      "expected_outcome": "own:alice@example.invalid",
+      "observed_outcome": "own:alice@example.invalid",
+      "observed_http_status": 200,
+      "observed_body": {
+        "data": {
+          "me": {
+            "id": "alice",
+            "email": "alice@example.invalid"
+          }
+        }
+      },
+      "matches_demonstration": true,
+      "response_file": "D-authz-and-introspection-off-own-profile.http",
+      "response_sha256": "c9dfda358aa5054dff24ae6682a14ef803398a4205e3caf6c0ebd8e65d0c656d"
+    },
+    {
+      "id": "D-authz-and-introspection-off/admin-call",
+      "started_at": "2026-11-10T22:46:59.530361+00:00",
+      "elapsed_ms": 8.054,
+      "server": {
+        "fixture_version": "1.0.0",
+        "introspection": "off",
+        "authz": "on",
+        "graphql_core": "3.2.14",
+        "base_url": "http://127.0.0.1:53312"
+      },
+      "command": [
+        "curl",
+        "--noproxy",
+        "*",
+        "--silent",
+        "--show-error",
+        "--include",
+        "--http1.1",
+        "--connect-timeout",
+        "1",
+        "--max-time",
+        "3",
+        "--request",
+        "POST",
+        "--header",
+        "Content-Type: application/json",
+        "--header",
+        "Authorization: Bearer demo-admin-token",
+        "--data",
+        "{\"query\": \"{ adminUserRecord(id: \\\"bob\\\") { id email ssn_last4 } }\"}",
+        "http://127.0.0.1:53312/graphql"
+      ],
+      "curl_exit_code": 0,
+      "stderr": "",
+      "identity": "admin",
+      "query": "{ adminUserRecord(id: \"bob\") { id email ssn_last4 } }",
+      "expected_outcome": "disclosed:bob@example.invalid",
+      "observed_outcome": "disclosed:bob@example.invalid",
+      "observed_http_status": 200,
+      "observed_body": {
+        "data": {
+          "adminUserRecord": {
+            "id": "bob",
+            "email": "bob@example.invalid",
+            "ssn_last4": "2222"
+          }
+        }
+      },
+      "matches_demonstration": true,
+      "response_file": "D-authz-and-introspection-off-admin-call.http",
+      "response_sha256": "b26203b90e50388fc0f1b71e8c2ad5de3226451c07b0339b6aede785fe048716"
+    },
+    {
+      "id": "D-authz-and-introspection-off/anonymous-call",
+      "started_at": "2026-11-10T22:46:59.538474+00:00",
+      "elapsed_ms": 7.656,
+      "server": {
+        "fixture_version": "1.0.0",
+        "introspection": "off",
+        "authz": "on",
+        "graphql_core": "3.2.14",
+        "base_url": "http://127.0.0.1:53312"
+      },
+      "command": [
+        "curl",
+        "--noproxy",
+        "*",
+        "--silent",
+        "--show-error",
+        "--include",
+        "--http1.1",
+        "--connect-timeout",
+        "1",
+        "--max-time",
+        "3",
+        "--request",
+        "POST",
+        "--header",
+        "Content-Type: application/json",
+        "--data",
+        "{\"query\": \"{ adminUserRecord(id: \\\"bob\\\") { id } }\"}",
+        "http://127.0.0.1:53312/graphql"
+      ],
+      "curl_exit_code": 0,
+      "stderr": "",
+      "identity": null,
+      "query": "{ adminUserRecord(id: \"bob\") { id } }",
+      "expected_outcome": "401",
+      "observed_outcome": "401",
+      "observed_http_status": 401,
+      "observed_body": {
+        "error": "authentication_required"
+      },
+      "matches_demonstration": true,
+      "response_file": "D-authz-and-introspection-off-anonymous-call.http",
+      "response_sha256": "c5d7e0130389c0c66704ce24736abdc8810fbfe4f67dad94ed67cc262383eb89"
+    }
+  ],
+  "failures": [],
+  "finished_at": "2026-11-10T22:46:59.606505+00:00",
+  "all_demonstration_checks_passed": true
+}

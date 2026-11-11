@@ -1,0 +1,302 @@
+{
+  "schema_version": 1,
+  "fixture_version": "1.0.0",
+  "started_at": "2026-11-10T22:51:23.817400+00:00",
+  "method": "Real curl subprocesses for scenario requests, a direct standard-library HTTP connection for the brute-force guess loop, against two locally spawned fixture modes",
+  "scope": {
+    "hosts": [
+      "127.0.0.1"
+    ],
+    "methods": [
+      "GET",
+      "POST"
+    ],
+    "paths": [
+      "/login",
+      "/verify-code",
+      "/account",
+      "/test-inbox"
+    ],
+    "data": "Three synthetic demo accounts and 4-digit synthetic codes; no production credentials"
+  },
+  "versions": {
+    "python": "3.15.2",
+    "os": "Darwin",
+    "architecture": "arm64",
+    "curl": "curl 8.7.1 (x86_64-apple-darwin24.0) libcurl/8.7.1 (SecureTransport) LibreSSL/3.3.6 zlib/1.2.12 nghttp2/1.64.0"
+  },
+  "sha256": {
+    "fixture.py": "fabafebf17cba0f64677f9ebcdbc5c94683461d072dc59635e68c88fad7e2a02",
+    "verify.py": "43031b70238a5e88ac830993aa0b9cd3e1435a0965925605ec2024c27f7da115"
+  },
+  "reproduction_command": "python3 verify.py --output recorded-run",
+  "agent_execution": {
+    "executed": false,
+    "note": "HTTP verification was scripted; no model or Excession agent ran"
+  },
+  "max_attempts_before_lockout": 5,
+  "setup": {
+    "vulnerable": [
+      {
+        "id": "vulnerable/login-alice-first",
+        "observed_status": 200,
+        "observed_body": {
+          "mfa_required": true,
+          "session": "sess-1-alice"
+        }
+      },
+      {
+        "id": "vulnerable/login-alice-second",
+        "observed_status": 200,
+        "observed_body": {
+          "mfa_required": true,
+          "session": "sess-2-alice"
+        }
+      },
+      {
+        "id": "vulnerable/read-own-code-alice",
+        "observed_status": 200,
+        "observed_body": {
+          "code": "0116"
+        }
+      },
+      {
+        "id": "vulnerable/login-bob",
+        "observed_status": 200,
+        "observed_body": {
+          "mfa_required": true,
+          "session": "sess-3-bob"
+        }
+      },
+      {
+        "id": "vulnerable/login-alice-third",
+        "observed_status": 200,
+        "observed_body": {
+          "mfa_required": true,
+          "session": "sess-4-alice"
+        }
+      },
+      {
+        "id": "vulnerable/read-own-code-alice-third",
+        "observed_status": 200,
+        "observed_body": {
+          "code": "6225"
+        }
+      },
+      {
+        "id": "vulnerable/login-charlie",
+        "observed_status": 200,
+        "observed_body": {
+          "mfa_required": true,
+          "session": "sess-5-charlie"
+        }
+      }
+    ],
+    "fixed": [
+      {
+        "id": "fixed/login-alice-first",
+        "observed_status": 200,
+        "observed_body": {
+          "mfa_required": true,
+          "session": "sess-1-alice"
+        }
+      },
+      {
+        "id": "fixed/login-alice-second",
+        "observed_status": 200,
+        "observed_body": {
+          "mfa_required": true,
+          "session": "sess-2-alice"
+        }
+      },
+      {
+        "id": "fixed/read-own-code-alice",
+        "observed_status": 200,
+        "observed_body": {
+          "code": "4081"
+        }
+      },
+      {
+        "id": "fixed/login-bob",
+        "observed_status": 200,
+        "observed_body": {
+          "mfa_required": true,
+          "session": "sess-3-bob"
+        }
+      },
+      {
+        "id": "fixed/login-alice-third",
+        "observed_status": 200,
+        "observed_body": {
+          "mfa_required": true,
+          "session": "sess-4-alice"
+        }
+      },
+      {
+        "id": "fixed/read-own-code-alice-third",
+        "observed_status": 200,
+        "observed_body": {
+          "code": "4385"
+        }
+      },
+      {
+        "id": "fixed/login-charlie",
+        "observed_status": 200,
+        "observed_body": {
+          "mfa_required": true,
+          "session": "sess-5-charlie"
+        }
+      }
+    ]
+  },
+  "cases": [
+    {
+      "id": "vulnerable/account-before-mfa",
+      "expected_status": 200,
+      "observed_status": 200,
+      "observed_body": {
+        "account": "synthetic account data",
+        "user": "alice"
+      },
+      "matches_expectation": true,
+      "note": "GET /account using only the password-step session, before the code is verified",
+      "response_file": "vulnerable-account-before-mfa.http",
+      "response_sha256": "6f63d1ed3dd6ec1f1ea483b48072037c9bc83f08d6303fe32383911acce7dbfa"
+    },
+    {
+      "id": "vulnerable/own-code-login",
+      "expected_status": 200,
+      "observed_status": 200,
+      "observed_body": {
+        "status": "authenticated"
+      },
+      "matches_expectation": true,
+      "note": "Alice submits her own correct code for her own session",
+      "response_file": "vulnerable-own-code-login.http",
+      "response_sha256": "5333b9b78d7804053e2eb125ebf0166c77af417beae6f6183bbfcf99b88f7438"
+    },
+    {
+      "id": "vulnerable/account-after-mfa",
+      "expected_status": 200,
+      "observed_status": 200,
+      "observed_body": {
+        "account": "synthetic account data",
+        "user": "alice"
+      },
+      "matches_expectation": true,
+      "note": "GET /account after the code step is completed",
+      "response_file": "vulnerable-account-after-mfa.http",
+      "response_sha256": "6f63d1ed3dd6ec1f1ea483b48072037c9bc83f08d6303fe32383911acce7dbfa"
+    },
+    {
+      "id": "vulnerable/replay-code",
+      "expected_status": 200,
+      "observed_status": 200,
+      "observed_body": {
+        "status": "authenticated"
+      },
+      "matches_expectation": true,
+      "note": "Resubmitting the same already-used code and session",
+      "response_file": "vulnerable-replay-code.http",
+      "response_sha256": "5333b9b78d7804053e2eb125ebf0166c77af417beae6f6183bbfcf99b88f7438"
+    },
+    {
+      "id": "vulnerable/cross-session-code",
+      "expected_status": 200,
+      "observed_status": 200,
+      "observed_body": {
+        "status": "authenticated"
+      },
+      "matches_expectation": true,
+      "note": "Bob's pending session is submitted together with Alice's valid, unused code",
+      "response_file": "vulnerable-cross-session-code.http",
+      "response_sha256": "5333b9b78d7804053e2eb125ebf0166c77af417beae6f6183bbfcf99b88f7438"
+    },
+    {
+      "id": "fixed/account-before-mfa",
+      "expected_status": 403,
+      "observed_status": 403,
+      "observed_body": {
+        "error": "mfa_required"
+      },
+      "matches_expectation": true,
+      "note": "GET /account using only the password-step session, before the code is verified",
+      "response_file": "fixed-account-before-mfa.http",
+      "response_sha256": "8bf6978221c69b907d4af45c39baac36f9e204c35b9ba7c83a4b96895a13bee7"
+    },
+    {
+      "id": "fixed/own-code-login",
+      "expected_status": 200,
+      "observed_status": 200,
+      "observed_body": {
+        "status": "authenticated"
+      },
+      "matches_expectation": true,
+      "note": "Alice submits her own correct code for her own session",
+      "response_file": "fixed-own-code-login.http",
+      "response_sha256": "3382e24be43bf4cabdf0c55e4def02f552f76849bdd9216c696801d216c4e676"
+    },
+    {
+      "id": "fixed/account-after-mfa",
+      "expected_status": 200,
+      "observed_status": 200,
+      "observed_body": {
+        "account": "synthetic account data",
+        "user": "alice"
+      },
+      "matches_expectation": true,
+      "note": "GET /account after the code step is completed",
+      "response_file": "fixed-account-after-mfa.http",
+      "response_sha256": "05b707fcf7d1c8476f2ab3779f7eb62acb2a806efc4ffa95063b39ff0bbfa3fc"
+    },
+    {
+      "id": "fixed/replay-code",
+      "expected_status": 409,
+      "observed_status": 409,
+      "observed_body": {
+        "error": "code_already_used"
+      },
+      "matches_expectation": true,
+      "note": "Resubmitting the same already-used code and session",
+      "response_file": "fixed-replay-code.http",
+      "response_sha256": "dff256eec5586b814ddbc3d4708d320aed7c928a7cc6f2820d5d46cd17c23dee"
+    },
+    {
+      "id": "fixed/cross-session-code",
+      "expected_status": 401,
+      "observed_status": 401,
+      "observed_body": {
+        "attempts_remaining": 4,
+        "error": "invalid_code"
+      },
+      "matches_expectation": true,
+      "note": "Bob's pending session is submitted together with Alice's valid, unused code",
+      "response_file": "fixed-cross-session-code.http",
+      "response_sha256": "54c655dfd7277459e93cead66537278a57715aea9ee3819f65e5cfe17b9e296b"
+    }
+  ],
+  "brute_force": {
+    "vulnerable": {
+      "attempts": 5599,
+      "elapsed_seconds": 0.524,
+      "final_status": 200,
+      "final_body": {
+        "status": "authenticated"
+      },
+      "code_space_size": 10000
+    },
+    "fixed": {
+      "attempts": 5,
+      "elapsed_seconds": 0.001,
+      "final_status": 423,
+      "final_body": {
+        "attempts": 5,
+        "error": "locked"
+      },
+      "code_space_size": 10000
+    }
+  },
+  "failures": [],
+  "finished_at": "2026-11-10T22:51:24.612525+00:00",
+  "all_checks_passed": true
+}

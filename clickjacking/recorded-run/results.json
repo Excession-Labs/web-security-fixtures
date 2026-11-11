@@ -1,0 +1,170 @@
+{
+  "schema_version": 1,
+  "fixture_version": "1.0.0",
+  "started_at": "2026-11-10T22:47:09.646011+00:00",
+  "method": "curl for response headers; headless Chromium (Playwright) for framing and click-through",
+  "scope": {
+    "hosts": [
+      "127.0.0.1"
+    ],
+    "origins": "two loopback ports per scenario: target and attacker",
+    "data": "One synthetic account page with a counter of delete requests"
+  },
+  "versions": {
+    "python": "3.15.2",
+    "os": "Darwin",
+    "architecture": "arm64",
+    "curl": "curl 8.7.1 (x86_64-apple-darwin24.0) libcurl/8.7.1 (SecureTransport) LibreSSL/3.3.6 zlib/1.2.12 nghttp2/1.64.0",
+    "node": "v22.23.4"
+  },
+  "browser_run": true,
+  "sha256": {
+    "fixture.py": "6b9e453c1156609587b29f74fd4991fd20cd2d3c9a5685159ba88ef8b4e841ae",
+    "verify.py": "10cd6d2e0a85ebad1449ea64e0d9e11b38cdfe67aa58d4b15ba4ef00c07c7595",
+    "browser_check.cjs": "98876ebfad0a59f72e0b4ef7beb0a005e2d068e9888188e34dfea4a35df37943"
+  },
+  "reproduction_command": "python3 verify.py --output recorded-run",
+  "agent_execution": {
+    "executed": false,
+    "note": "Scripted run; no model or agent ran"
+  },
+  "cases": [
+    {
+      "id": "vulnerable/curl-headers",
+      "expected": {
+        "status": 200,
+        "content_security_policy": null,
+        "x_frame_options": null
+      },
+      "observed": {
+        "status": 200,
+        "content_security_policy": null,
+        "x_frame_options": null
+      },
+      "matches_expected": true,
+      "server": "http://127.0.0.1:53494",
+      "response_file": "vulnerable-account-headers.http",
+      "command": [
+        "curl",
+        "--noproxy",
+        "*",
+        "--silent",
+        "--show-error",
+        "--include",
+        "--http1.1",
+        "--connect-timeout",
+        "1",
+        "--max-time",
+        "3",
+        "--request",
+        "GET",
+        "http://127.0.0.1:53494/account"
+      ]
+    },
+    {
+      "id": "vulnerable/browser-framed-click",
+      "expected": {
+        "frame_rendered": true,
+        "delete_requests": 1
+      },
+      "observed": {
+        "frame_rendered": true,
+        "delete_requests": 1
+      },
+      "matches_expected": true,
+      "target": "http://127.0.0.1:53497",
+      "attacker": "http://127.0.0.1:53498",
+      "frame_url": "http://127.0.0.1:53497/account",
+      "console": [],
+      "browser": "chromium 156.0.8078.4",
+      "browser_file": "vulnerable-framed-browser.json",
+      "state_file": "vulnerable-framed-state.http"
+    },
+    {
+      "id": "vulnerable/browser-direct-click",
+      "expected": {
+        "button_present": true,
+        "delete_requests": 1
+      },
+      "observed": {
+        "button_present": true,
+        "delete_requests": 1
+      },
+      "matches_expected": true,
+      "target": "http://127.0.0.1:53510",
+      "browser_file": "vulnerable-direct-browser.json",
+      "state_file": "vulnerable-direct-state.http"
+    },
+    {
+      "id": "fixed/curl-headers",
+      "expected": {
+        "status": 200,
+        "content_security_policy": "frame-ancestors 'none'",
+        "x_frame_options": "DENY"
+      },
+      "observed": {
+        "status": 200,
+        "content_security_policy": "frame-ancestors 'none'",
+        "x_frame_options": "DENY"
+      },
+      "matches_expected": true,
+      "server": "http://127.0.0.1:53516",
+      "response_file": "fixed-account-headers.http",
+      "command": [
+        "curl",
+        "--noproxy",
+        "*",
+        "--silent",
+        "--show-error",
+        "--include",
+        "--http1.1",
+        "--connect-timeout",
+        "1",
+        "--max-time",
+        "3",
+        "--request",
+        "GET",
+        "http://127.0.0.1:53516/account"
+      ]
+    },
+    {
+      "id": "fixed/browser-framed-click",
+      "expected": {
+        "frame_rendered": false,
+        "delete_requests": 0
+      },
+      "observed": {
+        "frame_rendered": false,
+        "delete_requests": 0
+      },
+      "matches_expected": true,
+      "target": "http://127.0.0.1:53518",
+      "attacker": "http://127.0.0.1:53520",
+      "frame_url": "chrome-error://chromewebdata/",
+      "console": [
+        "Framing 'http://127.0.0.1:53518/' violates the following Content Security Policy directive: \"frame-ancestors 'none'\". The request has been blocked.\n"
+      ],
+      "browser": "chromium 156.0.8078.4",
+      "browser_file": "fixed-framed-browser.json",
+      "state_file": "fixed-framed-state.http"
+    },
+    {
+      "id": "fixed/browser-direct-click",
+      "expected": {
+        "button_present": true,
+        "delete_requests": 1
+      },
+      "observed": {
+        "button_present": true,
+        "delete_requests": 1
+      },
+      "matches_expected": true,
+      "target": "http://127.0.0.1:53562",
+      "browser_file": "fixed-direct-browser.json",
+      "state_file": "fixed-direct-state.http"
+    }
+  ],
+  "failures": [],
+  "finished_at": "2026-11-10T22:47:15.641083+00:00",
+  "all_demonstration_checks_passed": true
+}

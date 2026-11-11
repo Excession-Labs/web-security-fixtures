@@ -1,0 +1,8 @@
+HTTP/1.0 200 OK
+Server: TenantFixture/1.0.0 
+Date: Tue, 10 Nov 2026 22:47:40 GMT
+Content-Type: application/json
+Content-Length: 88
+X-Cache: MISS
+
+{"generated_for": "alice", "period": "2026-10", "tenant": "acme", "total_cents": 20800}

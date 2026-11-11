@@ -1,0 +1,2 @@
+ERROR http-status        RFC 9116 s3         GET https://excessionlabs.ai/.well-known/security.txt returned HTTP 404, not 200.
+RESULT: FAIL (1 error(s))

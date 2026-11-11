@@ -1,0 +1,8 @@
+HTTP/1.0 409 Conflict
+Server: CouponFixture/1.0.0 
+Date: Tue, 10 Nov 2026 22:53:39 GMT
+Content-Type: application/json
+Content-Length: 30
+Cache-Control: no-store
+
+{"error": "coupon_exhausted"}

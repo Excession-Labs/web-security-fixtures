@@ -1,0 +1,25 @@
+HTTP/2 404 
+date: Tue, 10 Nov 2026 22:47:36 GMT
+content-type: text/html
+content-length: 2194
+cf-cache-status: HIT
+cache-control: public, max-age=0, must-revalidate
+etag: "f96e46d0b1020977ddd364dd7bf9f341"
+strict-transport-security: max-age=31536000; includeSubDomains
+content-security-policy: default-src 'self'; script-src 'self' https://challenges.cloudflare.com https://static.ads-twitter.com https://analytics.twitter.com https://t.co; frame-src https://challenges.cloudflare.com; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob: https://static.ads-twitter.com https://analytics.twitter.com https://t.co https://ads-twitter.com https://ads-api.twitter.com; font-src 'self' data:; connect-src 'self' https://challenges.cloudflare.com https://static.ads-twitter.com https://analytics.twitter.com https://t.co https://ads-twitter.com https://ads-api.twitter.com; worker-src 'none'; frame-ancestors 'none'; base-uri 'none'; form-action 'self' https://checkout.stripe.com
+permissions-policy: camera=(), microphone=(), geolocation=()
+referrer-policy: strict-origin-when-cross-origin
+x-content-type-options: nosniff
+x-frame-options: DENY
+server: cloudflare
+alt-svc: h3=":443"; ma=86400
+
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Not found · Excession</title>
+  <meta name="robots" content="noindex">
+  <meta name="theme-color" content="#080808">
+  <link rel="icon" href="

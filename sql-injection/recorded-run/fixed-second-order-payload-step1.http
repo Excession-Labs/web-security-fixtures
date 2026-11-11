@@ -1,0 +1,8 @@
+HTTP/1.0 201 Created
+Server: SqliFixture/1.0.0 
+Date: Tue, 10 Nov 2026 22:46:50 GMT
+Content-Type: application/json
+Content-Length: 38
+Cache-Control: no-store
+
+{"id": 5, "username": "x' OR '1'='1"}

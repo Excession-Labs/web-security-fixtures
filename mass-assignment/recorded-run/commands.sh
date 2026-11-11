@@ -1,0 +1,25 @@
+#!/bin/sh
+# Recorded curl commands; rerun verify.py to start fresh fixture servers.
+# These ephemeral ports refer to the recorded run and are no longer listening.
+# Server: python3 fixture.py --mode vulnerable --port 53348
+curl --noproxy '*' --silent --show-error --include --http1.1 --connect-timeout 1 --max-time 3 --request GET --header 'Authorization: Bearer demo-alice-token' http://127.0.0.1:53348/profile
+curl --noproxy '*' --silent --show-error --include --http1.1 --connect-timeout 1 --max-time 3 --request PATCH --header 'Authorization: Bearer demo-alice-token' --header 'Content-Type: application/json' --data '{"name":"Alice Example","bio":"Synthetic bio"}' http://127.0.0.1:53348/profile
+curl --noproxy '*' --silent --show-error --include --http1.1 --connect-timeout 1 --max-time 3 --request PATCH --header 'Authorization: Bearer demo-alice-token' --header 'Content-Type: application/json' --data '{"role":"admin","credit":9999}' http://127.0.0.1:53348/profile
+curl --noproxy '*' --silent --show-error --include --http1.1 --connect-timeout 1 --max-time 3 --request GET --header 'Authorization: Bearer demo-alice-token' http://127.0.0.1:53348/profile
+curl --noproxy '*' --silent --show-error --include --http1.1 --connect-timeout 1 --max-time 3 --request PATCH --header 'Authorization: Bearer demo-alice-token' --header 'Content-Type: application/json' --data '{"is_admin":true}' http://127.0.0.1:53348/profile
+curl --noproxy '*' --silent --show-error --include --http1.1 --connect-timeout 1 --max-time 3 --request PATCH --header 'Authorization: Bearer demo-alice-token' --header 'Content-Type: application/json' --data '{"bio":"Mixed attempt","role":"admin"}' http://127.0.0.1:53348/profile
+curl --noproxy '*' --silent --show-error --include --http1.1 --connect-timeout 1 --max-time 3 --request PATCH --header 'Authorization: Bearer demo-alice-token' --header 'Content-Type: application/json' --data '{"credit":1}' http://127.0.0.1:53348/users/bob
+curl --noproxy '*' --silent --show-error --include --http1.1 --connect-timeout 1 --max-time 3 --request PATCH --header 'Authorization: Bearer demo-admin-token' --header 'Content-Type: application/json' --data '{"credit":50}' http://127.0.0.1:53348/users/alice
+curl --noproxy '*' --silent --show-error --include --http1.1 --connect-timeout 1 --max-time 3 --request GET --header 'Authorization: Bearer demo-alice-token' http://127.0.0.1:53348/profile
+curl --noproxy '*' --silent --show-error --include --http1.1 --connect-timeout 1 --max-time 3 --request PATCH --header 'Content-Type: application/json' --data '{"bio":"x"}' http://127.0.0.1:53348/profile
+# Server: python3 fixture.py --mode fixed --port 53359
+curl --noproxy '*' --silent --show-error --include --http1.1 --connect-timeout 1 --max-time 3 --request GET --header 'Authorization: Bearer demo-alice-token' http://127.0.0.1:53359/profile
+curl --noproxy '*' --silent --show-error --include --http1.1 --connect-timeout 1 --max-time 3 --request PATCH --header 'Authorization: Bearer demo-alice-token' --header 'Content-Type: application/json' --data '{"name":"Alice Example","bio":"Synthetic bio"}' http://127.0.0.1:53359/profile
+curl --noproxy '*' --silent --show-error --include --http1.1 --connect-timeout 1 --max-time 3 --request PATCH --header 'Authorization: Bearer demo-alice-token' --header 'Content-Type: application/json' --data '{"role":"admin","credit":9999}' http://127.0.0.1:53359/profile
+curl --noproxy '*' --silent --show-error --include --http1.1 --connect-timeout 1 --max-time 3 --request GET --header 'Authorization: Bearer demo-alice-token' http://127.0.0.1:53359/profile
+curl --noproxy '*' --silent --show-error --include --http1.1 --connect-timeout 1 --max-time 3 --request PATCH --header 'Authorization: Bearer demo-alice-token' --header 'Content-Type: application/json' --data '{"is_admin":true}' http://127.0.0.1:53359/profile
+curl --noproxy '*' --silent --show-error --include --http1.1 --connect-timeout 1 --max-time 3 --request PATCH --header 'Authorization: Bearer demo-alice-token' --header 'Content-Type: application/json' --data '{"bio":"Mixed attempt","role":"admin"}' http://127.0.0.1:53359/profile
+curl --noproxy '*' --silent --show-error --include --http1.1 --connect-timeout 1 --max-time 3 --request PATCH --header 'Authorization: Bearer demo-alice-token' --header 'Content-Type: application/json' --data '{"credit":1}' http://127.0.0.1:53359/users/bob
+curl --noproxy '*' --silent --show-error --include --http1.1 --connect-timeout 1 --max-time 3 --request PATCH --header 'Authorization: Bearer demo-admin-token' --header 'Content-Type: application/json' --data '{"credit":50}' http://127.0.0.1:53359/users/alice
+curl --noproxy '*' --silent --show-error --include --http1.1 --connect-timeout 1 --max-time 3 --request GET --header 'Authorization: Bearer demo-alice-token' http://127.0.0.1:53359/profile
+curl --noproxy '*' --silent --show-error --include --http1.1 --connect-timeout 1 --max-time 3 --request PATCH --header 'Content-Type: application/json' --data '{"bio":"x"}' http://127.0.0.1:53359/profile

@@ -1,0 +1,8 @@
+HTTP/1.0 200 OK
+Server: SsrfPreview/1.0.0 
+Date: Tue, 10 Nov 2026 22:50:57 GMT
+Content-Type: application/json
+Content-Length: 314
+Cache-Control: no-store
+
+{"blocked": false, "body_preview": "<html><title>Public Article</title><body>Ordinary public content.</body></html>", "mode": "strict", "reason": null, "requested_host": "target.test", "requested_url": "http://target.test:55473/article", "resolved_ip": "127.0.0.1", "secret_leaked": false, "upstream_status": 200}

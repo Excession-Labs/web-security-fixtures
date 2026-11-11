@@ -1,0 +1,10 @@
+HTTP/1.0 200 OK
+Server: ClickjackFixture/1.0.0 
+Date: Tue, 10 Nov 2026 22:47:15 GMT
+Content-Type: application/json; charset=utf-8
+Content-Length: 23
+Cache-Control: no-store
+Content-Security-Policy: frame-ancestors 'none'
+X-Frame-Options: DENY
+
+{"delete_requests": 1}

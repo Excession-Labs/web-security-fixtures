@@ -1,0 +1,4 @@
+WARN  https-transport    RFC 9116 s3, 5.7    Fetched over http on 127.0.0.1. RFC 9116 section 5.7 allows this for localhost only with extra human validation.
+ERROR http-status        RFC 9116 s3         GET http://127.0.0.1:53877/.well-known/security.txt returned HTTP 404, not 200.
+NOTE  legacy-path        RFC 9116 s3         A file exists at http://127.0.0.1:53877/security.txt. That legacy path is allowed only for compatibility; the /.well-known/ path MUST be used.
+RESULT: FAIL (1 error(s))

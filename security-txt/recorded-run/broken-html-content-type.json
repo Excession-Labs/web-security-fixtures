@@ -1,0 +1,43 @@
+{
+  "checker_version": "1.0.0",
+  "source": "http://127.0.0.1:53877/html/.well-known/security.txt",
+  "errors": 1,
+  "findings": [
+    {
+      "level": "WARN",
+      "rule": "https-transport",
+      "rfc9116": "3, 5.7",
+      "message": "Fetched over http on 127.0.0.1. RFC 9116 section 5.7 allows this for localhost only with extra human validation."
+    },
+    {
+      "level": "ERROR",
+      "rule": "content-type",
+      "rfc9116": "3, 4",
+      "message": "Content-Type is 'text/html; charset=utf-8'. It MUST be text/plain."
+    },
+    {
+      "level": "NOTE",
+      "rule": "signature",
+      "rfc9116": "2.3",
+      "message": "File is not signed. A signature is RECOMMENDED, with a Canonical field."
+    },
+    {
+      "level": "OK",
+      "rule": "contact-required",
+      "rfc9116": "2.5.3",
+      "message": "1 Contact field(s) present."
+    },
+    {
+      "level": "OK",
+      "rule": "expires-format",
+      "rfc9116": "2.5.5",
+      "message": "Expires 2027-05-09T22:47:50Z is a valid date-time in the future."
+    },
+    {
+      "level": "OK",
+      "rule": "uri",
+      "rfc9116": "2.5",
+      "message": "Contact on line 1: mailto:security@example.com"
+    }
+  ]
+}

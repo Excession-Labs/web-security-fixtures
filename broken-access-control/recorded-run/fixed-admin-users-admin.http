@@ -1,0 +1,8 @@
+HTTP/1.0 200 OK
+Server: RoleFixture/1.0.0 
+Date: Tue, 10 Nov 2026 22:47:08 GMT
+Content-Type: application/json
+Content-Length: 273
+Cache-Control: no-store
+
+{"accounts": [{"email": "ten@example.test", "id": "acct-10", "role": "user"}, {"email": "seven@example.test", "id": "acct-7", "role": "user"}, {"email": "eight@example.test", "id": "acct-8", "role": "user"}, {"email": "nine@example.test", "id": "acct-9", "role": "user"}]}

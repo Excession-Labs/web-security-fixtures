@@ -1,0 +1,8 @@
+HTTP/1.1 200 OK
+Server: TwoStepFixture/1.0.0 
+Date: Tue, 10 Nov 2026 22:51:24 GMT
+Content-Type: application/json
+Content-Length: 28
+Cache-Control: no-store
+
+{"status": "authenticated"}

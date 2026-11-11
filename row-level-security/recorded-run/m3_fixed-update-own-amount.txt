@@ -1,0 +1,4 @@
+SET app.tenant_id = 'acme';
+SET
+UPDATE invoices SET amount = 300 WHERE id = 2;
+UPDATE 1

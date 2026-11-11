@@ -1,0 +1,25 @@
+{
+  "checker_version": "1.0.0",
+  "source": "http://127.0.0.1:53877/.well-known/security.txt",
+  "errors": 1,
+  "findings": [
+    {
+      "level": "WARN",
+      "rule": "https-transport",
+      "rfc9116": "3, 5.7",
+      "message": "Fetched over http on 127.0.0.1. RFC 9116 section 5.7 allows this for localhost only with extra human validation."
+    },
+    {
+      "level": "ERROR",
+      "rule": "http-status",
+      "rfc9116": "3",
+      "message": "GET http://127.0.0.1:53877/.well-known/security.txt returned HTTP 404, not 200."
+    },
+    {
+      "level": "NOTE",
+      "rule": "legacy-path",
+      "rfc9116": "3",
+      "message": "A file exists at http://127.0.0.1:53877/security.txt. That legacy path is allowed only for compatibility; the /.well-known/ path MUST be used."
+    }
+  ]
+}

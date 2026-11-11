@@ -1,0 +1,4 @@
+SET app.tenant_id = 'acme';
+SET
+INSERT INTO invoices VALUES (5, 'globex', 999);
+ERROR:  new row violates row-level security policy for table "invoices"

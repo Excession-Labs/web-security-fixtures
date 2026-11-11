@@ -1,0 +1,572 @@
+{
+  "schema_version": 1,
+  "fixture_version": "1.0.0",
+  "started_at": "2026-11-10T22:46:08.889629+00:00",
+  "method": "Real curl subprocesses against two locally spawned fixture modes",
+  "scope": {
+    "hosts": [
+      "127.0.0.1"
+    ],
+    "methods": [
+      "GET",
+      "POST"
+    ],
+    "paths": [
+      "/session",
+      "/login",
+      "/account"
+    ],
+    "data": "One synthetic user and a made-up password; session IDs are random per run"
+  },
+  "versions": {
+    "python": "3.15.2",
+    "os": "Darwin",
+    "architecture": "arm64",
+    "curl": "curl 8.7.1 (x86_64-apple-darwin24.0) libcurl/8.7.1 (SecureTransport) LibreSSL/3.3.6 zlib/1.2.12 nghttp2/1.64.0"
+  },
+  "sha256": {
+    "fixture.py": "7de96020ec6c65a22df47eaca790de04d8649839fe7d23ea24897fda0c621180",
+    "verify.py": "2fbd82c0705d98b8efe59fadfa67497f5dab25fd84417bdbb8c2c8072d2ac820"
+  },
+  "reproduction_command": "python3 verify.py --output recorded-run",
+  "agent_execution": {
+    "executed": false,
+    "note": "HTTP verification was scripted; no model or agent ran"
+  },
+  "cases": [
+    {
+      "id": "vulnerable/1-attacker-gets-session",
+      "role": "attacker",
+      "started_at": "2026-11-10T22:46:08.930568+00:00",
+      "elapsed_ms": 8.682,
+      "server": {
+        "mode": "vulnerable",
+        "base_url": "http://127.0.0.1:52659"
+      },
+      "command": [
+        "curl",
+        "--noproxy",
+        "*",
+        "--silent",
+        "--show-error",
+        "--include",
+        "--http1.1",
+        "--connect-timeout",
+        "1",
+        "--max-time",
+        "3",
+        "--request",
+        "GET",
+        "http://127.0.0.1:52659/session"
+      ],
+      "curl_exit_code": 0,
+      "stderr": "",
+      "sent_session_id": null,
+      "set_cookie_session_id": "a73e453b9181db0077034a4aa0dae665",
+      "secure_expected_status": 200,
+      "demonstration_expected_status": 200,
+      "observed_status": 200,
+      "observed_body": {
+        "session": "anonymous"
+      },
+      "matches_demonstration": true,
+      "boundary_holds": true,
+      "response_file": "vulnerable-1-attacker-gets-session.http",
+      "response_sha256": "e19f189f0d3f61555a38040d5c2baaf1013431d6cbeffad8e88355f6710fa99a"
+    },
+    {
+      "id": "vulnerable/2-attacker-before-login",
+      "role": "attacker",
+      "started_at": "2026-11-10T22:46:08.939340+00:00",
+      "elapsed_ms": 7.523,
+      "server": {
+        "mode": "vulnerable",
+        "base_url": "http://127.0.0.1:52659"
+      },
+      "command": [
+        "curl",
+        "--noproxy",
+        "*",
+        "--silent",
+        "--show-error",
+        "--include",
+        "--http1.1",
+        "--connect-timeout",
+        "1",
+        "--max-time",
+        "3",
+        "--cookie",
+        "sid=a73e453b9181db0077034a4aa0dae665",
+        "--request",
+        "GET",
+        "http://127.0.0.1:52659/account"
+      ],
+      "curl_exit_code": 0,
+      "stderr": "",
+      "sent_session_id": "a73e453b9181db0077034a4aa0dae665",
+      "set_cookie_session_id": null,
+      "secure_expected_status": 401,
+      "demonstration_expected_status": 401,
+      "observed_status": 401,
+      "observed_body": {
+        "error": "authentication_required"
+      },
+      "matches_demonstration": true,
+      "boundary_holds": true,
+      "response_file": "vulnerable-2-attacker-before-login.http",
+      "response_sha256": "0973bbc874290b865404a92341ba0a2900ab18e63e7d5f55529c07d1709dd5fd"
+    },
+    {
+      "id": "vulnerable/3-victim-wrong-password",
+      "role": "victim",
+      "started_at": "2026-11-10T22:46:08.946923+00:00",
+      "elapsed_ms": 7.726,
+      "server": {
+        "mode": "vulnerable",
+        "base_url": "http://127.0.0.1:52659"
+      },
+      "command": [
+        "curl",
+        "--noproxy",
+        "*",
+        "--silent",
+        "--show-error",
+        "--include",
+        "--http1.1",
+        "--connect-timeout",
+        "1",
+        "--max-time",
+        "3",
+        "--cookie",
+        "sid=a73e453b9181db0077034a4aa0dae665",
+        "--request",
+        "POST",
+        "--header",
+        "Content-Type: application/json",
+        "--data",
+        "{\"user\": \"victor\", \"password\": \"wrong-guess\"}",
+        "http://127.0.0.1:52659/login"
+      ],
+      "curl_exit_code": 0,
+      "stderr": "",
+      "sent_session_id": "a73e453b9181db0077034a4aa0dae665",
+      "set_cookie_session_id": null,
+      "secure_expected_status": 401,
+      "demonstration_expected_status": 401,
+      "observed_status": 401,
+      "observed_body": {
+        "error": "invalid_credentials"
+      },
+      "matches_demonstration": true,
+      "boundary_holds": true,
+      "response_file": "vulnerable-3-victim-wrong-password.http",
+      "response_sha256": "42de16a1e193138dd8358b439170ea6e1b6d61d9f71ac86b49fece9f9a33a36b"
+    },
+    {
+      "id": "vulnerable/4-victim-logs-in-with-fixed-id",
+      "role": "victim",
+      "started_at": "2026-11-10T22:46:08.954697+00:00",
+      "elapsed_ms": 6.748,
+      "server": {
+        "mode": "vulnerable",
+        "base_url": "http://127.0.0.1:52659"
+      },
+      "command": [
+        "curl",
+        "--noproxy",
+        "*",
+        "--silent",
+        "--show-error",
+        "--include",
+        "--http1.1",
+        "--connect-timeout",
+        "1",
+        "--max-time",
+        "3",
+        "--cookie",
+        "sid=a73e453b9181db0077034a4aa0dae665",
+        "--request",
+        "POST",
+        "--header",
+        "Content-Type: application/json",
+        "--data",
+        "{\"user\": \"victor\", \"password\": \"demo-password-not-real\"}",
+        "http://127.0.0.1:52659/login"
+      ],
+      "curl_exit_code": 0,
+      "stderr": "",
+      "sent_session_id": "a73e453b9181db0077034a4aa0dae665",
+      "set_cookie_session_id": null,
+      "secure_expected_status": 200,
+      "demonstration_expected_status": 200,
+      "observed_status": 200,
+      "observed_body": {
+        "login": "ok",
+        "user": "victor"
+      },
+      "matches_demonstration": true,
+      "boundary_holds": true,
+      "response_file": "vulnerable-4-victim-logs-in-with-fixed-id.http",
+      "response_sha256": "a29f13bf21e5c9371e9e588779fd0a67d6c6bb9b075cfe03ef573df7d91c39f8"
+    },
+    {
+      "id": "vulnerable/5-victim-own-session",
+      "role": "victim",
+      "started_at": "2026-11-10T22:46:08.961496+00:00",
+      "elapsed_ms": 6.325,
+      "server": {
+        "mode": "vulnerable",
+        "base_url": "http://127.0.0.1:52659"
+      },
+      "command": [
+        "curl",
+        "--noproxy",
+        "*",
+        "--silent",
+        "--show-error",
+        "--include",
+        "--http1.1",
+        "--connect-timeout",
+        "1",
+        "--max-time",
+        "3",
+        "--cookie",
+        "sid=a73e453b9181db0077034a4aa0dae665",
+        "--request",
+        "GET",
+        "http://127.0.0.1:52659/account"
+      ],
+      "curl_exit_code": 0,
+      "stderr": "",
+      "sent_session_id": "a73e453b9181db0077034a4aa0dae665",
+      "set_cookie_session_id": null,
+      "secure_expected_status": 200,
+      "demonstration_expected_status": 200,
+      "observed_status": 200,
+      "observed_body": {
+        "note": "Victor synthetic account page",
+        "user": "victor"
+      },
+      "matches_demonstration": true,
+      "boundary_holds": true,
+      "response_file": "vulnerable-5-victim-own-session.http",
+      "response_sha256": "2e21da045a9d67efa561361b80f6597c2d00de7ca6f684f964db2dfd2a8270f4"
+    },
+    {
+      "id": "vulnerable/6-attacker-after-login",
+      "role": "attacker",
+      "started_at": "2026-11-10T22:46:08.967859+00:00",
+      "elapsed_ms": 5.966,
+      "server": {
+        "mode": "vulnerable",
+        "base_url": "http://127.0.0.1:52659"
+      },
+      "command": [
+        "curl",
+        "--noproxy",
+        "*",
+        "--silent",
+        "--show-error",
+        "--include",
+        "--http1.1",
+        "--connect-timeout",
+        "1",
+        "--max-time",
+        "3",
+        "--cookie",
+        "sid=a73e453b9181db0077034a4aa0dae665",
+        "--request",
+        "GET",
+        "http://127.0.0.1:52659/account"
+      ],
+      "curl_exit_code": 0,
+      "stderr": "",
+      "sent_session_id": "a73e453b9181db0077034a4aa0dae665",
+      "set_cookie_session_id": null,
+      "secure_expected_status": 401,
+      "demonstration_expected_status": 200,
+      "observed_status": 200,
+      "observed_body": {
+        "note": "Victor synthetic account page",
+        "user": "victor"
+      },
+      "matches_demonstration": true,
+      "boundary_holds": false,
+      "response_file": "vulnerable-6-attacker-after-login.http",
+      "response_sha256": "2e21da045a9d67efa561361b80f6597c2d00de7ca6f684f964db2dfd2a8270f4"
+    },
+    {
+      "id": "fixed/1-attacker-gets-session",
+      "role": "attacker",
+      "started_at": "2026-11-10T22:46:09.008714+00:00",
+      "elapsed_ms": 6.872,
+      "server": {
+        "mode": "fixed",
+        "base_url": "http://127.0.0.1:52666"
+      },
+      "command": [
+        "curl",
+        "--noproxy",
+        "*",
+        "--silent",
+        "--show-error",
+        "--include",
+        "--http1.1",
+        "--connect-timeout",
+        "1",
+        "--max-time",
+        "3",
+        "--request",
+        "GET",
+        "http://127.0.0.1:52666/session"
+      ],
+      "curl_exit_code": 0,
+      "stderr": "",
+      "sent_session_id": null,
+      "set_cookie_session_id": "9c49b4cac21557c0ebde63be301f8776",
+      "secure_expected_status": 200,
+      "demonstration_expected_status": 200,
+      "observed_status": 200,
+      "observed_body": {
+        "session": "anonymous"
+      },
+      "matches_demonstration": true,
+      "boundary_holds": true,
+      "response_file": "fixed-1-attacker-gets-session.http",
+      "response_sha256": "3b30df9db885c17de1c8ebfeccc1d00422450ec05da888f697a63c51c55c28f4"
+    },
+    {
+      "id": "fixed/2-attacker-before-login",
+      "role": "attacker",
+      "started_at": "2026-11-10T22:46:09.015642+00:00",
+      "elapsed_ms": 5.857,
+      "server": {
+        "mode": "fixed",
+        "base_url": "http://127.0.0.1:52666"
+      },
+      "command": [
+        "curl",
+        "--noproxy",
+        "*",
+        "--silent",
+        "--show-error",
+        "--include",
+        "--http1.1",
+        "--connect-timeout",
+        "1",
+        "--max-time",
+        "3",
+        "--cookie",
+        "sid=9c49b4cac21557c0ebde63be301f8776",
+        "--request",
+        "GET",
+        "http://127.0.0.1:52666/account"
+      ],
+      "curl_exit_code": 0,
+      "stderr": "",
+      "sent_session_id": "9c49b4cac21557c0ebde63be301f8776",
+      "set_cookie_session_id": null,
+      "secure_expected_status": 401,
+      "demonstration_expected_status": 401,
+      "observed_status": 401,
+      "observed_body": {
+        "error": "authentication_required"
+      },
+      "matches_demonstration": true,
+      "boundary_holds": true,
+      "response_file": "fixed-2-attacker-before-login.http",
+      "response_sha256": "9226d34172bd7bd130420938bf0592e006a2d619e5fbc862e1de8165dc040e69"
+    },
+    {
+      "id": "fixed/3-victim-wrong-password",
+      "role": "victim",
+      "started_at": "2026-11-10T22:46:09.021554+00:00",
+      "elapsed_ms": 5.701,
+      "server": {
+        "mode": "fixed",
+        "base_url": "http://127.0.0.1:52666"
+      },
+      "command": [
+        "curl",
+        "--noproxy",
+        "*",
+        "--silent",
+        "--show-error",
+        "--include",
+        "--http1.1",
+        "--connect-timeout",
+        "1",
+        "--max-time",
+        "3",
+        "--cookie",
+        "sid=9c49b4cac21557c0ebde63be301f8776",
+        "--request",
+        "POST",
+        "--header",
+        "Content-Type: application/json",
+        "--data",
+        "{\"user\": \"victor\", \"password\": \"wrong-guess\"}",
+        "http://127.0.0.1:52666/login"
+      ],
+      "curl_exit_code": 0,
+      "stderr": "",
+      "sent_session_id": "9c49b4cac21557c0ebde63be301f8776",
+      "set_cookie_session_id": null,
+      "secure_expected_status": 401,
+      "demonstration_expected_status": 401,
+      "observed_status": 401,
+      "observed_body": {
+        "error": "invalid_credentials"
+      },
+      "matches_demonstration": true,
+      "boundary_holds": true,
+      "response_file": "fixed-3-victim-wrong-password.http",
+      "response_sha256": "c7bbe4d47ed4b34c02da4f7fff175263525b66d20b112b3bd458790bf1ad4291"
+    },
+    {
+      "id": "fixed/4-victim-logs-in-with-fixed-id",
+      "role": "victim",
+      "started_at": "2026-11-10T22:46:09.027300+00:00",
+      "elapsed_ms": 6.26,
+      "server": {
+        "mode": "fixed",
+        "base_url": "http://127.0.0.1:52666"
+      },
+      "command": [
+        "curl",
+        "--noproxy",
+        "*",
+        "--silent",
+        "--show-error",
+        "--include",
+        "--http1.1",
+        "--connect-timeout",
+        "1",
+        "--max-time",
+        "3",
+        "--cookie",
+        "sid=9c49b4cac21557c0ebde63be301f8776",
+        "--request",
+        "POST",
+        "--header",
+        "Content-Type: application/json",
+        "--data",
+        "{\"user\": \"victor\", \"password\": \"demo-password-not-real\"}",
+        "http://127.0.0.1:52666/login"
+      ],
+      "curl_exit_code": 0,
+      "stderr": "",
+      "sent_session_id": "9c49b4cac21557c0ebde63be301f8776",
+      "set_cookie_session_id": "499daed97ba66c5e8e864a6811554d9c",
+      "secure_expected_status": 200,
+      "demonstration_expected_status": 200,
+      "observed_status": 200,
+      "observed_body": {
+        "login": "ok",
+        "user": "victor"
+      },
+      "matches_demonstration": true,
+      "boundary_holds": true,
+      "response_file": "fixed-4-victim-logs-in-with-fixed-id.http",
+      "response_sha256": "1ecf9f8039c17cad4997f46ff42b0fbfb5c1a96800f703019ac100c761a3d84f"
+    },
+    {
+      "id": "fixed/5-victim-own-session",
+      "role": "victim",
+      "started_at": "2026-11-10T22:46:09.033613+00:00",
+      "elapsed_ms": 7.432,
+      "server": {
+        "mode": "fixed",
+        "base_url": "http://127.0.0.1:52666"
+      },
+      "command": [
+        "curl",
+        "--noproxy",
+        "*",
+        "--silent",
+        "--show-error",
+        "--include",
+        "--http1.1",
+        "--connect-timeout",
+        "1",
+        "--max-time",
+        "3",
+        "--cookie",
+        "sid=499daed97ba66c5e8e864a6811554d9c",
+        "--request",
+        "GET",
+        "http://127.0.0.1:52666/account"
+      ],
+      "curl_exit_code": 0,
+      "stderr": "",
+      "sent_session_id": "499daed97ba66c5e8e864a6811554d9c",
+      "set_cookie_session_id": null,
+      "secure_expected_status": 200,
+      "demonstration_expected_status": 200,
+      "observed_status": 200,
+      "observed_body": {
+        "note": "Victor synthetic account page",
+        "user": "victor"
+      },
+      "matches_demonstration": true,
+      "boundary_holds": true,
+      "response_file": "fixed-5-victim-own-session.http",
+      "response_sha256": "cbba310f806b2972654a3fa71cbbf23d28201f30a6451d72b457449def84fab1"
+    },
+    {
+      "id": "fixed/6-attacker-after-login",
+      "role": "attacker",
+      "started_at": "2026-11-10T22:46:09.041098+00:00",
+      "elapsed_ms": 6.529,
+      "server": {
+        "mode": "fixed",
+        "base_url": "http://127.0.0.1:52666"
+      },
+      "command": [
+        "curl",
+        "--noproxy",
+        "*",
+        "--silent",
+        "--show-error",
+        "--include",
+        "--http1.1",
+        "--connect-timeout",
+        "1",
+        "--max-time",
+        "3",
+        "--cookie",
+        "sid=9c49b4cac21557c0ebde63be301f8776",
+        "--request",
+        "GET",
+        "http://127.0.0.1:52666/account"
+      ],
+      "curl_exit_code": 0,
+      "stderr": "",
+      "sent_session_id": "9c49b4cac21557c0ebde63be301f8776",
+      "set_cookie_session_id": null,
+      "secure_expected_status": 401,
+      "demonstration_expected_status": 401,
+      "observed_status": 401,
+      "observed_body": {
+        "error": "authentication_required"
+      },
+      "matches_demonstration": true,
+      "boundary_holds": true,
+      "response_file": "fixed-6-attacker-after-login.http",
+      "response_sha256": "9226d34172bd7bd130420938bf0592e006a2d619e5fbc862e1de8165dc040e69"
+    }
+  ],
+  "failures": [],
+  "mode_summary": {
+    "vulnerable": {
+      "session_id_changed_at_login": false,
+      "attacker_id_authenticated_after_login": true
+    },
+    "fixed": {
+      "session_id_changed_at_login": true,
+      "attacker_id_authenticated_after_login": false
+    }
+  },
+  "finished_at": "2026-11-10T22:46:09.048307+00:00",
+  "all_demonstration_checks_passed": true
+}

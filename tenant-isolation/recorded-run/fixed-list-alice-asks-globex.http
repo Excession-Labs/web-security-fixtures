@@ -1,0 +1,7 @@
+HTTP/1.0 200 OK
+Server: TenantFixture/1.0.0 
+Date: Tue, 10 Nov 2026 22:47:40 GMT
+Content-Type: application/json
+Content-Length: 198
+
+{"invoices": [{"amount_cents": 12000, "customer": "Northwind Demo", "id": "acme-inv-1", "tenant": "acme"}, {"amount_cents": 8800, "customer": "Contoso Demo", "id": "acme-inv-2", "tenant": "acme"}]}

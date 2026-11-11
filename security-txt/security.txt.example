@@ -1,0 +1,10 @@
+# security.txt for example.com (RFC 9116). Replace every example.com value.
+# Reports: security@example.com is the preferred contact.
+Contact: mailto:security@example.com
+Contact: https://example.com/security/report
+Expires: 2027-06-30T23:59:59Z
+Encryption: https://example.com/.well-known/pgp-key.txt
+Policy: https://example.com/security/policy
+Acknowledgments: https://example.com/security/thanks
+Preferred-Languages: en
+Canonical: https://example.com/.well-known/security.txt

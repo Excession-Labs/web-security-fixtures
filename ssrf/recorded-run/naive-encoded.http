@@ -1,0 +1,8 @@
+HTTP/1.0 200 OK
+Server: SsrfPreview/1.0.0 
+Date: Tue, 10 Nov 2026 22:50:57 GMT
+Content-Type: application/json
+Content-Length: 296
+Cache-Control: no-store
+
+{"blocked": false, "body_preview": "{\"credential\": \"synthetic-metadata-secret-7f3c9e21\"}", "mode": "naive", "reason": null, "requested_host": "2130706433", "requested_url": "http://2130706433:55472/latest/meta-data/secret", "resolved_ip": null, "secret_leaked": true, "upstream_status": 200}

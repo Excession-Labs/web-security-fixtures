@@ -1,0 +1,8 @@
+HTTP/1.0 200 OK
+Server: SqliFixture/1.0.0 
+Date: Tue, 10 Nov 2026 22:46:49 GMT
+Content-Type: application/json
+Content-Length: 329
+Cache-Control: no-store
+
+{"results": [{"id": 1, "name": "alice", "price": "4d0c7400ae087ee00a5e7888478f0366688a3d1096544a3a5de852ac66ce3809"}, {"id": 2, "name": "bob", "price": "b973ce2e03f895897f4fb258dbb576bd582fed683d7002808bf61920db2c6264"}, {"id": 3, "name": "o'brien", "price": "e1c45299883551c38b5c63d167c20e92ec720d16a613a0d3a9da640429493206"}]}

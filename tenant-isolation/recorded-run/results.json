@@ -1,0 +1,2478 @@
+{
+  "schema_version": 1,
+  "fixture_version": "1.0.0",
+  "started_at": "2026-11-10T22:47:40.281793+00:00",
+  "method": "Real curl subprocesses against two locally spawned fixture modes",
+  "scope": {
+    "hosts": [
+      "127.0.0.1"
+    ],
+    "methods": [
+      "GET",
+      "POST"
+    ],
+    "paths": [
+      "/invoices",
+      "/reports/usage",
+      "/exports",
+      "/exports/<job_id>"
+    ],
+    "data": "Two synthetic tenants, two users each; all tokens are public demo values"
+  },
+  "versions": {
+    "python": "3.15.2",
+    "os": "Darwin",
+    "architecture": "arm64",
+    "curl": "curl 8.7.1 (x86_64-apple-darwin24.0) libcurl/8.7.1 (SecureTransport) LibreSSL/3.3.6 zlib/1.2.12 nghttp2/1.64.0"
+  },
+  "sha256": {
+    "fixture.py": "82ed9272a30bd0865eb464a93f6b6d86890bd28a0b0595561ff860bdf19b8037",
+    "verify.py": "2267bb23ff21c642e65d5a9f280a5ef59c9e979b6c215ba56dc557ff540c92f0"
+  },
+  "reproduction_command": "python3 verify.py --output recorded-run",
+  "agent_execution": {
+    "executed": false,
+    "note": "HTTP verification was scripted; no model or agent ran"
+  },
+  "cases": [
+    {
+      "id": "vulnerable/list-alice-own",
+      "endpoint": "list",
+      "role": "control",
+      "started_at": "2026-11-10T22:47:40.324826+00:00",
+      "elapsed_ms": 8.348,
+      "server": {
+        "fixture_version": "1.0.0",
+        "mode": "vulnerable",
+        "base_url": "http://127.0.0.1:53743"
+      },
+      "command": [
+        "curl",
+        "--noproxy",
+        "*",
+        "--silent",
+        "--show-error",
+        "--include",
+        "--http1.1",
+        "--connect-timeout",
+        "1",
+        "--max-time",
+        "3",
+        "--request",
+        "GET",
+        "--header",
+        "Authorization: Bearer demo-acme-alice",
+        "http://127.0.0.1:53743/invoices?q=inv&tenant_id=acme"
+      ],
+      "curl_exit_code": 0,
+      "stderr": "",
+      "identity": "alice",
+      "identity_tenant": "acme",
+      "path": "/invoices?q=inv&tenant_id=acme",
+      "expected": {
+        "status": 200,
+        "tenants_in_body": [
+          "acme"
+        ],
+        "x_cache": null
+      },
+      "observed": {
+        "status": 200,
+        "tenants_in_body": [
+          "acme"
+        ],
+        "x_cache": null
+      },
+      "cross_tenant_data_returned": false,
+      "authorization_boundary_holds": true,
+      "matches_demonstration": true,
+      "observed_body": {
+        "invoices": [
+          {
+            "amount_cents": 12000,
+            "customer": "Northwind Demo",
+            "id": "acme-inv-1",
+            "tenant": "acme"
+          },
+          {
+            "amount_cents": 8800,
+            "customer": "Contoso Demo",
+            "id": "acme-inv-2",
+            "tenant": "acme"
+          }
+        ]
+      },
+      "response_file": "vulnerable-list-alice-own.http",
+      "response_sha256": "3bf9aa2654a6de3cfd3400f56e4e5e794287f8b5e91b3a50c038a116377640ba"
+    },
+    {
+      "id": "vulnerable/list-bob-own",
+      "endpoint": "list",
+      "role": "control",
+      "started_at": "2026-11-10T22:47:40.333255+00:00",
+      "elapsed_ms": 8.143,
+      "server": {
+        "fixture_version": "1.0.0",
+        "mode": "vulnerable",
+        "base_url": "http://127.0.0.1:53743"
+      },
+      "command": [
+        "curl",
+        "--noproxy",
+        "*",
+        "--silent",
+        "--show-error",
+        "--include",
+        "--http1.1",
+        "--connect-timeout",
+        "1",
+        "--max-time",
+        "3",
+        "--request",
+        "GET",
+        "--header",
+        "Authorization: Bearer demo-globex-bob",
+        "http://127.0.0.1:53743/invoices?q=inv&tenant_id=globex"
+      ],
+      "curl_exit_code": 0,
+      "stderr": "",
+      "identity": "bob",
+      "identity_tenant": "globex",
+      "path": "/invoices?q=inv&tenant_id=globex",
+      "expected": {
+        "status": 200,
+        "tenants_in_body": [
+          "globex"
+        ],
+        "x_cache": null
+      },
+      "observed": {
+        "status": 200,
+        "tenants_in_body": [
+          "globex"
+        ],
+        "x_cache": null
+      },
+      "cross_tenant_data_returned": false,
+      "authorization_boundary_holds": true,
+      "matches_demonstration": true,
+      "observed_body": {
+        "invoices": [
+          {
+            "amount_cents": 45000,
+            "customer": "Fabrikam Demo",
+            "id": "globex-inv-1",
+            "tenant": "globex"
+          },
+          {
+            "amount_cents": 3100,
+            "customer": "Adatum Demo",
+            "id": "globex-inv-2",
+            "tenant": "globex"
+          }
+        ]
+      },
+      "response_file": "vulnerable-list-bob-own.http",
+      "response_sha256": "d419ea0957fe0d5fc73bfd3e9d408b6c6a1147f4964b63e0dafe1559f8e79293"
+    },
+    {
+      "id": "vulnerable/list-alice-asks-globex",
+      "endpoint": "list",
+      "role": "attack",
+      "started_at": "2026-11-10T22:47:40.341461+00:00",
+      "elapsed_ms": 7.83,
+      "server": {
+        "fixture_version": "1.0.0",
+        "mode": "vulnerable",
+        "base_url": "http://127.0.0.1:53743"
+      },
+      "command": [
+        "curl",
+        "--noproxy",
+        "*",
+        "--silent",
+        "--show-error",
+        "--include",
+        "--http1.1",
+        "--connect-timeout",
+        "1",
+        "--max-time",
+        "3",
+        "--request",
+        "GET",
+        "--header",
+        "Authorization: Bearer demo-acme-alice",
+        "http://127.0.0.1:53743/invoices?q=inv&tenant_id=globex"
+      ],
+      "curl_exit_code": 0,
+      "stderr": "",
+      "identity": "alice",
+      "identity_tenant": "acme",
+      "path": "/invoices?q=inv&tenant_id=globex",
+      "expected": {
+        "status": 200,
+        "tenants_in_body": [
+          "globex"
+        ],
+        "x_cache": null
+      },
+      "observed": {
+        "status": 200,
+        "tenants_in_body": [
+          "globex"
+        ],
+        "x_cache": null
+      },
+      "cross_tenant_data_returned": true,
+      "authorization_boundary_holds": false,
+      "matches_demonstration": true,
+      "observed_body": {
+        "invoices": [
+          {
+            "amount_cents": 45000,
+            "customer": "Fabrikam Demo",
+            "id": "globex-inv-1",
+            "tenant": "globex"
+          },
+          {
+            "amount_cents": 3100,
+            "customer": "Adatum Demo",
+            "id": "globex-inv-2",
+            "tenant": "globex"
+          }
+        ]
+      },
+      "response_file": "vulnerable-list-alice-asks-globex.http",
+      "response_sha256": "d419ea0957fe0d5fc73bfd3e9d408b6c6a1147f4964b63e0dafe1559f8e79293"
+    },
+    {
+      "id": "vulnerable/list-bob-asks-acme",
+      "endpoint": "list",
+      "role": "attack",
+      "started_at": "2026-11-10T22:47:40.349345+00:00",
+      "elapsed_ms": 7.553,
+      "server": {
+        "fixture_version": "1.0.0",
+        "mode": "vulnerable",
+        "base_url": "http://127.0.0.1:53743"
+      },
+      "command": [
+        "curl",
+        "--noproxy",
+        "*",
+        "--silent",
+        "--show-error",
+        "--include",
+        "--http1.1",
+        "--connect-timeout",
+        "1",
+        "--max-time",
+        "3",
+        "--request",
+        "GET",
+        "--header",
+        "Authorization: Bearer demo-globex-bob",
+        "http://127.0.0.1:53743/invoices?q=inv&tenant_id=acme"
+      ],
+      "curl_exit_code": 0,
+      "stderr": "",
+      "identity": "bob",
+      "identity_tenant": "globex",
+      "path": "/invoices?q=inv&tenant_id=acme",
+      "expected": {
+        "status": 200,
+        "tenants_in_body": [
+          "acme"
+        ],
+        "x_cache": null
+      },
+      "observed": {
+        "status": 200,
+        "tenants_in_body": [
+          "acme"
+        ],
+        "x_cache": null
+      },
+      "cross_tenant_data_returned": true,
+      "authorization_boundary_holds": false,
+      "matches_demonstration": true,
+      "observed_body": {
+        "invoices": [
+          {
+            "amount_cents": 12000,
+            "customer": "Northwind Demo",
+            "id": "acme-inv-1",
+            "tenant": "acme"
+          },
+          {
+            "amount_cents": 8800,
+            "customer": "Contoso Demo",
+            "id": "acme-inv-2",
+            "tenant": "acme"
+          }
+        ]
+      },
+      "response_file": "vulnerable-list-bob-asks-acme.http",
+      "response_sha256": "3bf9aa2654a6de3cfd3400f56e4e5e794287f8b5e91b3a50c038a116377640ba"
+    },
+    {
+      "id": "vulnerable/list-anonymous",
+      "endpoint": "list",
+      "role": "control",
+      "started_at": "2026-11-10T22:47:40.356959+00:00",
+      "elapsed_ms": 7.33,
+      "server": {
+        "fixture_version": "1.0.0",
+        "mode": "vulnerable",
+        "base_url": "http://127.0.0.1:53743"
+      },
+      "command": [
+        "curl",
+        "--noproxy",
+        "*",
+        "--silent",
+        "--show-error",
+        "--include",
+        "--http1.1",
+        "--connect-timeout",
+        "1",
+        "--max-time",
+        "3",
+        "--request",
+        "GET",
+        "http://127.0.0.1:53743/invoices?q=inv&tenant_id=acme"
+      ],
+      "curl_exit_code": 0,
+      "stderr": "",
+      "identity": null,
+      "identity_tenant": null,
+      "path": "/invoices?q=inv&tenant_id=acme",
+      "expected": {
+        "status": 401,
+        "tenants_in_body": [],
+        "x_cache": null
+      },
+      "observed": {
+        "status": 401,
+        "tenants_in_body": [],
+        "x_cache": null
+      },
+      "cross_tenant_data_returned": false,
+      "authorization_boundary_holds": true,
+      "matches_demonstration": true,
+      "observed_body": {
+        "error": "authentication_required"
+      },
+      "response_file": "vulnerable-list-anonymous.http",
+      "response_sha256": "4aa80d5c71ec6454c3739c9e4cba67091564386f39a9f9aad124d4c2b5f80b3c"
+    },
+    {
+      "id": "vulnerable/cache-alice-fills-0901",
+      "endpoint": "cache",
+      "role": "control",
+      "started_at": "2026-11-10T22:47:40.364338+00:00",
+      "elapsed_ms": 7.194,
+      "server": {
+        "fixture_version": "1.0.0",
+        "mode": "vulnerable",
+        "base_url": "http://127.0.0.1:53743"
+      },
+      "command": [
+        "curl",
+        "--noproxy",
+        "*",
+        "--silent",
+        "--show-error",
+        "--include",
+        "--http1.1",
+        "--connect-timeout",
+        "1",
+        "--max-time",
+        "3",
+        "--request",
+        "GET",
+        "--header",
+        "Authorization: Bearer demo-acme-alice",
+        "http://127.0.0.1:53743/reports/usage?period=2026-09"
+      ],
+      "curl_exit_code": 0,
+      "stderr": "",
+      "identity": "alice",
+      "identity_tenant": "acme",
+      "path": "/reports/usage?period=2026-09",
+      "expected": {
+        "status": 200,
+        "tenants_in_body": [
+          "acme"
+        ],
+        "x_cache": "MISS"
+      },
+      "observed": {
+        "status": 200,
+        "tenants_in_body": [
+          "acme"
+        ],
+        "x_cache": "MISS"
+      },
+      "cross_tenant_data_returned": false,
+      "authorization_boundary_holds": true,
+      "matches_demonstration": true,
+      "observed_body": {
+        "generated_for": "alice",
+        "period": "2026-09",
+        "tenant": "acme",
+        "total_cents": 20800
+      },
+      "response_file": "vulnerable-cache-alice-fills-0901.http",
+      "response_sha256": "643b70be636fbb93177820ac43c487d643a00045536c1e77ee5b5506628f0ee5"
+    },
+    {
+      "id": "vulnerable/cache-bob-reads-0901",
+      "endpoint": "cache",
+      "role": "attack",
+      "started_at": "2026-11-10T22:47:40.371588+00:00",
+      "elapsed_ms": 8.651,
+      "server": {
+        "fixture_version": "1.0.0",
+        "mode": "vulnerable",
+        "base_url": "http://127.0.0.1:53743"
+      },
+      "command": [
+        "curl",
+        "--noproxy",
+        "*",
+        "--silent",
+        "--show-error",
+        "--include",
+        "--http1.1",
+        "--connect-timeout",
+        "1",
+        "--max-time",
+        "3",
+        "--request",
+        "GET",
+        "--header",
+        "Authorization: Bearer demo-globex-bob",
+        "http://127.0.0.1:53743/reports/usage?period=2026-09"
+      ],
+      "curl_exit_code": 0,
+      "stderr": "",
+      "identity": "bob",
+      "identity_tenant": "globex",
+      "path": "/reports/usage?period=2026-09",
+      "expected": {
+        "status": 200,
+        "tenants_in_body": [
+          "acme"
+        ],
+        "x_cache": "HIT"
+      },
+      "observed": {
+        "status": 200,
+        "tenants_in_body": [
+          "acme"
+        ],
+        "x_cache": "HIT"
+      },
+      "cross_tenant_data_returned": true,
+      "authorization_boundary_holds": false,
+      "matches_demonstration": true,
+      "observed_body": {
+        "generated_for": "alice",
+        "period": "2026-09",
+        "tenant": "acme",
+        "total_cents": 20800
+      },
+      "response_file": "vulnerable-cache-bob-reads-0901.http",
+      "response_sha256": "cb526c3a90fd5a3466eea3dc5b4229d270ebdab11a82face3711617ad2c0898a"
+    },
+    {
+      "id": "vulnerable/cache-bob-fills-1001",
+      "endpoint": "cache",
+      "role": "control",
+      "started_at": "2026-11-10T22:47:40.380294+00:00",
+      "elapsed_ms": 6.922,
+      "server": {
+        "fixture_version": "1.0.0",
+        "mode": "vulnerable",
+        "base_url": "http://127.0.0.1:53743"
+      },
+      "command": [
+        "curl",
+        "--noproxy",
+        "*",
+        "--silent",
+        "--show-error",
+        "--include",
+        "--http1.1",
+        "--connect-timeout",
+        "1",
+        "--max-time",
+        "3",
+        "--request",
+        "GET",
+        "--header",
+        "Authorization: Bearer demo-globex-bob",
+        "http://127.0.0.1:53743/reports/usage?period=2026-10"
+      ],
+      "curl_exit_code": 0,
+      "stderr": "",
+      "identity": "bob",
+      "identity_tenant": "globex",
+      "path": "/reports/usage?period=2026-10",
+      "expected": {
+        "status": 200,
+        "tenants_in_body": [
+          "globex"
+        ],
+        "x_cache": "MISS"
+      },
+      "observed": {
+        "status": 200,
+        "tenants_in_body": [
+          "globex"
+        ],
+        "x_cache": "MISS"
+      },
+      "cross_tenant_data_returned": false,
+      "authorization_boundary_holds": true,
+      "matches_demonstration": true,
+      "observed_body": {
+        "generated_for": "bob",
+        "period": "2026-10",
+        "tenant": "globex",
+        "total_cents": 48100
+      },
+      "response_file": "vulnerable-cache-bob-fills-1001.http",
+      "response_sha256": "a1636931a7f0695bd7d4047a3fa22d1ad926139704c14572cce5e6e436849866"
+    },
+    {
+      "id": "vulnerable/cache-alice-reads-1001",
+      "endpoint": "cache",
+      "role": "attack",
+      "started_at": "2026-11-10T22:47:40.387268+00:00",
+      "elapsed_ms": 6.95,
+      "server": {
+        "fixture_version": "1.0.0",
+        "mode": "vulnerable",
+        "base_url": "http://127.0.0.1:53743"
+      },
+      "command": [
+        "curl",
+        "--noproxy",
+        "*",
+        "--silent",
+        "--show-error",
+        "--include",
+        "--http1.1",
+        "--connect-timeout",
+        "1",
+        "--max-time",
+        "3",
+        "--request",
+        "GET",
+        "--header",
+        "Authorization: Bearer demo-acme-alice",
+        "http://127.0.0.1:53743/reports/usage?period=2026-10"
+      ],
+      "curl_exit_code": 0,
+      "stderr": "",
+      "identity": "alice",
+      "identity_tenant": "acme",
+      "path": "/reports/usage?period=2026-10",
+      "expected": {
+        "status": 200,
+        "tenants_in_body": [
+          "globex"
+        ],
+        "x_cache": "HIT"
+      },
+      "observed": {
+        "status": 200,
+        "tenants_in_body": [
+          "globex"
+        ],
+        "x_cache": "HIT"
+      },
+      "cross_tenant_data_returned": true,
+      "authorization_boundary_holds": false,
+      "matches_demonstration": true,
+      "observed_body": {
+        "generated_for": "bob",
+        "period": "2026-10",
+        "tenant": "globex",
+        "total_cents": 48100
+      },
+      "response_file": "vulnerable-cache-alice-reads-1001.http",
+      "response_sha256": "d7a132a13fa38ae9086d0e8edfcb93acb08e1a0f1db949d54f919aec9760a8cb"
+    },
+    {
+      "id": "vulnerable/cache-alice-repeats-0901",
+      "endpoint": "cache",
+      "role": "control",
+      "started_at": "2026-11-10T22:47:40.394268+00:00",
+      "elapsed_ms": 6.136,
+      "server": {
+        "fixture_version": "1.0.0",
+        "mode": "vulnerable",
+        "base_url": "http://127.0.0.1:53743"
+      },
+      "command": [
+        "curl",
+        "--noproxy",
+        "*",
+        "--silent",
+        "--show-error",
+        "--include",
+        "--http1.1",
+        "--connect-timeout",
+        "1",
+        "--max-time",
+        "3",
+        "--request",
+        "GET",
+        "--header",
+        "Authorization: Bearer demo-acme-alice",
+        "http://127.0.0.1:53743/reports/usage?period=2026-09"
+      ],
+      "curl_exit_code": 0,
+      "stderr": "",
+      "identity": "alice",
+      "identity_tenant": "acme",
+      "path": "/reports/usage?period=2026-09",
+      "expected": {
+        "status": 200,
+        "tenants_in_body": [
+          "acme"
+        ],
+        "x_cache": "HIT"
+      },
+      "observed": {
+        "status": 200,
+        "tenants_in_body": [
+          "acme"
+        ],
+        "x_cache": "HIT"
+      },
+      "cross_tenant_data_returned": false,
+      "authorization_boundary_holds": true,
+      "matches_demonstration": true,
+      "observed_body": {
+        "generated_for": "alice",
+        "period": "2026-09",
+        "tenant": "acme",
+        "total_cents": 20800
+      },
+      "response_file": "vulnerable-cache-alice-repeats-0901.http",
+      "response_sha256": "cb526c3a90fd5a3466eea3dc5b4229d270ebdab11a82face3711617ad2c0898a"
+    },
+    {
+      "id": "vulnerable/cache-anonymous",
+      "endpoint": "cache",
+      "role": "control",
+      "started_at": "2026-11-10T22:47:40.400446+00:00",
+      "elapsed_ms": 6.864,
+      "server": {
+        "fixture_version": "1.0.0",
+        "mode": "vulnerable",
+        "base_url": "http://127.0.0.1:53743"
+      },
+      "command": [
+        "curl",
+        "--noproxy",
+        "*",
+        "--silent",
+        "--show-error",
+        "--include",
+        "--http1.1",
+        "--connect-timeout",
+        "1",
+        "--max-time",
+        "3",
+        "--request",
+        "GET",
+        "http://127.0.0.1:53743/reports/usage?period=2026-09"
+      ],
+      "curl_exit_code": 0,
+      "stderr": "",
+      "identity": null,
+      "identity_tenant": null,
+      "path": "/reports/usage?period=2026-09",
+      "expected": {
+        "status": 401,
+        "tenants_in_body": [],
+        "x_cache": null
+      },
+      "observed": {
+        "status": 401,
+        "tenants_in_body": [],
+        "x_cache": null
+      },
+      "cross_tenant_data_returned": false,
+      "authorization_boundary_holds": true,
+      "matches_demonstration": true,
+      "observed_body": {
+        "error": "authentication_required"
+      },
+      "response_file": "vulnerable-cache-anonymous.http",
+      "response_sha256": "4aa80d5c71ec6454c3739c9e4cba67091564386f39a9f9aad124d4c2b5f80b3c"
+    },
+    {
+      "id": "vulnerable/export-alice-creates",
+      "endpoint": "export",
+      "role": "control",
+      "started_at": "2026-11-10T22:47:40.407350+00:00",
+      "elapsed_ms": 6.345,
+      "server": {
+        "fixture_version": "1.0.0",
+        "mode": "vulnerable",
+        "base_url": "http://127.0.0.1:53743"
+      },
+      "command": [
+        "curl",
+        "--noproxy",
+        "*",
+        "--silent",
+        "--show-error",
+        "--include",
+        "--http1.1",
+        "--connect-timeout",
+        "1",
+        "--max-time",
+        "3",
+        "--request",
+        "POST",
+        "--header",
+        "Authorization: Bearer demo-acme-alice",
+        "--header",
+        "Content-Type: application/json",
+        "--data",
+        "{}",
+        "http://127.0.0.1:53743/exports"
+      ],
+      "curl_exit_code": 0,
+      "stderr": "",
+      "identity": "alice",
+      "identity_tenant": "acme",
+      "path": "/exports",
+      "expected": {
+        "status": 201,
+        "tenants_in_body": [
+          "acme"
+        ],
+        "x_cache": null
+      },
+      "observed": {
+        "status": 201,
+        "tenants_in_body": [
+          "acme"
+        ],
+        "x_cache": null
+      },
+      "cross_tenant_data_returned": false,
+      "authorization_boundary_holds": true,
+      "matches_demonstration": true,
+      "observed_body": {
+        "job_id": "exp-0001",
+        "status": "done",
+        "tenant": "acme"
+      },
+      "response_file": "vulnerable-export-alice-creates.http",
+      "response_sha256": "3ad56cbec228c78c8d5fe74abcd45f3c23e400208baed4141f239616a3376b73"
+    },
+    {
+      "id": "vulnerable/export-bob-creates",
+      "endpoint": "export",
+      "role": "control",
+      "started_at": "2026-11-10T22:47:40.413731+00:00",
+      "elapsed_ms": 5.917,
+      "server": {
+        "fixture_version": "1.0.0",
+        "mode": "vulnerable",
+        "base_url": "http://127.0.0.1:53743"
+      },
+      "command": [
+        "curl",
+        "--noproxy",
+        "*",
+        "--silent",
+        "--show-error",
+        "--include",
+        "--http1.1",
+        "--connect-timeout",
+        "1",
+        "--max-time",
+        "3",
+        "--request",
+        "POST",
+        "--header",
+        "Authorization: Bearer demo-globex-bob",
+        "--header",
+        "Content-Type: application/json",
+        "--data",
+        "{}",
+        "http://127.0.0.1:53743/exports"
+      ],
+      "curl_exit_code": 0,
+      "stderr": "",
+      "identity": "bob",
+      "identity_tenant": "globex",
+      "path": "/exports",
+      "expected": {
+        "status": 201,
+        "tenants_in_body": [
+          "globex"
+        ],
+        "x_cache": null
+      },
+      "observed": {
+        "status": 201,
+        "tenants_in_body": [
+          "globex"
+        ],
+        "x_cache": null
+      },
+      "cross_tenant_data_returned": false,
+      "authorization_boundary_holds": true,
+      "matches_demonstration": true,
+      "observed_body": {
+        "job_id": "exp-0002",
+        "status": "done",
+        "tenant": "globex"
+      },
+      "response_file": "vulnerable-export-bob-creates.http",
+      "response_sha256": "40b969a24d6f4a1c7c80aa1ada17acc0a965d30971104eddffe19205b3ac0628"
+    },
+    {
+      "id": "vulnerable/export-bob-fetches-alice-job",
+      "endpoint": "export",
+      "role": "attack",
+      "started_at": "2026-11-10T22:47:40.419687+00:00",
+      "elapsed_ms": 6.651,
+      "server": {
+        "fixture_version": "1.0.0",
+        "mode": "vulnerable",
+        "base_url": "http://127.0.0.1:53743"
+      },
+      "command": [
+        "curl",
+        "--noproxy",
+        "*",
+        "--silent",
+        "--show-error",
+        "--include",
+        "--http1.1",
+        "--connect-timeout",
+        "1",
+        "--max-time",
+        "3",
+        "--request",
+        "GET",
+        "--header",
+        "Authorization: Bearer demo-globex-bob",
+        "http://127.0.0.1:53743/exports/exp-0001"
+      ],
+      "curl_exit_code": 0,
+      "stderr": "",
+      "identity": "bob",
+      "identity_tenant": "globex",
+      "path": "/exports/exp-0001",
+      "expected": {
+        "status": 200,
+        "tenants_in_body": [
+          "acme"
+        ],
+        "x_cache": null
+      },
+      "observed": {
+        "status": 200,
+        "tenants_in_body": [
+          "acme"
+        ],
+        "x_cache": null
+      },
+      "cross_tenant_data_returned": true,
+      "authorization_boundary_holds": false,
+      "matches_demonstration": true,
+      "observed_body": {
+        "created_by": "alice",
+        "job_id": "exp-0001",
+        "rows": [
+          {
+            "amount_cents": 12000,
+            "customer": "Northwind Demo",
+            "id": "acme-inv-1",
+            "tenant": "acme"
+          },
+          {
+            "amount_cents": 8800,
+            "customer": "Contoso Demo",
+            "id": "acme-inv-2",
+            "tenant": "acme"
+          }
+        ],
+        "status": "done",
+        "tenant": "acme"
+      },
+      "response_file": "vulnerable-export-bob-fetches-alice-job.http",
+      "response_sha256": "af26123e6da02207ec45623254862a6702dfb133d1a64193749cf0e227733f2f"
+    },
+    {
+      "id": "vulnerable/export-alice-fetches-bob-job",
+      "endpoint": "export",
+      "role": "attack",
+      "started_at": "2026-11-10T22:47:40.426382+00:00",
+      "elapsed_ms": 6.785,
+      "server": {
+        "fixture_version": "1.0.0",
+        "mode": "vulnerable",
+        "base_url": "http://127.0.0.1:53743"
+      },
+      "command": [
+        "curl",
+        "--noproxy",
+        "*",
+        "--silent",
+        "--show-error",
+        "--include",
+        "--http1.1",
+        "--connect-timeout",
+        "1",
+        "--max-time",
+        "3",
+        "--request",
+        "GET",
+        "--header",
+        "Authorization: Bearer demo-acme-alice",
+        "http://127.0.0.1:53743/exports/exp-0002"
+      ],
+      "curl_exit_code": 0,
+      "stderr": "",
+      "identity": "alice",
+      "identity_tenant": "acme",
+      "path": "/exports/exp-0002",
+      "expected": {
+        "status": 200,
+        "tenants_in_body": [
+          "globex"
+        ],
+        "x_cache": null
+      },
+      "observed": {
+        "status": 200,
+        "tenants_in_body": [
+          "globex"
+        ],
+        "x_cache": null
+      },
+      "cross_tenant_data_returned": true,
+      "authorization_boundary_holds": false,
+      "matches_demonstration": true,
+      "observed_body": {
+        "created_by": "bob",
+        "job_id": "exp-0002",
+        "rows": [
+          {
+            "amount_cents": 45000,
+            "customer": "Fabrikam Demo",
+            "id": "globex-inv-1",
+            "tenant": "globex"
+          },
+          {
+            "amount_cents": 3100,
+            "customer": "Adatum Demo",
+            "id": "globex-inv-2",
+            "tenant": "globex"
+          }
+        ],
+        "status": "done",
+        "tenant": "globex"
+      },
+      "response_file": "vulnerable-export-alice-fetches-bob-job.http",
+      "response_sha256": "42e69f0a3588cb27db9d10d47e7b2c530baaf723964f0a4ab0ef0c26b5f7194a"
+    },
+    {
+      "id": "vulnerable/export-alice-fetches-own-job",
+      "endpoint": "export",
+      "role": "control",
+      "started_at": "2026-11-10T22:47:40.433216+00:00",
+      "elapsed_ms": 6.664,
+      "server": {
+        "fixture_version": "1.0.0",
+        "mode": "vulnerable",
+        "base_url": "http://127.0.0.1:53743"
+      },
+      "command": [
+        "curl",
+        "--noproxy",
+        "*",
+        "--silent",
+        "--show-error",
+        "--include",
+        "--http1.1",
+        "--connect-timeout",
+        "1",
+        "--max-time",
+        "3",
+        "--request",
+        "GET",
+        "--header",
+        "Authorization: Bearer demo-acme-alice",
+        "http://127.0.0.1:53743/exports/exp-0001"
+      ],
+      "curl_exit_code": 0,
+      "stderr": "",
+      "identity": "alice",
+      "identity_tenant": "acme",
+      "path": "/exports/exp-0001",
+      "expected": {
+        "status": 200,
+        "tenants_in_body": [
+          "acme"
+        ],
+        "x_cache": null
+      },
+      "observed": {
+        "status": 200,
+        "tenants_in_body": [
+          "acme"
+        ],
+        "x_cache": null
+      },
+      "cross_tenant_data_returned": false,
+      "authorization_boundary_holds": true,
+      "matches_demonstration": true,
+      "observed_body": {
+        "created_by": "alice",
+        "job_id": "exp-0001",
+        "rows": [
+          {
+            "amount_cents": 12000,
+            "customer": "Northwind Demo",
+            "id": "acme-inv-1",
+            "tenant": "acme"
+          },
+          {
+            "amount_cents": 8800,
+            "customer": "Contoso Demo",
+            "id": "acme-inv-2",
+            "tenant": "acme"
+          }
+        ],
+        "status": "done",
+        "tenant": "acme"
+      },
+      "response_file": "vulnerable-export-alice-fetches-own-job.http",
+      "response_sha256": "af26123e6da02207ec45623254862a6702dfb133d1a64193749cf0e227733f2f"
+    },
+    {
+      "id": "vulnerable/export-amy-fetches-alice-job",
+      "endpoint": "export",
+      "role": "control",
+      "started_at": "2026-11-10T22:47:40.439922+00:00",
+      "elapsed_ms": 6.002,
+      "server": {
+        "fixture_version": "1.0.0",
+        "mode": "vulnerable",
+        "base_url": "http://127.0.0.1:53743"
+      },
+      "command": [
+        "curl",
+        "--noproxy",
+        "*",
+        "--silent",
+        "--show-error",
+        "--include",
+        "--http1.1",
+        "--connect-timeout",
+        "1",
+        "--max-time",
+        "3",
+        "--request",
+        "GET",
+        "--header",
+        "Authorization: Bearer demo-acme-amy",
+        "http://127.0.0.1:53743/exports/exp-0001"
+      ],
+      "curl_exit_code": 0,
+      "stderr": "",
+      "identity": "amy",
+      "identity_tenant": "acme",
+      "path": "/exports/exp-0001",
+      "expected": {
+        "status": 200,
+        "tenants_in_body": [
+          "acme"
+        ],
+        "x_cache": null
+      },
+      "observed": {
+        "status": 200,
+        "tenants_in_body": [
+          "acme"
+        ],
+        "x_cache": null
+      },
+      "cross_tenant_data_returned": false,
+      "authorization_boundary_holds": true,
+      "matches_demonstration": true,
+      "observed_body": {
+        "created_by": "alice",
+        "job_id": "exp-0001",
+        "rows": [
+          {
+            "amount_cents": 12000,
+            "customer": "Northwind Demo",
+            "id": "acme-inv-1",
+            "tenant": "acme"
+          },
+          {
+            "amount_cents": 8800,
+            "customer": "Contoso Demo",
+            "id": "acme-inv-2",
+            "tenant": "acme"
+          }
+        ],
+        "status": "done",
+        "tenant": "acme"
+      },
+      "response_file": "vulnerable-export-amy-fetches-alice-job.http",
+      "response_sha256": "af26123e6da02207ec45623254862a6702dfb133d1a64193749cf0e227733f2f"
+    },
+    {
+      "id": "vulnerable/export-unknown-job",
+      "endpoint": "export",
+      "role": "control",
+      "started_at": "2026-11-10T22:47:40.445973+00:00",
+      "elapsed_ms": 5.996,
+      "server": {
+        "fixture_version": "1.0.0",
+        "mode": "vulnerable",
+        "base_url": "http://127.0.0.1:53743"
+      },
+      "command": [
+        "curl",
+        "--noproxy",
+        "*",
+        "--silent",
+        "--show-error",
+        "--include",
+        "--http1.1",
+        "--connect-timeout",
+        "1",
+        "--max-time",
+        "3",
+        "--request",
+        "GET",
+        "--header",
+        "Authorization: Bearer demo-acme-alice",
+        "http://127.0.0.1:53743/exports/exp-9999"
+      ],
+      "curl_exit_code": 0,
+      "stderr": "",
+      "identity": "alice",
+      "identity_tenant": "acme",
+      "path": "/exports/exp-9999",
+      "expected": {
+        "status": 404,
+        "tenants_in_body": [],
+        "x_cache": null
+      },
+      "observed": {
+        "status": 404,
+        "tenants_in_body": [],
+        "x_cache": null
+      },
+      "cross_tenant_data_returned": false,
+      "authorization_boundary_holds": true,
+      "matches_demonstration": true,
+      "observed_body": {
+        "error": "not_found"
+      },
+      "response_file": "vulnerable-export-unknown-job.http",
+      "response_sha256": "eddaaeec38ebc09167d9265f7d2424a2726ce064562220c49aca5e96c9a95ed3"
+    },
+    {
+      "id": "vulnerable/export-anonymous",
+      "endpoint": "export",
+      "role": "control",
+      "started_at": "2026-11-10T22:47:40.452013+00:00",
+      "elapsed_ms": 6.119,
+      "server": {
+        "fixture_version": "1.0.0",
+        "mode": "vulnerable",
+        "base_url": "http://127.0.0.1:53743"
+      },
+      "command": [
+        "curl",
+        "--noproxy",
+        "*",
+        "--silent",
+        "--show-error",
+        "--include",
+        "--http1.1",
+        "--connect-timeout",
+        "1",
+        "--max-time",
+        "3",
+        "--request",
+        "GET",
+        "http://127.0.0.1:53743/exports/exp-0001"
+      ],
+      "curl_exit_code": 0,
+      "stderr": "",
+      "identity": null,
+      "identity_tenant": null,
+      "path": "/exports/exp-0001",
+      "expected": {
+        "status": 401,
+        "tenants_in_body": [],
+        "x_cache": null
+      },
+      "observed": {
+        "status": 401,
+        "tenants_in_body": [],
+        "x_cache": null
+      },
+      "cross_tenant_data_returned": false,
+      "authorization_boundary_holds": true,
+      "matches_demonstration": true,
+      "observed_body": {
+        "error": "authentication_required"
+      },
+      "response_file": "vulnerable-export-anonymous.http",
+      "response_sha256": "4aa80d5c71ec6454c3739c9e4cba67091564386f39a9f9aad124d4c2b5f80b3c"
+    },
+    {
+      "id": "fixed/list-alice-own",
+      "endpoint": "list",
+      "role": "control",
+      "started_at": "2026-11-10T22:47:40.491987+00:00",
+      "elapsed_ms": 7.142,
+      "server": {
+        "fixture_version": "1.0.0",
+        "mode": "fixed",
+        "base_url": "http://127.0.0.1:53763"
+      },
+      "command": [
+        "curl",
+        "--noproxy",
+        "*",
+        "--silent",
+        "--show-error",
+        "--include",
+        "--http1.1",
+        "--connect-timeout",
+        "1",
+        "--max-time",
+        "3",
+        "--request",
+        "GET",
+        "--header",
+        "Authorization: Bearer demo-acme-alice",
+        "http://127.0.0.1:53763/invoices?q=inv&tenant_id=acme"
+      ],
+      "curl_exit_code": 0,
+      "stderr": "",
+      "identity": "alice",
+      "identity_tenant": "acme",
+      "path": "/invoices?q=inv&tenant_id=acme",
+      "expected": {
+        "status": 200,
+        "tenants_in_body": [
+          "acme"
+        ],
+        "x_cache": null
+      },
+      "observed": {
+        "status": 200,
+        "tenants_in_body": [
+          "acme"
+        ],
+        "x_cache": null
+      },
+      "cross_tenant_data_returned": false,
+      "authorization_boundary_holds": true,
+      "matches_demonstration": true,
+      "observed_body": {
+        "invoices": [
+          {
+            "amount_cents": 12000,
+            "customer": "Northwind Demo",
+            "id": "acme-inv-1",
+            "tenant": "acme"
+          },
+          {
+            "amount_cents": 8800,
+            "customer": "Contoso Demo",
+            "id": "acme-inv-2",
+            "tenant": "acme"
+          }
+        ]
+      },
+      "response_file": "fixed-list-alice-own.http",
+      "response_sha256": "3bf9aa2654a6de3cfd3400f56e4e5e794287f8b5e91b3a50c038a116377640ba"
+    },
+    {
+      "id": "fixed/list-bob-own",
+      "endpoint": "list",
+      "role": "control",
+      "started_at": "2026-11-10T22:47:40.499175+00:00",
+      "elapsed_ms": 6.402,
+      "server": {
+        "fixture_version": "1.0.0",
+        "mode": "fixed",
+        "base_url": "http://127.0.0.1:53763"
+      },
+      "command": [
+        "curl",
+        "--noproxy",
+        "*",
+        "--silent",
+        "--show-error",
+        "--include",
+        "--http1.1",
+        "--connect-timeout",
+        "1",
+        "--max-time",
+        "3",
+        "--request",
+        "GET",
+        "--header",
+        "Authorization: Bearer demo-globex-bob",
+        "http://127.0.0.1:53763/invoices?q=inv&tenant_id=globex"
+      ],
+      "curl_exit_code": 0,
+      "stderr": "",
+      "identity": "bob",
+      "identity_tenant": "globex",
+      "path": "/invoices?q=inv&tenant_id=globex",
+      "expected": {
+        "status": 200,
+        "tenants_in_body": [
+          "globex"
+        ],
+        "x_cache": null
+      },
+      "observed": {
+        "status": 200,
+        "tenants_in_body": [
+          "globex"
+        ],
+        "x_cache": null
+      },
+      "cross_tenant_data_returned": false,
+      "authorization_boundary_holds": true,
+      "matches_demonstration": true,
+      "observed_body": {
+        "invoices": [
+          {
+            "amount_cents": 45000,
+            "customer": "Fabrikam Demo",
+            "id": "globex-inv-1",
+            "tenant": "globex"
+          },
+          {
+            "amount_cents": 3100,
+            "customer": "Adatum Demo",
+            "id": "globex-inv-2",
+            "tenant": "globex"
+          }
+        ]
+      },
+      "response_file": "fixed-list-bob-own.http",
+      "response_sha256": "d419ea0957fe0d5fc73bfd3e9d408b6c6a1147f4964b63e0dafe1559f8e79293"
+    },
+    {
+      "id": "fixed/list-alice-asks-globex",
+      "endpoint": "list",
+      "role": "attack",
+      "started_at": "2026-11-10T22:47:40.505631+00:00",
+      "elapsed_ms": 6.598,
+      "server": {
+        "fixture_version": "1.0.0",
+        "mode": "fixed",
+        "base_url": "http://127.0.0.1:53763"
+      },
+      "command": [
+        "curl",
+        "--noproxy",
+        "*",
+        "--silent",
+        "--show-error",
+        "--include",
+        "--http1.1",
+        "--connect-timeout",
+        "1",
+        "--max-time",
+        "3",
+        "--request",
+        "GET",
+        "--header",
+        "Authorization: Bearer demo-acme-alice",
+        "http://127.0.0.1:53763/invoices?q=inv&tenant_id=globex"
+      ],
+      "curl_exit_code": 0,
+      "stderr": "",
+      "identity": "alice",
+      "identity_tenant": "acme",
+      "path": "/invoices?q=inv&tenant_id=globex",
+      "expected": {
+        "status": 200,
+        "tenants_in_body": [
+          "acme"
+        ],
+        "x_cache": null
+      },
+      "observed": {
+        "status": 200,
+        "tenants_in_body": [
+          "acme"
+        ],
+        "x_cache": null
+      },
+      "cross_tenant_data_returned": false,
+      "authorization_boundary_holds": true,
+      "matches_demonstration": true,
+      "observed_body": {
+        "invoices": [
+          {
+            "amount_cents": 12000,
+            "customer": "Northwind Demo",
+            "id": "acme-inv-1",
+            "tenant": "acme"
+          },
+          {
+            "amount_cents": 8800,
+            "customer": "Contoso Demo",
+            "id": "acme-inv-2",
+            "tenant": "acme"
+          }
+        ]
+      },
+      "response_file": "fixed-list-alice-asks-globex.http",
+      "response_sha256": "3bf9aa2654a6de3cfd3400f56e4e5e794287f8b5e91b3a50c038a116377640ba"
+    },
+    {
+      "id": "fixed/list-bob-asks-acme",
+      "endpoint": "list",
+      "role": "attack",
+      "started_at": "2026-11-10T22:47:40.512280+00:00",
+      "elapsed_ms": 7.165,
+      "server": {
+        "fixture_version": "1.0.0",
+        "mode": "fixed",
+        "base_url": "http://127.0.0.1:53763"
+      },
+      "command": [
+        "curl",
+        "--noproxy",
+        "*",
+        "--silent",
+        "--show-error",
+        "--include",
+        "--http1.1",
+        "--connect-timeout",
+        "1",
+        "--max-time",
+        "3",
+        "--request",
+        "GET",
+        "--header",
+        "Authorization: Bearer demo-globex-bob",
+        "http://127.0.0.1:53763/invoices?q=inv&tenant_id=acme"
+      ],
+      "curl_exit_code": 0,
+      "stderr": "",
+      "identity": "bob",
+      "identity_tenant": "globex",
+      "path": "/invoices?q=inv&tenant_id=acme",
+      "expected": {
+        "status": 200,
+        "tenants_in_body": [
+          "globex"
+        ],
+        "x_cache": null
+      },
+      "observed": {
+        "status": 200,
+        "tenants_in_body": [
+          "globex"
+        ],
+        "x_cache": null
+      },
+      "cross_tenant_data_returned": false,
+      "authorization_boundary_holds": true,
+      "matches_demonstration": true,
+      "observed_body": {
+        "invoices": [
+          {
+            "amount_cents": 45000,
+            "customer": "Fabrikam Demo",
+            "id": "globex-inv-1",
+            "tenant": "globex"
+          },
+          {
+            "amount_cents": 3100,
+            "customer": "Adatum Demo",
+            "id": "globex-inv-2",
+            "tenant": "globex"
+          }
+        ]
+      },
+      "response_file": "fixed-list-bob-asks-acme.http",
+      "response_sha256": "d419ea0957fe0d5fc73bfd3e9d408b6c6a1147f4964b63e0dafe1559f8e79293"
+    },
+    {
+      "id": "fixed/list-anonymous",
+      "endpoint": "list",
+      "role": "control",
+      "started_at": "2026-11-10T22:47:40.519502+00:00",
+      "elapsed_ms": 6.296,
+      "server": {
+        "fixture_version": "1.0.0",
+        "mode": "fixed",
+        "base_url": "http://127.0.0.1:53763"
+      },
+      "command": [
+        "curl",
+        "--noproxy",
+        "*",
+        "--silent",
+        "--show-error",
+        "--include",
+        "--http1.1",
+        "--connect-timeout",
+        "1",
+        "--max-time",
+        "3",
+        "--request",
+        "GET",
+        "http://127.0.0.1:53763/invoices?q=inv&tenant_id=acme"
+      ],
+      "curl_exit_code": 0,
+      "stderr": "",
+      "identity": null,
+      "identity_tenant": null,
+      "path": "/invoices?q=inv&tenant_id=acme",
+      "expected": {
+        "status": 401,
+        "tenants_in_body": [],
+        "x_cache": null
+      },
+      "observed": {
+        "status": 401,
+        "tenants_in_body": [],
+        "x_cache": null
+      },
+      "cross_tenant_data_returned": false,
+      "authorization_boundary_holds": true,
+      "matches_demonstration": true,
+      "observed_body": {
+        "error": "authentication_required"
+      },
+      "response_file": "fixed-list-anonymous.http",
+      "response_sha256": "4aa80d5c71ec6454c3739c9e4cba67091564386f39a9f9aad124d4c2b5f80b3c"
+    },
+    {
+      "id": "fixed/cache-alice-fills-0901",
+      "endpoint": "cache",
+      "role": "control",
+      "started_at": "2026-11-10T22:47:40.525846+00:00",
+      "elapsed_ms": 7.62,
+      "server": {
+        "fixture_version": "1.0.0",
+        "mode": "fixed",
+        "base_url": "http://127.0.0.1:53763"
+      },
+      "command": [
+        "curl",
+        "--noproxy",
+        "*",
+        "--silent",
+        "--show-error",
+        "--include",
+        "--http1.1",
+        "--connect-timeout",
+        "1",
+        "--max-time",
+        "3",
+        "--request",
+        "GET",
+        "--header",
+        "Authorization: Bearer demo-acme-alice",
+        "http://127.0.0.1:53763/reports/usage?period=2026-09"
+      ],
+      "curl_exit_code": 0,
+      "stderr": "",
+      "identity": "alice",
+      "identity_tenant": "acme",
+      "path": "/reports/usage?period=2026-09",
+      "expected": {
+        "status": 200,
+        "tenants_in_body": [
+          "acme"
+        ],
+        "x_cache": "MISS"
+      },
+      "observed": {
+        "status": 200,
+        "tenants_in_body": [
+          "acme"
+        ],
+        "x_cache": "MISS"
+      },
+      "cross_tenant_data_returned": false,
+      "authorization_boundary_holds": true,
+      "matches_demonstration": true,
+      "observed_body": {
+        "generated_for": "alice",
+        "period": "2026-09",
+        "tenant": "acme",
+        "total_cents": 20800
+      },
+      "response_file": "fixed-cache-alice-fills-0901.http",
+      "response_sha256": "643b70be636fbb93177820ac43c487d643a00045536c1e77ee5b5506628f0ee5"
+    },
+    {
+      "id": "fixed/cache-bob-reads-0901",
+      "endpoint": "cache",
+      "role": "attack",
+      "started_at": "2026-11-10T22:47:40.533525+00:00",
+      "elapsed_ms": 9.302,
+      "server": {
+        "fixture_version": "1.0.0",
+        "mode": "fixed",
+        "base_url": "http://127.0.0.1:53763"
+      },
+      "command": [
+        "curl",
+        "--noproxy",
+        "*",
+        "--silent",
+        "--show-error",
+        "--include",
+        "--http1.1",
+        "--connect-timeout",
+        "1",
+        "--max-time",
+        "3",
+        "--request",
+        "GET",
+        "--header",
+        "Authorization: Bearer demo-globex-bob",
+        "http://127.0.0.1:53763/reports/usage?period=2026-09"
+      ],
+      "curl_exit_code": 0,
+      "stderr": "",
+      "identity": "bob",
+      "identity_tenant": "globex",
+      "path": "/reports/usage?period=2026-09",
+      "expected": {
+        "status": 200,
+        "tenants_in_body": [
+          "globex"
+        ],
+        "x_cache": "MISS"
+      },
+      "observed": {
+        "status": 200,
+        "tenants_in_body": [
+          "globex"
+        ],
+        "x_cache": "MISS"
+      },
+      "cross_tenant_data_returned": false,
+      "authorization_boundary_holds": true,
+      "matches_demonstration": true,
+      "observed_body": {
+        "generated_for": "bob",
+        "period": "2026-09",
+        "tenant": "globex",
+        "total_cents": 48100
+      },
+      "response_file": "fixed-cache-bob-reads-0901.http",
+      "response_sha256": "c78bc6d168eaeba01dc6533ec8415b20a9f1688ac2e6a4e12ee70564286787d5"
+    },
+    {
+      "id": "fixed/cache-bob-fills-1001",
+      "endpoint": "cache",
+      "role": "control",
+      "started_at": "2026-11-10T22:47:40.542891+00:00",
+      "elapsed_ms": 8.174,
+      "server": {
+        "fixture_version": "1.0.0",
+        "mode": "fixed",
+        "base_url": "http://127.0.0.1:53763"
+      },
+      "command": [
+        "curl",
+        "--noproxy",
+        "*",
+        "--silent",
+        "--show-error",
+        "--include",
+        "--http1.1",
+        "--connect-timeout",
+        "1",
+        "--max-time",
+        "3",
+        "--request",
+        "GET",
+        "--header",
+        "Authorization: Bearer demo-globex-bob",
+        "http://127.0.0.1:53763/reports/usage?period=2026-10"
+      ],
+      "curl_exit_code": 0,
+      "stderr": "",
+      "identity": "bob",
+      "identity_tenant": "globex",
+      "path": "/reports/usage?period=2026-10",
+      "expected": {
+        "status": 200,
+        "tenants_in_body": [
+          "globex"
+        ],
+        "x_cache": "MISS"
+      },
+      "observed": {
+        "status": 200,
+        "tenants_in_body": [
+          "globex"
+        ],
+        "x_cache": "MISS"
+      },
+      "cross_tenant_data_returned": false,
+      "authorization_boundary_holds": true,
+      "matches_demonstration": true,
+      "observed_body": {
+        "generated_for": "bob",
+        "period": "2026-10",
+        "tenant": "globex",
+        "total_cents": 48100
+      },
+      "response_file": "fixed-cache-bob-fills-1001.http",
+      "response_sha256": "a1636931a7f0695bd7d4047a3fa22d1ad926139704c14572cce5e6e436849866"
+    },
+    {
+      "id": "fixed/cache-alice-reads-1001",
+      "endpoint": "cache",
+      "role": "attack",
+      "started_at": "2026-11-10T22:47:40.551121+00:00",
+      "elapsed_ms": 6.807,
+      "server": {
+        "fixture_version": "1.0.0",
+        "mode": "fixed",
+        "base_url": "http://127.0.0.1:53763"
+      },
+      "command": [
+        "curl",
+        "--noproxy",
+        "*",
+        "--silent",
+        "--show-error",
+        "--include",
+        "--http1.1",
+        "--connect-timeout",
+        "1",
+        "--max-time",
+        "3",
+        "--request",
+        "GET",
+        "--header",
+        "Authorization: Bearer demo-acme-alice",
+        "http://127.0.0.1:53763/reports/usage?period=2026-10"
+      ],
+      "curl_exit_code": 0,
+      "stderr": "",
+      "identity": "alice",
+      "identity_tenant": "acme",
+      "path": "/reports/usage?period=2026-10",
+      "expected": {
+        "status": 200,
+        "tenants_in_body": [
+          "acme"
+        ],
+        "x_cache": "MISS"
+      },
+      "observed": {
+        "status": 200,
+        "tenants_in_body": [
+          "acme"
+        ],
+        "x_cache": "MISS"
+      },
+      "cross_tenant_data_returned": false,
+      "authorization_boundary_holds": true,
+      "matches_demonstration": true,
+      "observed_body": {
+        "generated_for": "alice",
+        "period": "2026-10",
+        "tenant": "acme",
+        "total_cents": 20800
+      },
+      "response_file": "fixed-cache-alice-reads-1001.http",
+      "response_sha256": "397503d652d2a8be059628c89a961b01fc7baaada1a43bc0088a4453087bac03"
+    },
+    {
+      "id": "fixed/cache-alice-repeats-0901",
+      "endpoint": "cache",
+      "role": "control",
+      "started_at": "2026-11-10T22:47:40.557980+00:00",
+      "elapsed_ms": 6.992,
+      "server": {
+        "fixture_version": "1.0.0",
+        "mode": "fixed",
+        "base_url": "http://127.0.0.1:53763"
+      },
+      "command": [
+        "curl",
+        "--noproxy",
+        "*",
+        "--silent",
+        "--show-error",
+        "--include",
+        "--http1.1",
+        "--connect-timeout",
+        "1",
+        "--max-time",
+        "3",
+        "--request",
+        "GET",
+        "--header",
+        "Authorization: Bearer demo-acme-alice",
+        "http://127.0.0.1:53763/reports/usage?period=2026-09"
+      ],
+      "curl_exit_code": 0,
+      "stderr": "",
+      "identity": "alice",
+      "identity_tenant": "acme",
+      "path": "/reports/usage?period=2026-09",
+      "expected": {
+        "status": 200,
+        "tenants_in_body": [
+          "acme"
+        ],
+        "x_cache": "HIT"
+      },
+      "observed": {
+        "status": 200,
+        "tenants_in_body": [
+          "acme"
+        ],
+        "x_cache": "HIT"
+      },
+      "cross_tenant_data_returned": false,
+      "authorization_boundary_holds": true,
+      "matches_demonstration": true,
+      "observed_body": {
+        "generated_for": "alice",
+        "period": "2026-09",
+        "tenant": "acme",
+        "total_cents": 20800
+      },
+      "response_file": "fixed-cache-alice-repeats-0901.http",
+      "response_sha256": "cb526c3a90fd5a3466eea3dc5b4229d270ebdab11a82face3711617ad2c0898a"
+    },
+    {
+      "id": "fixed/cache-anonymous",
+      "endpoint": "cache",
+      "role": "control",
+      "started_at": "2026-11-10T22:47:40.565013+00:00",
+      "elapsed_ms": 6.227,
+      "server": {
+        "fixture_version": "1.0.0",
+        "mode": "fixed",
+        "base_url": "http://127.0.0.1:53763"
+      },
+      "command": [
+        "curl",
+        "--noproxy",
+        "*",
+        "--silent",
+        "--show-error",
+        "--include",
+        "--http1.1",
+        "--connect-timeout",
+        "1",
+        "--max-time",
+        "3",
+        "--request",
+        "GET",
+        "http://127.0.0.1:53763/reports/usage?period=2026-09"
+      ],
+      "curl_exit_code": 0,
+      "stderr": "",
+      "identity": null,
+      "identity_tenant": null,
+      "path": "/reports/usage?period=2026-09",
+      "expected": {
+        "status": 401,
+        "tenants_in_body": [],
+        "x_cache": null
+      },
+      "observed": {
+        "status": 401,
+        "tenants_in_body": [],
+        "x_cache": null
+      },
+      "cross_tenant_data_returned": false,
+      "authorization_boundary_holds": true,
+      "matches_demonstration": true,
+      "observed_body": {
+        "error": "authentication_required"
+      },
+      "response_file": "fixed-cache-anonymous.http",
+      "response_sha256": "4aa80d5c71ec6454c3739c9e4cba67091564386f39a9f9aad124d4c2b5f80b3c"
+    },
+    {
+      "id": "fixed/export-alice-creates",
+      "endpoint": "export",
+      "role": "control",
+      "started_at": "2026-11-10T22:47:40.571285+00:00",
+      "elapsed_ms": 7.419,
+      "server": {
+        "fixture_version": "1.0.0",
+        "mode": "fixed",
+        "base_url": "http://127.0.0.1:53763"
+      },
+      "command": [
+        "curl",
+        "--noproxy",
+        "*",
+        "--silent",
+        "--show-error",
+        "--include",
+        "--http1.1",
+        "--connect-timeout",
+        "1",
+        "--max-time",
+        "3",
+        "--request",
+        "POST",
+        "--header",
+        "Authorization: Bearer demo-acme-alice",
+        "--header",
+        "Content-Type: application/json",
+        "--data",
+        "{}",
+        "http://127.0.0.1:53763/exports"
+      ],
+      "curl_exit_code": 0,
+      "stderr": "",
+      "identity": "alice",
+      "identity_tenant": "acme",
+      "path": "/exports",
+      "expected": {
+        "status": 201,
+        "tenants_in_body": [
+          "acme"
+        ],
+        "x_cache": null
+      },
+      "observed": {
+        "status": 201,
+        "tenants_in_body": [
+          "acme"
+        ],
+        "x_cache": null
+      },
+      "cross_tenant_data_returned": false,
+      "authorization_boundary_holds": true,
+      "matches_demonstration": true,
+      "observed_body": {
+        "job_id": "exp-0001",
+        "status": "done",
+        "tenant": "acme"
+      },
+      "response_file": "fixed-export-alice-creates.http",
+      "response_sha256": "3ad56cbec228c78c8d5fe74abcd45f3c23e400208baed4141f239616a3376b73"
+    },
+    {
+      "id": "fixed/export-bob-creates",
+      "endpoint": "export",
+      "role": "control",
+      "started_at": "2026-11-10T22:47:40.578750+00:00",
+      "elapsed_ms": 6.889,
+      "server": {
+        "fixture_version": "1.0.0",
+        "mode": "fixed",
+        "base_url": "http://127.0.0.1:53763"
+      },
+      "command": [
+        "curl",
+        "--noproxy",
+        "*",
+        "--silent",
+        "--show-error",
+        "--include",
+        "--http1.1",
+        "--connect-timeout",
+        "1",
+        "--max-time",
+        "3",
+        "--request",
+        "POST",
+        "--header",
+        "Authorization: Bearer demo-globex-bob",
+        "--header",
+        "Content-Type: application/json",
+        "--data",
+        "{}",
+        "http://127.0.0.1:53763/exports"
+      ],
+      "curl_exit_code": 0,
+      "stderr": "",
+      "identity": "bob",
+      "identity_tenant": "globex",
+      "path": "/exports",
+      "expected": {
+        "status": 201,
+        "tenants_in_body": [
+          "globex"
+        ],
+        "x_cache": null
+      },
+      "observed": {
+        "status": 201,
+        "tenants_in_body": [
+          "globex"
+        ],
+        "x_cache": null
+      },
+      "cross_tenant_data_returned": false,
+      "authorization_boundary_holds": true,
+      "matches_demonstration": true,
+      "observed_body": {
+        "job_id": "exp-0002",
+        "status": "done",
+        "tenant": "globex"
+      },
+      "response_file": "fixed-export-bob-creates.http",
+      "response_sha256": "40b969a24d6f4a1c7c80aa1ada17acc0a965d30971104eddffe19205b3ac0628"
+    },
+    {
+      "id": "fixed/export-bob-fetches-alice-job",
+      "endpoint": "export",
+      "role": "attack",
+      "started_at": "2026-11-10T22:47:40.585691+00:00",
+      "elapsed_ms": 6.561,
+      "server": {
+        "fixture_version": "1.0.0",
+        "mode": "fixed",
+        "base_url": "http://127.0.0.1:53763"
+      },
+      "command": [
+        "curl",
+        "--noproxy",
+        "*",
+        "--silent",
+        "--show-error",
+        "--include",
+        "--http1.1",
+        "--connect-timeout",
+        "1",
+        "--max-time",
+        "3",
+        "--request",
+        "GET",
+        "--header",
+        "Authorization: Bearer demo-globex-bob",
+        "http://127.0.0.1:53763/exports/exp-0001"
+      ],
+      "curl_exit_code": 0,
+      "stderr": "",
+      "identity": "bob",
+      "identity_tenant": "globex",
+      "path": "/exports/exp-0001",
+      "expected": {
+        "status": 404,
+        "tenants_in_body": [],
+        "x_cache": null
+      },
+      "observed": {
+        "status": 404,
+        "tenants_in_body": [],
+        "x_cache": null
+      },
+      "cross_tenant_data_returned": false,
+      "authorization_boundary_holds": true,
+      "matches_demonstration": true,
+      "observed_body": {
+        "error": "not_found"
+      },
+      "response_file": "fixed-export-bob-fetches-alice-job.http",
+      "response_sha256": "eddaaeec38ebc09167d9265f7d2424a2726ce064562220c49aca5e96c9a95ed3"
+    },
+    {
+      "id": "fixed/export-alice-fetches-bob-job",
+      "endpoint": "export",
+      "role": "attack",
+      "started_at": "2026-11-10T22:47:40.592304+00:00",
+      "elapsed_ms": 6.416,
+      "server": {
+        "fixture_version": "1.0.0",
+        "mode": "fixed",
+        "base_url": "http://127.0.0.1:53763"
+      },
+      "command": [
+        "curl",
+        "--noproxy",
+        "*",
+        "--silent",
+        "--show-error",
+        "--include",
+        "--http1.1",
+        "--connect-timeout",
+        "1",
+        "--max-time",
+        "3",
+        "--request",
+        "GET",
+        "--header",
+        "Authorization: Bearer demo-acme-alice",
+        "http://127.0.0.1:53763/exports/exp-0002"
+      ],
+      "curl_exit_code": 0,
+      "stderr": "",
+      "identity": "alice",
+      "identity_tenant": "acme",
+      "path": "/exports/exp-0002",
+      "expected": {
+        "status": 404,
+        "tenants_in_body": [],
+        "x_cache": null
+      },
+      "observed": {
+        "status": 404,
+        "tenants_in_body": [],
+        "x_cache": null
+      },
+      "cross_tenant_data_returned": false,
+      "authorization_boundary_holds": true,
+      "matches_demonstration": true,
+      "observed_body": {
+        "error": "not_found"
+      },
+      "response_file": "fixed-export-alice-fetches-bob-job.http",
+      "response_sha256": "eddaaeec38ebc09167d9265f7d2424a2726ce064562220c49aca5e96c9a95ed3"
+    },
+    {
+      "id": "fixed/export-alice-fetches-own-job",
+      "endpoint": "export",
+      "role": "control",
+      "started_at": "2026-11-10T22:47:40.598775+00:00",
+      "elapsed_ms": 6.65,
+      "server": {
+        "fixture_version": "1.0.0",
+        "mode": "fixed",
+        "base_url": "http://127.0.0.1:53763"
+      },
+      "command": [
+        "curl",
+        "--noproxy",
+        "*",
+        "--silent",
+        "--show-error",
+        "--include",
+        "--http1.1",
+        "--connect-timeout",
+        "1",
+        "--max-time",
+        "3",
+        "--request",
+        "GET",
+        "--header",
+        "Authorization: Bearer demo-acme-alice",
+        "http://127.0.0.1:53763/exports/exp-0001"
+      ],
+      "curl_exit_code": 0,
+      "stderr": "",
+      "identity": "alice",
+      "identity_tenant": "acme",
+      "path": "/exports/exp-0001",
+      "expected": {
+        "status": 200,
+        "tenants_in_body": [
+          "acme"
+        ],
+        "x_cache": null
+      },
+      "observed": {
+        "status": 200,
+        "tenants_in_body": [
+          "acme"
+        ],
+        "x_cache": null
+      },
+      "cross_tenant_data_returned": false,
+      "authorization_boundary_holds": true,
+      "matches_demonstration": true,
+      "observed_body": {
+        "created_by": "alice",
+        "job_id": "exp-0001",
+        "rows": [
+          {
+            "amount_cents": 12000,
+            "customer": "Northwind Demo",
+            "id": "acme-inv-1",
+            "tenant": "acme"
+          },
+          {
+            "amount_cents": 8800,
+            "customer": "Contoso Demo",
+            "id": "acme-inv-2",
+            "tenant": "acme"
+          }
+        ],
+        "status": "done",
+        "tenant": "acme"
+      },
+      "response_file": "fixed-export-alice-fetches-own-job.http",
+      "response_sha256": "af26123e6da02207ec45623254862a6702dfb133d1a64193749cf0e227733f2f"
+    },
+    {
+      "id": "fixed/export-amy-fetches-alice-job",
+      "endpoint": "export",
+      "role": "control",
+      "started_at": "2026-11-10T22:47:40.605470+00:00",
+      "elapsed_ms": 6.312,
+      "server": {
+        "fixture_version": "1.0.0",
+        "mode": "fixed",
+        "base_url": "http://127.0.0.1:53763"
+      },
+      "command": [
+        "curl",
+        "--noproxy",
+        "*",
+        "--silent",
+        "--show-error",
+        "--include",
+        "--http1.1",
+        "--connect-timeout",
+        "1",
+        "--max-time",
+        "3",
+        "--request",
+        "GET",
+        "--header",
+        "Authorization: Bearer demo-acme-amy",
+        "http://127.0.0.1:53763/exports/exp-0001"
+      ],
+      "curl_exit_code": 0,
+      "stderr": "",
+      "identity": "amy",
+      "identity_tenant": "acme",
+      "path": "/exports/exp-0001",
+      "expected": {
+        "status": 200,
+        "tenants_in_body": [
+          "acme"
+        ],
+        "x_cache": null
+      },
+      "observed": {
+        "status": 200,
+        "tenants_in_body": [
+          "acme"
+        ],
+        "x_cache": null
+      },
+      "cross_tenant_data_returned": false,
+      "authorization_boundary_holds": true,
+      "matches_demonstration": true,
+      "observed_body": {
+        "created_by": "alice",
+        "job_id": "exp-0001",
+        "rows": [
+          {
+            "amount_cents": 12000,
+            "customer": "Northwind Demo",
+            "id": "acme-inv-1",
+            "tenant": "acme"
+          },
+          {
+            "amount_cents": 8800,
+            "customer": "Contoso Demo",
+            "id": "acme-inv-2",
+            "tenant": "acme"
+          }
+        ],
+        "status": "done",
+        "tenant": "acme"
+      },
+      "response_file": "fixed-export-amy-fetches-alice-job.http",
+      "response_sha256": "af26123e6da02207ec45623254862a6702dfb133d1a64193749cf0e227733f2f"
+    },
+    {
+      "id": "fixed/export-unknown-job",
+      "endpoint": "export",
+      "role": "control",
+      "started_at": "2026-11-10T22:47:40.611837+00:00",
+      "elapsed_ms": 5.858,
+      "server": {
+        "fixture_version": "1.0.0",
+        "mode": "fixed",
+        "base_url": "http://127.0.0.1:53763"
+      },
+      "command": [
+        "curl",
+        "--noproxy",
+        "*",
+        "--silent",
+        "--show-error",
+        "--include",
+        "--http1.1",
+        "--connect-timeout",
+        "1",
+        "--max-time",
+        "3",
+        "--request",
+        "GET",
+        "--header",
+        "Authorization: Bearer demo-acme-alice",
+        "http://127.0.0.1:53763/exports/exp-9999"
+      ],
+      "curl_exit_code": 0,
+      "stderr": "",
+      "identity": "alice",
+      "identity_tenant": "acme",
+      "path": "/exports/exp-9999",
+      "expected": {
+        "status": 404,
+        "tenants_in_body": [],
+        "x_cache": null
+      },
+      "observed": {
+        "status": 404,
+        "tenants_in_body": [],
+        "x_cache": null
+      },
+      "cross_tenant_data_returned": false,
+      "authorization_boundary_holds": true,
+      "matches_demonstration": true,
+      "observed_body": {
+        "error": "not_found"
+      },
+      "response_file": "fixed-export-unknown-job.http",
+      "response_sha256": "eddaaeec38ebc09167d9265f7d2424a2726ce064562220c49aca5e96c9a95ed3"
+    },
+    {
+      "id": "fixed/export-anonymous",
+      "endpoint": "export",
+      "role": "control",
+      "started_at": "2026-11-10T22:47:40.617735+00:00",
+      "elapsed_ms": 6.585,
+      "server": {
+        "fixture_version": "1.0.0",
+        "mode": "fixed",
+        "base_url": "http://127.0.0.1:53763"
+      },
+      "command": [
+        "curl",
+        "--noproxy",
+        "*",
+        "--silent",
+        "--show-error",
+        "--include",
+        "--http1.1",
+        "--connect-timeout",
+        "1",
+        "--max-time",
+        "3",
+        "--request",
+        "GET",
+        "http://127.0.0.1:53763/exports/exp-0001"
+      ],
+      "curl_exit_code": 0,
+      "stderr": "",
+      "identity": null,
+      "identity_tenant": null,
+      "path": "/exports/exp-0001",
+      "expected": {
+        "status": 401,
+        "tenants_in_body": [],
+        "x_cache": null
+      },
+      "observed": {
+        "status": 401,
+        "tenants_in_body": [],
+        "x_cache": null
+      },
+      "cross_tenant_data_returned": false,
+      "authorization_boundary_holds": true,
+      "matches_demonstration": true,
+      "observed_body": {
+        "error": "authentication_required"
+      },
+      "response_file": "fixed-export-anonymous.http",
+      "response_sha256": "4aa80d5c71ec6454c3739c9e4cba67091564386f39a9f9aad124d4c2b5f80b3c"
+    }
+  ],
+  "failures": [],
+  "matrix": {
+    "vulnerable": {
+      "acme": {
+        "list": {
+          "status": 200,
+          "cross_tenant_data_returned": true
+        },
+        "cache": {
+          "status": 200,
+          "cross_tenant_data_returned": true
+        },
+        "export": {
+          "status": 200,
+          "cross_tenant_data_returned": true
+        }
+      },
+      "globex": {
+        "list": {
+          "status": 200,
+          "cross_tenant_data_returned": true
+        },
+        "cache": {
+          "status": 200,
+          "cross_tenant_data_returned": true
+        },
+        "export": {
+          "status": 200,
+          "cross_tenant_data_returned": true
+        }
+      }
+    },
+    "fixed": {
+      "acme": {
+        "list": {
+          "status": 200,
+          "cross_tenant_data_returned": false
+        },
+        "cache": {
+          "status": 200,
+          "cross_tenant_data_returned": false
+        },
+        "export": {
+          "status": 404,
+          "cross_tenant_data_returned": false
+        }
+      },
+      "globex": {
+        "list": {
+          "status": 200,
+          "cross_tenant_data_returned": false
+        },
+        "cache": {
+          "status": 200,
+          "cross_tenant_data_returned": false
+        },
+        "export": {
+          "status": 404,
+          "cross_tenant_data_returned": false
+        }
+      }
+    }
+  },
+  "finished_at": "2026-11-10T22:47:40.624970+00:00",
+  "all_demonstration_checks_passed": true
+}

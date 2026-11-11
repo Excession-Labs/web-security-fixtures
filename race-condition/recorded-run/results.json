@@ -1,0 +1,2968 @@
+{
+  "schema_version": 1,
+  "fixture_version": "1.0.0",
+  "started_at": "2026-11-10T22:53:39.434839+00:00",
+  "method": "Concurrent burst via Python threads + urllib against a locally spawned fixture; curl subprocesses for the sequential control requests and status checks",
+  "parameters": {
+    "rounds_per_condition": 5,
+    "burst_size": 16,
+    "conditions": [
+      {
+        "label": "vulnerable-baseline",
+        "mode": "vulnerable",
+        "delay_seconds": 0.0
+      },
+      {
+        "label": "vulnerable-widened",
+        "mode": "vulnerable",
+        "delay_seconds": 0.05
+      },
+      {
+        "label": "fixed",
+        "mode": "fixed",
+        "delay_seconds": 0.0
+      }
+    ],
+    "note": "vulnerable-widened adds an artificial sleep between the check and the write, stated here and in the published post, so a handful of local threads reliably land inside the window. vulnerable-baseline adds no delay; fixed has no check-then-act window to widen."
+  },
+  "scope": {
+    "hosts": [
+      "127.0.0.1"
+    ],
+    "methods": [
+      "GET",
+      "POST"
+    ],
+    "paths": [
+      "/redeem",
+      "/status"
+    ],
+    "data": "Two synthetic single-use coupon codes held in an in-memory SQLite table"
+  },
+  "versions": {
+    "python": "3.15.2",
+    "os": "Darwin",
+    "architecture": "arm64",
+    "curl": "curl 8.7.1 (x86_64-apple-darwin24.0) libcurl/8.7.1 (SecureTransport) LibreSSL/3.3.6 zlib/1.2.12 nghttp2/1.64.0"
+  },
+  "sha256": {
+    "fixture.py": "03648ec5a359c43eda2e525a05f25169b3d9e971d1f4ae715417c066adebe0a6",
+    "verify.py": "931b561d6d60ab069864230681baf37aece4a5cd25dfb748df1c36c2a8a7db0e"
+  },
+  "reproduction_command": "python3 verify.py --output recorded-run",
+  "agent_execution": {
+    "executed": false,
+    "note": "HTTP verification was scripted; no model or Excession agent ran"
+  },
+  "rounds": [
+    {
+      "label": "vulnerable-baseline",
+      "mode": "vulnerable",
+      "delay_seconds": 0.0,
+      "round": 0,
+      "server": {
+        "fixture_version": "1.0.0",
+        "mode": "vulnerable",
+        "delay_seconds": 0.0,
+        "base_url": "http://127.0.0.1:56701",
+        "seed_coupons": {
+          "SAVE10": 1,
+          "CONTROL1": 1
+        }
+      },
+      "server_command": "python3 -u fixture.py --mode vulnerable --port 0 --delay 0.0",
+      "steps": [
+        {
+          "id": "unknown-coupon",
+          "command": "curl --noproxy '*' --silent --show-error --include --http1.1 --connect-timeout 1 --max-time 3 --request GET 'http://127.0.0.1:56701/status?code=NOPE'",
+          "expected_status": 404,
+          "observed_status": 404,
+          "observed_body": {
+            "error": "unknown_coupon"
+          },
+          "passed": true,
+          "response_file": "vulnerable-baseline-unknown-coupon.http",
+          "response_sha256": "0ae1f4ede503040932233a077d6d5994095bec65872fd32c9439b95f6edbdc8f"
+        },
+        {
+          "id": "control-first-redeem",
+          "command": "curl --noproxy '*' --silent --show-error --include --http1.1 --connect-timeout 1 --max-time 3 --request POST --header 'X-Coupon-Code: CONTROL1' http://127.0.0.1:56701/redeem",
+          "expected_status": 200,
+          "observed_status": 200,
+          "observed_body": {
+            "code": "CONTROL1",
+            "status": "redeemed"
+          },
+          "passed": true,
+          "response_file": "vulnerable-baseline-control-first-redeem.http",
+          "response_sha256": "109cbc2a0b1dd1dc2ed8188355bc96feaf8a5a7bb1e7dad88af6151de3b23fe9"
+        },
+        {
+          "id": "control-second-redeem",
+          "command": "curl --noproxy '*' --silent --show-error --include --http1.1 --connect-timeout 1 --max-time 3 --request POST --header 'X-Coupon-Code: CONTROL1' http://127.0.0.1:56701/redeem",
+          "expected_status": 409,
+          "observed_status": 409,
+          "observed_body": {
+            "error": "coupon_exhausted"
+          },
+          "passed": true,
+          "response_file": "vulnerable-baseline-control-second-redeem.http",
+          "response_sha256": "48d1aebc40db6fe4bec273cdd9736dae9c2b606f0b606c9c01a5298c1d7a9cab"
+        },
+        {
+          "id": "burst-final-status",
+          "command": "curl --noproxy '*' --silent --show-error --include --http1.1 --connect-timeout 1 --max-time 3 --request GET 'http://127.0.0.1:56701/status?code=SAVE10'",
+          "expected_status": 200,
+          "observed_status": 200,
+          "observed_body": {
+            "code": "SAVE10",
+            "uses_remaining": -2
+          },
+          "passed": true,
+          "response_file": "vulnerable-baseline-burst-final-status.http",
+          "response_sha256": "db3d2db6f2789cad7c8099d0ee1f4cee98302b7839c84b3452c2915569be6fb3"
+        }
+      ],
+      "burst": {
+        "coupon": "SAVE10",
+        "requests_sent": 16,
+        "successful_200_count": 3,
+        "expected_successful_count": 1,
+        "results": [
+          {
+            "status": 409,
+            "body": {
+              "error": "coupon_exhausted"
+            },
+            "elapsed_ms": 18.784
+          },
+          {
+            "status": 409,
+            "body": {
+              "error": "coupon_exhausted"
+            },
+            "elapsed_ms": 19.556
+          },
+          {
+            "status": 409,
+            "body": {
+              "error": "coupon_exhausted"
+            },
+            "elapsed_ms": 19.016
+          },
+          {
+            "status": 200,
+            "body": {
+              "code": "SAVE10",
+              "status": "redeemed"
+            },
+            "elapsed_ms": 19.669
+          },
+          {
+            "status": 409,
+            "body": {
+              "error": "coupon_exhausted"
+            },
+            "elapsed_ms": 20.177
+          },
+          {
+            "status": 409,
+            "body": {
+              "error": "coupon_exhausted"
+            },
+            "elapsed_ms": 18.255
+          },
+          {
+            "status": 409,
+            "body": {
+              "error": "coupon_exhausted"
+            },
+            "elapsed_ms": 19.207
+          },
+          {
+            "status": 409,
+            "body": {
+              "error": "coupon_exhausted"
+            },
+            "elapsed_ms": 17.306
+          },
+          {
+            "status": 409,
+            "body": {
+              "error": "coupon_exhausted"
+            },
+            "elapsed_ms": 19.134
+          },
+          {
+            "status": 200,
+            "body": {
+              "code": "SAVE10",
+              "status": "redeemed"
+            },
+            "elapsed_ms": 17.609
+          },
+          {
+            "status": 409,
+            "body": {
+              "error": "coupon_exhausted"
+            },
+            "elapsed_ms": 18.734
+          },
+          {
+            "status": 409,
+            "body": {
+              "error": "coupon_exhausted"
+            },
+            "elapsed_ms": 19.798
+          },
+          {
+            "status": 409,
+            "body": {
+              "error": "coupon_exhausted"
+            },
+            "elapsed_ms": 17.104
+          },
+          {
+            "status": 409,
+            "body": {
+              "error": "coupon_exhausted"
+            },
+            "elapsed_ms": 18.503
+          },
+          {
+            "status": 200,
+            "body": {
+              "code": "SAVE10",
+              "status": "redeemed"
+            },
+            "elapsed_ms": 16.641
+          },
+          {
+            "status": 409,
+            "body": {
+              "error": "coupon_exhausted"
+            },
+            "elapsed_ms": 17.066
+          }
+        ]
+      },
+      "final_uses_remaining": -2
+    },
+    {
+      "label": "vulnerable-baseline",
+      "mode": "vulnerable",
+      "delay_seconds": 0.0,
+      "round": 1,
+      "server": {
+        "fixture_version": "1.0.0",
+        "mode": "vulnerable",
+        "delay_seconds": 0.0,
+        "base_url": "http://127.0.0.1:56722",
+        "seed_coupons": {
+          "SAVE10": 1,
+          "CONTROL1": 1
+        }
+      },
+      "server_command": "python3 -u fixture.py --mode vulnerable --port 0 --delay 0.0",
+      "steps": [
+        {
+          "id": "unknown-coupon",
+          "command": "curl --noproxy '*' --silent --show-error --include --http1.1 --connect-timeout 1 --max-time 3 --request GET 'http://127.0.0.1:56722/status?code=NOPE'",
+          "expected_status": 404,
+          "observed_status": 404,
+          "observed_body": {
+            "error": "unknown_coupon"
+          },
+          "passed": true
+        },
+        {
+          "id": "control-first-redeem",
+          "command": "curl --noproxy '*' --silent --show-error --include --http1.1 --connect-timeout 1 --max-time 3 --request POST --header 'X-Coupon-Code: CONTROL1' http://127.0.0.1:56722/redeem",
+          "expected_status": 200,
+          "observed_status": 200,
+          "observed_body": {
+            "code": "CONTROL1",
+            "status": "redeemed"
+          },
+          "passed": true
+        },
+        {
+          "id": "control-second-redeem",
+          "command": "curl --noproxy '*' --silent --show-error --include --http1.1 --connect-timeout 1 --max-time 3 --request POST --header 'X-Coupon-Code: CONTROL1' http://127.0.0.1:56722/redeem",
+          "expected_status": 409,
+          "observed_status": 409,
+          "observed_body": {
+            "error": "coupon_exhausted"
+          },
+          "passed": true
+        },
+        {
+          "id": "burst-final-status",
+          "command": "curl --noproxy '*' --silent --show-error --include --http1.1 --connect-timeout 1 --max-time 3 --request GET 'http://127.0.0.1:56722/status?code=SAVE10'",
+          "expected_status": 200,
+          "observed_status": 200,
+          "observed_body": {
+            "code": "SAVE10",
+            "uses_remaining": 0
+          },
+          "passed": true
+        }
+      ],
+      "burst": {
+        "coupon": "SAVE10",
+        "requests_sent": 16,
+        "successful_200_count": 1,
+        "expected_successful_count": 1,
+        "results": [
+          {
+            "status": 409,
+            "body": {
+              "error": "coupon_exhausted"
+            },
+            "elapsed_ms": 3.788
+          },
+          {
+            "status": 200,
+            "body": {
+              "code": "SAVE10",
+              "status": "redeemed"
+            },
+            "elapsed_ms": 2.321
+          },
+          {
+            "status": 409,
+            "body": {
+              "error": "coupon_exhausted"
+            },
+            "elapsed_ms": 2.386
+          },
+          {
+            "status": 409,
+            "body": {
+              "error": "coupon_exhausted"
+            },
+            "elapsed_ms": 2.925
+          },
+          {
+            "status": 409,
+            "body": {
+              "error": "coupon_exhausted"
+            },
+            "elapsed_ms": 4.098
+          },
+          {
+            "status": 409,
+            "body": {
+              "error": "coupon_exhausted"
+            },
+            "elapsed_ms": 3.05
+          },
+          {
+            "status": 409,
+            "body": {
+              "error": "coupon_exhausted"
+            },
+            "elapsed_ms": 2.95
+          },
+          {
+            "status": 409,
+            "body": {
+              "error": "coupon_exhausted"
+            },
+            "elapsed_ms": 2.908
+          },
+          {
+            "status": 409,
+            "body": {
+              "error": "coupon_exhausted"
+            },
+            "elapsed_ms": 3.164
+          },
+          {
+            "status": 409,
+            "body": {
+              "error": "coupon_exhausted"
+            },
+            "elapsed_ms": 2.574
+          },
+          {
+            "status": 409,
+            "body": {
+              "error": "coupon_exhausted"
+            },
+            "elapsed_ms": 2.18
+          },
+          {
+            "status": 409,
+            "body": {
+              "error": "coupon_exhausted"
+            },
+            "elapsed_ms": 2.682
+          },
+          {
+            "status": 409,
+            "body": {
+              "error": "coupon_exhausted"
+            },
+            "elapsed_ms": 2.515
+          },
+          {
+            "status": 409,
+            "body": {
+              "error": "coupon_exhausted"
+            },
+            "elapsed_ms": 2.343
+          },
+          {
+            "status": 409,
+            "body": {
+              "error": "coupon_exhausted"
+            },
+            "elapsed_ms": 2.15
+          },
+          {
+            "status": 409,
+            "body": {
+              "error": "coupon_exhausted"
+            },
+            "elapsed_ms": 2.237
+          }
+        ]
+      },
+      "final_uses_remaining": 0
+    },
+    {
+      "label": "vulnerable-baseline",
+      "mode": "vulnerable",
+      "delay_seconds": 0.0,
+      "round": 2,
+      "server": {
+        "fixture_version": "1.0.0",
+        "mode": "vulnerable",
+        "delay_seconds": 0.0,
+        "base_url": "http://127.0.0.1:56743",
+        "seed_coupons": {
+          "SAVE10": 1,
+          "CONTROL1": 1
+        }
+      },
+      "server_command": "python3 -u fixture.py --mode vulnerable --port 0 --delay 0.0",
+      "steps": [
+        {
+          "id": "unknown-coupon",
+          "command": "curl --noproxy '*' --silent --show-error --include --http1.1 --connect-timeout 1 --max-time 3 --request GET 'http://127.0.0.1:56743/status?code=NOPE'",
+          "expected_status": 404,
+          "observed_status": 404,
+          "observed_body": {
+            "error": "unknown_coupon"
+          },
+          "passed": true
+        },
+        {
+          "id": "control-first-redeem",
+          "command": "curl --noproxy '*' --silent --show-error --include --http1.1 --connect-timeout 1 --max-time 3 --request POST --header 'X-Coupon-Code: CONTROL1' http://127.0.0.1:56743/redeem",
+          "expected_status": 200,
+          "observed_status": 200,
+          "observed_body": {
+            "code": "CONTROL1",
+            "status": "redeemed"
+          },
+          "passed": true
+        },
+        {
+          "id": "control-second-redeem",
+          "command": "curl --noproxy '*' --silent --show-error --include --http1.1 --connect-timeout 1 --max-time 3 --request POST --header 'X-Coupon-Code: CONTROL1' http://127.0.0.1:56743/redeem",
+          "expected_status": 409,
+          "observed_status": 409,
+          "observed_body": {
+            "error": "coupon_exhausted"
+          },
+          "passed": true
+        },
+        {
+          "id": "burst-final-status",
+          "command": "curl --noproxy '*' --silent --show-error --include --http1.1 --connect-timeout 1 --max-time 3 --request GET 'http://127.0.0.1:56743/status?code=SAVE10'",
+          "expected_status": 200,
+          "observed_status": 200,
+          "observed_body": {
+            "code": "SAVE10",
+            "uses_remaining": -7
+          },
+          "passed": true
+        }
+      ],
+      "burst": {
+        "coupon": "SAVE10",
+        "requests_sent": 16,
+        "successful_200_count": 8,
+        "expected_successful_count": 1,
+        "results": [
+          {
+            "status": 200,
+            "body": {
+              "code": "SAVE10",
+              "status": "redeemed"
+            },
+            "elapsed_ms": 9.541
+          },
+          {
+            "status": 200,
+            "body": {
+              "code": "SAVE10",
+              "status": "redeemed"
+            },
+            "elapsed_ms": 3.419
+          },
+          {
+            "status": 200,
+            "body": {
+              "code": "SAVE10",
+              "status": "redeemed"
+            },
+            "elapsed_ms": 4.947
+          },
+          {
+            "status": 200,
+            "body": {
+              "code": "SAVE10",
+              "status": "redeemed"
+            },
+            "elapsed_ms": 7.064
+          },
+          {
+            "status": 200,
+            "body": {
+              "code": "SAVE10",
+              "status": "redeemed"
+            },
+            "elapsed_ms": 7.322
+          },
+          {
+            "status": 200,
+            "body": {
+              "code": "SAVE10",
+              "status": "redeemed"
+            },
+            "elapsed_ms": 23.35
+          },
+          {
+            "status": 200,
+            "body": {
+              "code": "SAVE10",
+              "status": "redeemed"
+            },
+            "elapsed_ms": 13.188
+          },
+          {
+            "status": 200,
+            "body": {
+              "code": "SAVE10",
+              "status": "redeemed"
+            },
+            "elapsed_ms": 11.794
+          },
+          {
+            "status": 409,
+            "body": {
+              "error": "coupon_exhausted"
+            },
+            "elapsed_ms": 4.966
+          },
+          {
+            "status": 409,
+            "body": {
+              "error": "coupon_exhausted"
+            },
+            "elapsed_ms": 4.882
+          },
+          {
+            "status": 409,
+            "body": {
+              "error": "coupon_exhausted"
+            },
+            "elapsed_ms": 4.493
+          },
+          {
+            "status": 409,
+            "body": {
+              "error": "coupon_exhausted"
+            },
+            "elapsed_ms": 2.298
+          },
+          {
+            "status": 409,
+            "body": {
+              "error": "coupon_exhausted"
+            },
+            "elapsed_ms": 11.006
+          },
+          {
+            "status": 409,
+            "body": {
+              "error": "coupon_exhausted"
+            },
+            "elapsed_ms": 9.748
+          },
+          {
+            "status": 409,
+            "body": {
+              "error": "coupon_exhausted"
+            },
+            "elapsed_ms": 10.634
+          },
+          {
+            "status": 409,
+            "body": {
+              "error": "coupon_exhausted"
+            },
+            "elapsed_ms": 10.621
+          }
+        ]
+      },
+      "final_uses_remaining": -7
+    },
+    {
+      "label": "vulnerable-baseline",
+      "mode": "vulnerable",
+      "delay_seconds": 0.0,
+      "round": 3,
+      "server": {
+        "fixture_version": "1.0.0",
+        "mode": "vulnerable",
+        "delay_seconds": 0.0,
+        "base_url": "http://127.0.0.1:56766",
+        "seed_coupons": {
+          "SAVE10": 1,
+          "CONTROL1": 1
+        }
+      },
+      "server_command": "python3 -u fixture.py --mode vulnerable --port 0 --delay 0.0",
+      "steps": [
+        {
+          "id": "unknown-coupon",
+          "command": "curl --noproxy '*' --silent --show-error --include --http1.1 --connect-timeout 1 --max-time 3 --request GET 'http://127.0.0.1:56766/status?code=NOPE'",
+          "expected_status": 404,
+          "observed_status": 404,
+          "observed_body": {
+            "error": "unknown_coupon"
+          },
+          "passed": true
+        },
+        {
+          "id": "control-first-redeem",
+          "command": "curl --noproxy '*' --silent --show-error --include --http1.1 --connect-timeout 1 --max-time 3 --request POST --header 'X-Coupon-Code: CONTROL1' http://127.0.0.1:56766/redeem",
+          "expected_status": 200,
+          "observed_status": 200,
+          "observed_body": {
+            "code": "CONTROL1",
+            "status": "redeemed"
+          },
+          "passed": true
+        },
+        {
+          "id": "control-second-redeem",
+          "command": "curl --noproxy '*' --silent --show-error --include --http1.1 --connect-timeout 1 --max-time 3 --request POST --header 'X-Coupon-Code: CONTROL1' http://127.0.0.1:56766/redeem",
+          "expected_status": 409,
+          "observed_status": 409,
+          "observed_body": {
+            "error": "coupon_exhausted"
+          },
+          "passed": true
+        },
+        {
+          "id": "burst-final-status",
+          "command": "curl --noproxy '*' --silent --show-error --include --http1.1 --connect-timeout 1 --max-time 3 --request GET 'http://127.0.0.1:56766/status?code=SAVE10'",
+          "expected_status": 200,
+          "observed_status": 200,
+          "observed_body": {
+            "code": "SAVE10",
+            "uses_remaining": 0
+          },
+          "passed": true
+        }
+      ],
+      "burst": {
+        "coupon": "SAVE10",
+        "requests_sent": 16,
+        "successful_200_count": 1,
+        "expected_successful_count": 1,
+        "results": [
+          {
+            "status": 409,
+            "body": {
+              "error": "coupon_exhausted"
+            },
+            "elapsed_ms": 2.595
+          },
+          {
+            "status": 200,
+            "body": {
+              "code": "SAVE10",
+              "status": "redeemed"
+            },
+            "elapsed_ms": 1.933
+          },
+          {
+            "status": 409,
+            "body": {
+              "error": "coupon_exhausted"
+            },
+            "elapsed_ms": 2.927
+          },
+          {
+            "status": 409,
+            "body": {
+              "error": "coupon_exhausted"
+            },
+            "elapsed_ms": 2.618
+          },
+          {
+            "status": 409,
+            "body": {
+              "error": "coupon_exhausted"
+            },
+            "elapsed_ms": 1.634
+          },
+          {
+            "status": 409,
+            "body": {
+              "error": "coupon_exhausted"
+            },
+            "elapsed_ms": 2.345
+          },
+          {
+            "status": 409,
+            "body": {
+              "error": "coupon_exhausted"
+            },
+            "elapsed_ms": 2.034
+          },
+          {
+            "status": 409,
+            "body": {
+              "error": "coupon_exhausted"
+            },
+            "elapsed_ms": 1.129
+          },
+          {
+            "status": 409,
+            "body": {
+              "error": "coupon_exhausted"
+            },
+            "elapsed_ms": 1.213
+          },
+          {
+            "status": 409,
+            "body": {
+              "error": "coupon_exhausted"
+            },
+            "elapsed_ms": 1.332
+          },
+          {
+            "status": 409,
+            "body": {
+              "error": "coupon_exhausted"
+            },
+            "elapsed_ms": 1.739
+          },
+          {
+            "status": 409,
+            "body": {
+              "error": "coupon_exhausted"
+            },
+            "elapsed_ms": 1.689
+          },
+          {
+            "status": 409,
+            "body": {
+              "error": "coupon_exhausted"
+            },
+            "elapsed_ms": 1.698
+          },
+          {
+            "status": 409,
+            "body": {
+              "error": "coupon_exhausted"
+            },
+            "elapsed_ms": 1.629
+          },
+          {
+            "status": 409,
+            "body": {
+              "error": "coupon_exhausted"
+            },
+            "elapsed_ms": 1.668
+          },
+          {
+            "status": 409,
+            "body": {
+              "error": "coupon_exhausted"
+            },
+            "elapsed_ms": 1.497
+          }
+        ]
+      },
+      "final_uses_remaining": 0
+    },
+    {
+      "label": "vulnerable-baseline",
+      "mode": "vulnerable",
+      "delay_seconds": 0.0,
+      "round": 4,
+      "server": {
+        "fixture_version": "1.0.0",
+        "mode": "vulnerable",
+        "delay_seconds": 0.0,
+        "base_url": "http://127.0.0.1:56787",
+        "seed_coupons": {
+          "SAVE10": 1,
+          "CONTROL1": 1
+        }
+      },
+      "server_command": "python3 -u fixture.py --mode vulnerable --port 0 --delay 0.0",
+      "steps": [
+        {
+          "id": "unknown-coupon",
+          "command": "curl --noproxy '*' --silent --show-error --include --http1.1 --connect-timeout 1 --max-time 3 --request GET 'http://127.0.0.1:56787/status?code=NOPE'",
+          "expected_status": 404,
+          "observed_status": 404,
+          "observed_body": {
+            "error": "unknown_coupon"
+          },
+          "passed": true
+        },
+        {
+          "id": "control-first-redeem",
+          "command": "curl --noproxy '*' --silent --show-error --include --http1.1 --connect-timeout 1 --max-time 3 --request POST --header 'X-Coupon-Code: CONTROL1' http://127.0.0.1:56787/redeem",
+          "expected_status": 200,
+          "observed_status": 200,
+          "observed_body": {
+            "code": "CONTROL1",
+            "status": "redeemed"
+          },
+          "passed": true
+        },
+        {
+          "id": "control-second-redeem",
+          "command": "curl --noproxy '*' --silent --show-error --include --http1.1 --connect-timeout 1 --max-time 3 --request POST --header 'X-Coupon-Code: CONTROL1' http://127.0.0.1:56787/redeem",
+          "expected_status": 409,
+          "observed_status": 409,
+          "observed_body": {
+            "error": "coupon_exhausted"
+          },
+          "passed": true
+        },
+        {
+          "id": "burst-final-status",
+          "command": "curl --noproxy '*' --silent --show-error --include --http1.1 --connect-timeout 1 --max-time 3 --request GET 'http://127.0.0.1:56787/status?code=SAVE10'",
+          "expected_status": 200,
+          "observed_status": 200,
+          "observed_body": {
+            "code": "SAVE10",
+            "uses_remaining": -3
+          },
+          "passed": true
+        }
+      ],
+      "burst": {
+        "coupon": "SAVE10",
+        "requests_sent": 16,
+        "successful_200_count": 4,
+        "expected_successful_count": 1,
+        "results": [
+          {
+            "status": 409,
+            "body": {
+              "error": "coupon_exhausted"
+            },
+            "elapsed_ms": 5.209
+          },
+          {
+            "status": 409,
+            "body": {
+              "error": "coupon_exhausted"
+            },
+            "elapsed_ms": 4.95
+          },
+          {
+            "status": 200,
+            "body": {
+              "code": "SAVE10",
+              "status": "redeemed"
+            },
+            "elapsed_ms": 3.109
+          },
+          {
+            "status": 200,
+            "body": {
+              "code": "SAVE10",
+              "status": "redeemed"
+            },
+            "elapsed_ms": 7.08
+          },
+          {
+            "status": 200,
+            "body": {
+              "code": "SAVE10",
+              "status": "redeemed"
+            },
+            "elapsed_ms": 4.427
+          },
+          {
+            "status": 200,
+            "body": {
+              "code": "SAVE10",
+              "status": "redeemed"
+            },
+            "elapsed_ms": 5.849
+          },
+          {
+            "status": 409,
+            "body": {
+              "error": "coupon_exhausted"
+            },
+            "elapsed_ms": 4.98
+          },
+          {
+            "status": 409,
+            "body": {
+              "error": "coupon_exhausted"
+            },
+            "elapsed_ms": 5.905
+          },
+          {
+            "status": 409,
+            "body": {
+              "error": "coupon_exhausted"
+            },
+            "elapsed_ms": 4.708
+          },
+          {
+            "status": 409,
+            "body": {
+              "error": "coupon_exhausted"
+            },
+            "elapsed_ms": 6.044
+          },
+          {
+            "status": 409,
+            "body": {
+              "error": "coupon_exhausted"
+            },
+            "elapsed_ms": 4.482
+          },
+          {
+            "status": 409,
+            "body": {
+              "error": "coupon_exhausted"
+            },
+            "elapsed_ms": 4.784
+          },
+          {
+            "status": 409,
+            "body": {
+              "error": "coupon_exhausted"
+            },
+            "elapsed_ms": 5.077
+          },
+          {
+            "status": 409,
+            "body": {
+              "error": "coupon_exhausted"
+            },
+            "elapsed_ms": 4.404
+          },
+          {
+            "status": 409,
+            "body": {
+              "error": "coupon_exhausted"
+            },
+            "elapsed_ms": 4.812
+          },
+          {
+            "status": 409,
+            "body": {
+              "error": "coupon_exhausted"
+            },
+            "elapsed_ms": 3.941
+          }
+        ]
+      },
+      "final_uses_remaining": -3
+    },
+    {
+      "label": "vulnerable-widened",
+      "mode": "vulnerable",
+      "delay_seconds": 0.05,
+      "round": 0,
+      "server": {
+        "fixture_version": "1.0.0",
+        "mode": "vulnerable",
+        "delay_seconds": 0.05,
+        "base_url": "http://127.0.0.1:56808",
+        "seed_coupons": {
+          "SAVE10": 1,
+          "CONTROL1": 1
+        }
+      },
+      "server_command": "python3 -u fixture.py --mode vulnerable --port 0 --delay 0.05",
+      "steps": [
+        {
+          "id": "unknown-coupon",
+          "command": "curl --noproxy '*' --silent --show-error --include --http1.1 --connect-timeout 1 --max-time 3 --request GET 'http://127.0.0.1:56808/status?code=NOPE'",
+          "expected_status": 404,
+          "observed_status": 404,
+          "observed_body": {
+            "error": "unknown_coupon"
+          },
+          "passed": true,
+          "response_file": "vulnerable-widened-unknown-coupon.http",
+          "response_sha256": "0ae1f4ede503040932233a077d6d5994095bec65872fd32c9439b95f6edbdc8f"
+        },
+        {
+          "id": "control-first-redeem",
+          "command": "curl --noproxy '*' --silent --show-error --include --http1.1 --connect-timeout 1 --max-time 3 --request POST --header 'X-Coupon-Code: CONTROL1' http://127.0.0.1:56808/redeem",
+          "expected_status": 200,
+          "observed_status": 200,
+          "observed_body": {
+            "code": "CONTROL1",
+            "status": "redeemed"
+          },
+          "passed": true,
+          "response_file": "vulnerable-widened-control-first-redeem.http",
+          "response_sha256": "109cbc2a0b1dd1dc2ed8188355bc96feaf8a5a7bb1e7dad88af6151de3b23fe9"
+        },
+        {
+          "id": "control-second-redeem",
+          "command": "curl --noproxy '*' --silent --show-error --include --http1.1 --connect-timeout 1 --max-time 3 --request POST --header 'X-Coupon-Code: CONTROL1' http://127.0.0.1:56808/redeem",
+          "expected_status": 409,
+          "observed_status": 409,
+          "observed_body": {
+            "error": "coupon_exhausted"
+          },
+          "passed": true,
+          "response_file": "vulnerable-widened-control-second-redeem.http",
+          "response_sha256": "f9a73da104b7aeb2f2e889a4734311e140a8dd6c43eb348b3991da6ab658f3d3"
+        },
+        {
+          "id": "burst-final-status",
+          "command": "curl --noproxy '*' --silent --show-error --include --http1.1 --connect-timeout 1 --max-time 3 --request GET 'http://127.0.0.1:56808/status?code=SAVE10'",
+          "expected_status": 200,
+          "observed_status": 200,
+          "observed_body": {
+            "code": "SAVE10",
+            "uses_remaining": -15
+          },
+          "passed": true,
+          "response_file": "vulnerable-widened-burst-final-status.http",
+          "response_sha256": "4d1138c6d5cf71655a94be8ad06306907a54f64addfb421b830a20d33507ea54"
+        }
+      ],
+      "burst": {
+        "coupon": "SAVE10",
+        "requests_sent": 16,
+        "successful_200_count": 16,
+        "expected_successful_count": 1,
+        "results": [
+          {
+            "status": 200,
+            "body": {
+              "code": "SAVE10",
+              "status": "redeemed"
+            },
+            "elapsed_ms": 52.842
+          },
+          {
+            "status": 200,
+            "body": {
+              "code": "SAVE10",
+              "status": "redeemed"
+            },
+            "elapsed_ms": 71.718
+          },
+          {
+            "status": 200,
+            "body": {
+              "code": "SAVE10",
+              "status": "redeemed"
+            },
+            "elapsed_ms": 52.1
+          },
+          {
+            "status": 200,
+            "body": {
+              "code": "SAVE10",
+              "status": "redeemed"
+            },
+            "elapsed_ms": 52.994
+          },
+          {
+            "status": 200,
+            "body": {
+              "code": "SAVE10",
+              "status": "redeemed"
+            },
+            "elapsed_ms": 66.804
+          },
+          {
+            "status": 200,
+            "body": {
+              "code": "SAVE10",
+              "status": "redeemed"
+            },
+            "elapsed_ms": 53.699
+          },
+          {
+            "status": 200,
+            "body": {
+              "code": "SAVE10",
+              "status": "redeemed"
+            },
+            "elapsed_ms": 78.678
+          },
+          {
+            "status": 200,
+            "body": {
+              "code": "SAVE10",
+              "status": "redeemed"
+            },
+            "elapsed_ms": 53.091
+          },
+          {
+            "status": 200,
+            "body": {
+              "code": "SAVE10",
+              "status": "redeemed"
+            },
+            "elapsed_ms": 63.174
+          },
+          {
+            "status": 200,
+            "body": {
+              "code": "SAVE10",
+              "status": "redeemed"
+            },
+            "elapsed_ms": 66.67
+          },
+          {
+            "status": 200,
+            "body": {
+              "code": "SAVE10",
+              "status": "redeemed"
+            },
+            "elapsed_ms": 76.746
+          },
+          {
+            "status": 200,
+            "body": {
+              "code": "SAVE10",
+              "status": "redeemed"
+            },
+            "elapsed_ms": 57.405
+          },
+          {
+            "status": 200,
+            "body": {
+              "code": "SAVE10",
+              "status": "redeemed"
+            },
+            "elapsed_ms": 60.23
+          },
+          {
+            "status": 200,
+            "body": {
+              "code": "SAVE10",
+              "status": "redeemed"
+            },
+            "elapsed_ms": 93.197
+          },
+          {
+            "status": 200,
+            "body": {
+              "code": "SAVE10",
+              "status": "redeemed"
+            },
+            "elapsed_ms": 65.219
+          },
+          {
+            "status": 200,
+            "body": {
+              "code": "SAVE10",
+              "status": "redeemed"
+            },
+            "elapsed_ms": 53.648
+          }
+        ]
+      },
+      "final_uses_remaining": -15
+    },
+    {
+      "label": "vulnerable-widened",
+      "mode": "vulnerable",
+      "delay_seconds": 0.05,
+      "round": 1,
+      "server": {
+        "fixture_version": "1.0.0",
+        "mode": "vulnerable",
+        "delay_seconds": 0.05,
+        "base_url": "http://127.0.0.1:56829",
+        "seed_coupons": {
+          "SAVE10": 1,
+          "CONTROL1": 1
+        }
+      },
+      "server_command": "python3 -u fixture.py --mode vulnerable --port 0 --delay 0.05",
+      "steps": [
+        {
+          "id": "unknown-coupon",
+          "command": "curl --noproxy '*' --silent --show-error --include --http1.1 --connect-timeout 1 --max-time 3 --request GET 'http://127.0.0.1:56829/status?code=NOPE'",
+          "expected_status": 404,
+          "observed_status": 404,
+          "observed_body": {
+            "error": "unknown_coupon"
+          },
+          "passed": true
+        },
+        {
+          "id": "control-first-redeem",
+          "command": "curl --noproxy '*' --silent --show-error --include --http1.1 --connect-timeout 1 --max-time 3 --request POST --header 'X-Coupon-Code: CONTROL1' http://127.0.0.1:56829/redeem",
+          "expected_status": 200,
+          "observed_status": 200,
+          "observed_body": {
+            "code": "CONTROL1",
+            "status": "redeemed"
+          },
+          "passed": true
+        },
+        {
+          "id": "control-second-redeem",
+          "command": "curl --noproxy '*' --silent --show-error --include --http1.1 --connect-timeout 1 --max-time 3 --request POST --header 'X-Coupon-Code: CONTROL1' http://127.0.0.1:56829/redeem",
+          "expected_status": 409,
+          "observed_status": 409,
+          "observed_body": {
+            "error": "coupon_exhausted"
+          },
+          "passed": true
+        },
+        {
+          "id": "burst-final-status",
+          "command": "curl --noproxy '*' --silent --show-error --include --http1.1 --connect-timeout 1 --max-time 3 --request GET 'http://127.0.0.1:56829/status?code=SAVE10'",
+          "expected_status": 200,
+          "observed_status": 200,
+          "observed_body": {
+            "code": "SAVE10",
+            "uses_remaining": -15
+          },
+          "passed": true
+        }
+      ],
+      "burst": {
+        "coupon": "SAVE10",
+        "requests_sent": 16,
+        "successful_200_count": 16,
+        "expected_successful_count": 1,
+        "results": [
+          {
+            "status": 200,
+            "body": {
+              "code": "SAVE10",
+              "status": "redeemed"
+            },
+            "elapsed_ms": 93.004
+          },
+          {
+            "status": 200,
+            "body": {
+              "code": "SAVE10",
+              "status": "redeemed"
+            },
+            "elapsed_ms": 62.14
+          },
+          {
+            "status": 200,
+            "body": {
+              "code": "SAVE10",
+              "status": "redeemed"
+            },
+            "elapsed_ms": 58.796
+          },
+          {
+            "status": 200,
+            "body": {
+              "code": "SAVE10",
+              "status": "redeemed"
+            },
+            "elapsed_ms": 58.251
+          },
+          {
+            "status": 200,
+            "body": {
+              "code": "SAVE10",
+              "status": "redeemed"
+            },
+            "elapsed_ms": 52.351
+          },
+          {
+            "status": 200,
+            "body": {
+              "code": "SAVE10",
+              "status": "redeemed"
+            },
+            "elapsed_ms": 62.017
+          },
+          {
+            "status": 200,
+            "body": {
+              "code": "SAVE10",
+              "status": "redeemed"
+            },
+            "elapsed_ms": 79.398
+          },
+          {
+            "status": 200,
+            "body": {
+              "code": "SAVE10",
+              "status": "redeemed"
+            },
+            "elapsed_ms": 52.277
+          },
+          {
+            "status": 200,
+            "body": {
+              "code": "SAVE10",
+              "status": "redeemed"
+            },
+            "elapsed_ms": 74.236
+          },
+          {
+            "status": 200,
+            "body": {
+              "code": "SAVE10",
+              "status": "redeemed"
+            },
+            "elapsed_ms": 63.494
+          },
+          {
+            "status": 200,
+            "body": {
+              "code": "SAVE10",
+              "status": "redeemed"
+            },
+            "elapsed_ms": 56.38
+          },
+          {
+            "status": 200,
+            "body": {
+              "code": "SAVE10",
+              "status": "redeemed"
+            },
+            "elapsed_ms": 58.614
+          },
+          {
+            "status": 200,
+            "body": {
+              "code": "SAVE10",
+              "status": "redeemed"
+            },
+            "elapsed_ms": 79.066
+          },
+          {
+            "status": 200,
+            "body": {
+              "code": "SAVE10",
+              "status": "redeemed"
+            },
+            "elapsed_ms": 56.758
+          },
+          {
+            "status": 200,
+            "body": {
+              "code": "SAVE10",
+              "status": "redeemed"
+            },
+            "elapsed_ms": 54.772
+          },
+          {
+            "status": 200,
+            "body": {
+              "code": "SAVE10",
+              "status": "redeemed"
+            },
+            "elapsed_ms": 58.614
+          }
+        ]
+      },
+      "final_uses_remaining": -15
+    },
+    {
+      "label": "vulnerable-widened",
+      "mode": "vulnerable",
+      "delay_seconds": 0.05,
+      "round": 2,
+      "server": {
+        "fixture_version": "1.0.0",
+        "mode": "vulnerable",
+        "delay_seconds": 0.05,
+        "base_url": "http://127.0.0.1:56850",
+        "seed_coupons": {
+          "SAVE10": 1,
+          "CONTROL1": 1
+        }
+      },
+      "server_command": "python3 -u fixture.py --mode vulnerable --port 0 --delay 0.05",
+      "steps": [
+        {
+          "id": "unknown-coupon",
+          "command": "curl --noproxy '*' --silent --show-error --include --http1.1 --connect-timeout 1 --max-time 3 --request GET 'http://127.0.0.1:56850/status?code=NOPE'",
+          "expected_status": 404,
+          "observed_status": 404,
+          "observed_body": {
+            "error": "unknown_coupon"
+          },
+          "passed": true
+        },
+        {
+          "id": "control-first-redeem",
+          "command": "curl --noproxy '*' --silent --show-error --include --http1.1 --connect-timeout 1 --max-time 3 --request POST --header 'X-Coupon-Code: CONTROL1' http://127.0.0.1:56850/redeem",
+          "expected_status": 200,
+          "observed_status": 200,
+          "observed_body": {
+            "code": "CONTROL1",
+            "status": "redeemed"
+          },
+          "passed": true
+        },
+        {
+          "id": "control-second-redeem",
+          "command": "curl --noproxy '*' --silent --show-error --include --http1.1 --connect-timeout 1 --max-time 3 --request POST --header 'X-Coupon-Code: CONTROL1' http://127.0.0.1:56850/redeem",
+          "expected_status": 409,
+          "observed_status": 409,
+          "observed_body": {
+            "error": "coupon_exhausted"
+          },
+          "passed": true
+        },
+        {
+          "id": "burst-final-status",
+          "command": "curl --noproxy '*' --silent --show-error --include --http1.1 --connect-timeout 1 --max-time 3 --request GET 'http://127.0.0.1:56850/status?code=SAVE10'",
+          "expected_status": 200,
+          "observed_status": 200,
+          "observed_body": {
+            "code": "SAVE10",
+            "uses_remaining": -15
+          },
+          "passed": true
+        }
+      ],
+      "burst": {
+        "coupon": "SAVE10",
+        "requests_sent": 16,
+        "successful_200_count": 16,
+        "expected_successful_count": 1,
+        "results": [
+          {
+            "status": 200,
+            "body": {
+              "code": "SAVE10",
+              "status": "redeemed"
+            },
+            "elapsed_ms": 77.224
+          },
+          {
+            "status": 200,
+            "body": {
+              "code": "SAVE10",
+              "status": "redeemed"
+            },
+            "elapsed_ms": 63.736
+          },
+          {
+            "status": 200,
+            "body": {
+              "code": "SAVE10",
+              "status": "redeemed"
+            },
+            "elapsed_ms": 55.321
+          },
+          {
+            "status": 200,
+            "body": {
+              "code": "SAVE10",
+              "status": "redeemed"
+            },
+            "elapsed_ms": 56.476
+          },
+          {
+            "status": 200,
+            "body": {
+              "code": "SAVE10",
+              "status": "redeemed"
+            },
+            "elapsed_ms": 52.454
+          },
+          {
+            "status": 200,
+            "body": {
+              "code": "SAVE10",
+              "status": "redeemed"
+            },
+            "elapsed_ms": 60.652
+          },
+          {
+            "status": 200,
+            "body": {
+              "code": "SAVE10",
+              "status": "redeemed"
+            },
+            "elapsed_ms": 53.326
+          },
+          {
+            "status": 200,
+            "body": {
+              "code": "SAVE10",
+              "status": "redeemed"
+            },
+            "elapsed_ms": 56.173
+          },
+          {
+            "status": 200,
+            "body": {
+              "code": "SAVE10",
+              "status": "redeemed"
+            },
+            "elapsed_ms": 54.01
+          },
+          {
+            "status": 200,
+            "body": {
+              "code": "SAVE10",
+              "status": "redeemed"
+            },
+            "elapsed_ms": 76.131
+          },
+          {
+            "status": 200,
+            "body": {
+              "code": "SAVE10",
+              "status": "redeemed"
+            },
+            "elapsed_ms": 53.488
+          },
+          {
+            "status": 200,
+            "body": {
+              "code": "SAVE10",
+              "status": "redeemed"
+            },
+            "elapsed_ms": 56.134
+          },
+          {
+            "status": 200,
+            "body": {
+              "code": "SAVE10",
+              "status": "redeemed"
+            },
+            "elapsed_ms": 74.907
+          },
+          {
+            "status": 200,
+            "body": {
+              "code": "SAVE10",
+              "status": "redeemed"
+            },
+            "elapsed_ms": 71.168
+          },
+          {
+            "status": 200,
+            "body": {
+              "code": "SAVE10",
+              "status": "redeemed"
+            },
+            "elapsed_ms": 55.101
+          },
+          {
+            "status": 200,
+            "body": {
+              "code": "SAVE10",
+              "status": "redeemed"
+            },
+            "elapsed_ms": 58.507
+          }
+        ]
+      },
+      "final_uses_remaining": -15
+    },
+    {
+      "label": "vulnerable-widened",
+      "mode": "vulnerable",
+      "delay_seconds": 0.05,
+      "round": 3,
+      "server": {
+        "fixture_version": "1.0.0",
+        "mode": "vulnerable",
+        "delay_seconds": 0.05,
+        "base_url": "http://127.0.0.1:56872",
+        "seed_coupons": {
+          "SAVE10": 1,
+          "CONTROL1": 1
+        }
+      },
+      "server_command": "python3 -u fixture.py --mode vulnerable --port 0 --delay 0.05",
+      "steps": [
+        {
+          "id": "unknown-coupon",
+          "command": "curl --noproxy '*' --silent --show-error --include --http1.1 --connect-timeout 1 --max-time 3 --request GET 'http://127.0.0.1:56872/status?code=NOPE'",
+          "expected_status": 404,
+          "observed_status": 404,
+          "observed_body": {
+            "error": "unknown_coupon"
+          },
+          "passed": true
+        },
+        {
+          "id": "control-first-redeem",
+          "command": "curl --noproxy '*' --silent --show-error --include --http1.1 --connect-timeout 1 --max-time 3 --request POST --header 'X-Coupon-Code: CONTROL1' http://127.0.0.1:56872/redeem",
+          "expected_status": 200,
+          "observed_status": 200,
+          "observed_body": {
+            "code": "CONTROL1",
+            "status": "redeemed"
+          },
+          "passed": true
+        },
+        {
+          "id": "control-second-redeem",
+          "command": "curl --noproxy '*' --silent --show-error --include --http1.1 --connect-timeout 1 --max-time 3 --request POST --header 'X-Coupon-Code: CONTROL1' http://127.0.0.1:56872/redeem",
+          "expected_status": 409,
+          "observed_status": 409,
+          "observed_body": {
+            "error": "coupon_exhausted"
+          },
+          "passed": true
+        },
+        {
+          "id": "burst-final-status",
+          "command": "curl --noproxy '*' --silent --show-error --include --http1.1 --connect-timeout 1 --max-time 3 --request GET 'http://127.0.0.1:56872/status?code=SAVE10'",
+          "expected_status": 200,
+          "observed_status": 200,
+          "observed_body": {
+            "code": "SAVE10",
+            "uses_remaining": -15
+          },
+          "passed": true
+        }
+      ],
+      "burst": {
+        "coupon": "SAVE10",
+        "requests_sent": 16,
+        "successful_200_count": 16,
+        "expected_successful_count": 1,
+        "results": [
+          {
+            "status": 200,
+            "body": {
+              "code": "SAVE10",
+              "status": "redeemed"
+            },
+            "elapsed_ms": 61.842
+          },
+          {
+            "status": 200,
+            "body": {
+              "code": "SAVE10",
+              "status": "redeemed"
+            },
+            "elapsed_ms": 66.945
+          },
+          {
+            "status": 200,
+            "body": {
+              "code": "SAVE10",
+              "status": "redeemed"
+            },
+            "elapsed_ms": 62.782
+          },
+          {
+            "status": 200,
+            "body": {
+              "code": "SAVE10",
+              "status": "redeemed"
+            },
+            "elapsed_ms": 58.209
+          },
+          {
+            "status": 200,
+            "body": {
+              "code": "SAVE10",
+              "status": "redeemed"
+            },
+            "elapsed_ms": 68.198
+          },
+          {
+            "status": 200,
+            "body": {
+              "code": "SAVE10",
+              "status": "redeemed"
+            },
+            "elapsed_ms": 85.877
+          },
+          {
+            "status": 200,
+            "body": {
+              "code": "SAVE10",
+              "status": "redeemed"
+            },
+            "elapsed_ms": 103.301
+          },
+          {
+            "status": 200,
+            "body": {
+              "code": "SAVE10",
+              "status": "redeemed"
+            },
+            "elapsed_ms": 86.293
+          },
+          {
+            "status": 200,
+            "body": {
+              "code": "SAVE10",
+              "status": "redeemed"
+            },
+            "elapsed_ms": 54.812
+          },
+          {
+            "status": 200,
+            "body": {
+              "code": "SAVE10",
+              "status": "redeemed"
+            },
+            "elapsed_ms": 68.958
+          },
+          {
+            "status": 200,
+            "body": {
+              "code": "SAVE10",
+              "status": "redeemed"
+            },
+            "elapsed_ms": 58.808
+          },
+          {
+            "status": 200,
+            "body": {
+              "code": "SAVE10",
+              "status": "redeemed"
+            },
+            "elapsed_ms": 75.01
+          },
+          {
+            "status": 200,
+            "body": {
+              "code": "SAVE10",
+              "status": "redeemed"
+            },
+            "elapsed_ms": 56.609
+          },
+          {
+            "status": 200,
+            "body": {
+              "code": "SAVE10",
+              "status": "redeemed"
+            },
+            "elapsed_ms": 55.702
+          },
+          {
+            "status": 200,
+            "body": {
+              "code": "SAVE10",
+              "status": "redeemed"
+            },
+            "elapsed_ms": 89.541
+          },
+          {
+            "status": 200,
+            "body": {
+              "code": "SAVE10",
+              "status": "redeemed"
+            },
+            "elapsed_ms": 57.7
+          }
+        ]
+      },
+      "final_uses_remaining": -15
+    },
+    {
+      "label": "vulnerable-widened",
+      "mode": "vulnerable",
+      "delay_seconds": 0.05,
+      "round": 4,
+      "server": {
+        "fixture_version": "1.0.0",
+        "mode": "vulnerable",
+        "delay_seconds": 0.05,
+        "base_url": "http://127.0.0.1:56905",
+        "seed_coupons": {
+          "SAVE10": 1,
+          "CONTROL1": 1
+        }
+      },
+      "server_command": "python3 -u fixture.py --mode vulnerable --port 0 --delay 0.05",
+      "steps": [
+        {
+          "id": "unknown-coupon",
+          "command": "curl --noproxy '*' --silent --show-error --include --http1.1 --connect-timeout 1 --max-time 3 --request GET 'http://127.0.0.1:56905/status?code=NOPE'",
+          "expected_status": 404,
+          "observed_status": 404,
+          "observed_body": {
+            "error": "unknown_coupon"
+          },
+          "passed": true
+        },
+        {
+          "id": "control-first-redeem",
+          "command": "curl --noproxy '*' --silent --show-error --include --http1.1 --connect-timeout 1 --max-time 3 --request POST --header 'X-Coupon-Code: CONTROL1' http://127.0.0.1:56905/redeem",
+          "expected_status": 200,
+          "observed_status": 200,
+          "observed_body": {
+            "code": "CONTROL1",
+            "status": "redeemed"
+          },
+          "passed": true
+        },
+        {
+          "id": "control-second-redeem",
+          "command": "curl --noproxy '*' --silent --show-error --include --http1.1 --connect-timeout 1 --max-time 3 --request POST --header 'X-Coupon-Code: CONTROL1' http://127.0.0.1:56905/redeem",
+          "expected_status": 409,
+          "observed_status": 409,
+          "observed_body": {
+            "error": "coupon_exhausted"
+          },
+          "passed": true
+        },
+        {
+          "id": "burst-final-status",
+          "command": "curl --noproxy '*' --silent --show-error --include --http1.1 --connect-timeout 1 --max-time 3 --request GET 'http://127.0.0.1:56905/status?code=SAVE10'",
+          "expected_status": 200,
+          "observed_status": 200,
+          "observed_body": {
+            "code": "SAVE10",
+            "uses_remaining": -15
+          },
+          "passed": true
+        }
+      ],
+      "burst": {
+        "coupon": "SAVE10",
+        "requests_sent": 16,
+        "successful_200_count": 16,
+        "expected_successful_count": 1,
+        "results": [
+          {
+            "status": 200,
+            "body": {
+              "code": "SAVE10",
+              "status": "redeemed"
+            },
+            "elapsed_ms": 53.034
+          },
+          {
+            "status": 200,
+            "body": {
+              "code": "SAVE10",
+              "status": "redeemed"
+            },
+            "elapsed_ms": 51.797
+          },
+          {
+            "status": 200,
+            "body": {
+              "code": "SAVE10",
+              "status": "redeemed"
+            },
+            "elapsed_ms": 81.252
+          },
+          {
+            "status": 200,
+            "body": {
+              "code": "SAVE10",
+              "status": "redeemed"
+            },
+            "elapsed_ms": 71.484
+          },
+          {
+            "status": 200,
+            "body": {
+              "code": "SAVE10",
+              "status": "redeemed"
+            },
+            "elapsed_ms": 70.845
+          },
+          {
+            "status": 200,
+            "body": {
+              "code": "SAVE10",
+              "status": "redeemed"
+            },
+            "elapsed_ms": 55.512
+          },
+          {
+            "status": 200,
+            "body": {
+              "code": "SAVE10",
+              "status": "redeemed"
+            },
+            "elapsed_ms": 51.962
+          },
+          {
+            "status": 200,
+            "body": {
+              "code": "SAVE10",
+              "status": "redeemed"
+            },
+            "elapsed_ms": 58.989
+          },
+          {
+            "status": 200,
+            "body": {
+              "code": "SAVE10",
+              "status": "redeemed"
+            },
+            "elapsed_ms": 54.193
+          },
+          {
+            "status": 200,
+            "body": {
+              "code": "SAVE10",
+              "status": "redeemed"
+            },
+            "elapsed_ms": 57.371
+          },
+          {
+            "status": 200,
+            "body": {
+              "code": "SAVE10",
+              "status": "redeemed"
+            },
+            "elapsed_ms": 54.973
+          },
+          {
+            "status": 200,
+            "body": {
+              "code": "SAVE10",
+              "status": "redeemed"
+            },
+            "elapsed_ms": 66.202
+          },
+          {
+            "status": 200,
+            "body": {
+              "code": "SAVE10",
+              "status": "redeemed"
+            },
+            "elapsed_ms": 57.267
+          },
+          {
+            "status": 200,
+            "body": {
+              "code": "SAVE10",
+              "status": "redeemed"
+            },
+            "elapsed_ms": 71.19
+          },
+          {
+            "status": 200,
+            "body": {
+              "code": "SAVE10",
+              "status": "redeemed"
+            },
+            "elapsed_ms": 58.464
+          },
+          {
+            "status": 200,
+            "body": {
+              "code": "SAVE10",
+              "status": "redeemed"
+            },
+            "elapsed_ms": 57.885
+          }
+        ]
+      },
+      "final_uses_remaining": -15
+    },
+    {
+      "label": "fixed",
+      "mode": "fixed",
+      "delay_seconds": 0.0,
+      "round": 0,
+      "server": {
+        "fixture_version": "1.0.0",
+        "mode": "fixed",
+        "delay_seconds": 0.0,
+        "base_url": "http://127.0.0.1:56941",
+        "seed_coupons": {
+          "SAVE10": 1,
+          "CONTROL1": 1
+        }
+      },
+      "server_command": "python3 -u fixture.py --mode fixed --port 0 --delay 0.0",
+      "steps": [
+        {
+          "id": "unknown-coupon",
+          "command": "curl --noproxy '*' --silent --show-error --include --http1.1 --connect-timeout 1 --max-time 3 --request GET 'http://127.0.0.1:56941/status?code=NOPE'",
+          "expected_status": 404,
+          "observed_status": 404,
+          "observed_body": {
+            "error": "unknown_coupon"
+          },
+          "passed": true,
+          "response_file": "fixed-unknown-coupon.http",
+          "response_sha256": "1d127196e88e1ddc6116b5bfea18ff98cfc2360f17f46946a8119d6f4adbea99"
+        },
+        {
+          "id": "control-first-redeem",
+          "command": "curl --noproxy '*' --silent --show-error --include --http1.1 --connect-timeout 1 --max-time 3 --request POST --header 'X-Coupon-Code: CONTROL1' http://127.0.0.1:56941/redeem",
+          "expected_status": 200,
+          "observed_status": 200,
+          "observed_body": {
+            "code": "CONTROL1",
+            "status": "redeemed"
+          },
+          "passed": true,
+          "response_file": "fixed-control-first-redeem.http",
+          "response_sha256": "68d17e6b255757d9fde26c82096cb76be8b96444d7bab5cc3204771987d5e7e8"
+        },
+        {
+          "id": "control-second-redeem",
+          "command": "curl --noproxy '*' --silent --show-error --include --http1.1 --connect-timeout 1 --max-time 3 --request POST --header 'X-Coupon-Code: CONTROL1' http://127.0.0.1:56941/redeem",
+          "expected_status": 409,
+          "observed_status": 409,
+          "observed_body": {
+            "error": "coupon_exhausted"
+          },
+          "passed": true,
+          "response_file": "fixed-control-second-redeem.http",
+          "response_sha256": "871f26748737a9ba07cc31451cd51f75e7f36d585fd3fd2a8bfec34ba70ce726"
+        },
+        {
+          "id": "burst-final-status",
+          "command": "curl --noproxy '*' --silent --show-error --include --http1.1 --connect-timeout 1 --max-time 3 --request GET 'http://127.0.0.1:56941/status?code=SAVE10'",
+          "expected_status": 200,
+          "observed_status": 200,
+          "observed_body": {
+            "code": "SAVE10",
+            "uses_remaining": 0
+          },
+          "passed": true,
+          "response_file": "fixed-burst-final-status.http",
+          "response_sha256": "cd67fa78709b52bbc3f8dd722d5511ab7aa51c29df57dd5c0b055fafa404ab68"
+        }
+      ],
+      "burst": {
+        "coupon": "SAVE10",
+        "requests_sent": 16,
+        "successful_200_count": 1,
+        "expected_successful_count": 1,
+        "results": [
+          {
+            "status": 409,
+            "body": {
+              "error": "coupon_exhausted"
+            },
+            "elapsed_ms": 11.373
+          },
+          {
+            "status": 409,
+            "body": {
+              "error": "coupon_exhausted"
+            },
+            "elapsed_ms": 24.46
+          },
+          {
+            "status": 409,
+            "body": {
+              "error": "coupon_exhausted"
+            },
+            "elapsed_ms": 5.796
+          },
+          {
+            "status": 409,
+            "body": {
+              "error": "coupon_exhausted"
+            },
+            "elapsed_ms": 5.286
+          },
+          {
+            "status": 200,
+            "body": {
+              "code": "SAVE10",
+              "status": "redeemed"
+            },
+            "elapsed_ms": 2.842
+          },
+          {
+            "status": 409,
+            "body": {
+              "error": "coupon_exhausted"
+            },
+            "elapsed_ms": 24.868
+          },
+          {
+            "status": 409,
+            "body": {
+              "error": "coupon_exhausted"
+            },
+            "elapsed_ms": 23.678
+          },
+          {
+            "status": 409,
+            "body": {
+              "error": "coupon_exhausted"
+            },
+            "elapsed_ms": 22.308
+          },
+          {
+            "status": 409,
+            "body": {
+              "error": "coupon_exhausted"
+            },
+            "elapsed_ms": 31.327
+          },
+          {
+            "status": 409,
+            "body": {
+              "error": "coupon_exhausted"
+            },
+            "elapsed_ms": 6.263
+          },
+          {
+            "status": 409,
+            "body": {
+              "error": "coupon_exhausted"
+            },
+            "elapsed_ms": 24.922
+          },
+          {
+            "status": 409,
+            "body": {
+              "error": "coupon_exhausted"
+            },
+            "elapsed_ms": 5.953
+          },
+          {
+            "status": 409,
+            "body": {
+              "error": "coupon_exhausted"
+            },
+            "elapsed_ms": 7.596
+          },
+          {
+            "status": 409,
+            "body": {
+              "error": "coupon_exhausted"
+            },
+            "elapsed_ms": 20.173
+          },
+          {
+            "status": 409,
+            "body": {
+              "error": "coupon_exhausted"
+            },
+            "elapsed_ms": 24.312
+          },
+          {
+            "status": 409,
+            "body": {
+              "error": "coupon_exhausted"
+            },
+            "elapsed_ms": 20.877
+          }
+        ]
+      },
+      "final_uses_remaining": 0
+    },
+    {
+      "label": "fixed",
+      "mode": "fixed",
+      "delay_seconds": 0.0,
+      "round": 1,
+      "server": {
+        "fixture_version": "1.0.0",
+        "mode": "fixed",
+        "delay_seconds": 0.0,
+        "base_url": "http://127.0.0.1:56964",
+        "seed_coupons": {
+          "SAVE10": 1,
+          "CONTROL1": 1
+        }
+      },
+      "server_command": "python3 -u fixture.py --mode fixed --port 0 --delay 0.0",
+      "steps": [
+        {
+          "id": "unknown-coupon",
+          "command": "curl --noproxy '*' --silent --show-error --include --http1.1 --connect-timeout 1 --max-time 3 --request GET 'http://127.0.0.1:56964/status?code=NOPE'",
+          "expected_status": 404,
+          "observed_status": 404,
+          "observed_body": {
+            "error": "unknown_coupon"
+          },
+          "passed": true
+        },
+        {
+          "id": "control-first-redeem",
+          "command": "curl --noproxy '*' --silent --show-error --include --http1.1 --connect-timeout 1 --max-time 3 --request POST --header 'X-Coupon-Code: CONTROL1' http://127.0.0.1:56964/redeem",
+          "expected_status": 200,
+          "observed_status": 200,
+          "observed_body": {
+            "code": "CONTROL1",
+            "status": "redeemed"
+          },
+          "passed": true
+        },
+        {
+          "id": "control-second-redeem",
+          "command": "curl --noproxy '*' --silent --show-error --include --http1.1 --connect-timeout 1 --max-time 3 --request POST --header 'X-Coupon-Code: CONTROL1' http://127.0.0.1:56964/redeem",
+          "expected_status": 409,
+          "observed_status": 409,
+          "observed_body": {
+            "error": "coupon_exhausted"
+          },
+          "passed": true
+        },
+        {
+          "id": "burst-final-status",
+          "command": "curl --noproxy '*' --silent --show-error --include --http1.1 --connect-timeout 1 --max-time 3 --request GET 'http://127.0.0.1:56964/status?code=SAVE10'",
+          "expected_status": 200,
+          "observed_status": 200,
+          "observed_body": {
+            "code": "SAVE10",
+            "uses_remaining": 0
+          },
+          "passed": true
+        }
+      ],
+      "burst": {
+        "coupon": "SAVE10",
+        "requests_sent": 16,
+        "successful_200_count": 1,
+        "expected_successful_count": 1,
+        "results": [
+          {
+            "status": 409,
+            "body": {
+              "error": "coupon_exhausted"
+            },
+            "elapsed_ms": 4.789
+          },
+          {
+            "status": 200,
+            "body": {
+              "code": "SAVE10",
+              "status": "redeemed"
+            },
+            "elapsed_ms": 2.566
+          },
+          {
+            "status": 409,
+            "body": {
+              "error": "coupon_exhausted"
+            },
+            "elapsed_ms": 4.332
+          },
+          {
+            "status": 409,
+            "body": {
+              "error": "coupon_exhausted"
+            },
+            "elapsed_ms": 10.474
+          },
+          {
+            "status": 409,
+            "body": {
+              "error": "coupon_exhausted"
+            },
+            "elapsed_ms": 4.539
+          },
+          {
+            "status": 409,
+            "body": {
+              "error": "coupon_exhausted"
+            },
+            "elapsed_ms": 2.322
+          },
+          {
+            "status": 409,
+            "body": {
+              "error": "coupon_exhausted"
+            },
+            "elapsed_ms": 2.141
+          },
+          {
+            "status": 409,
+            "body": {
+              "error": "coupon_exhausted"
+            },
+            "elapsed_ms": 1.927
+          },
+          {
+            "status": 409,
+            "body": {
+              "error": "coupon_exhausted"
+            },
+            "elapsed_ms": 2.114
+          },
+          {
+            "status": 409,
+            "body": {
+              "error": "coupon_exhausted"
+            },
+            "elapsed_ms": 3.311
+          },
+          {
+            "status": 409,
+            "body": {
+              "error": "coupon_exhausted"
+            },
+            "elapsed_ms": 1.927
+          },
+          {
+            "status": 409,
+            "body": {
+              "error": "coupon_exhausted"
+            },
+            "elapsed_ms": 1.825
+          },
+          {
+            "status": 409,
+            "body": {
+              "error": "coupon_exhausted"
+            },
+            "elapsed_ms": 1.889
+          },
+          {
+            "status": 409,
+            "body": {
+              "error": "coupon_exhausted"
+            },
+            "elapsed_ms": 2.088
+          },
+          {
+            "status": 409,
+            "body": {
+              "error": "coupon_exhausted"
+            },
+            "elapsed_ms": 1.96
+          },
+          {
+            "status": 409,
+            "body": {
+              "error": "coupon_exhausted"
+            },
+            "elapsed_ms": 1.671
+          }
+        ]
+      },
+      "final_uses_remaining": 0
+    },
+    {
+      "label": "fixed",
+      "mode": "fixed",
+      "delay_seconds": 0.0,
+      "round": 2,
+      "server": {
+        "fixture_version": "1.0.0",
+        "mode": "fixed",
+        "delay_seconds": 0.0,
+        "base_url": "http://127.0.0.1:56985",
+        "seed_coupons": {
+          "SAVE10": 1,
+          "CONTROL1": 1
+        }
+      },
+      "server_command": "python3 -u fixture.py --mode fixed --port 0 --delay 0.0",
+      "steps": [
+        {
+          "id": "unknown-coupon",
+          "command": "curl --noproxy '*' --silent --show-error --include --http1.1 --connect-timeout 1 --max-time 3 --request GET 'http://127.0.0.1:56985/status?code=NOPE'",
+          "expected_status": 404,
+          "observed_status": 404,
+          "observed_body": {
+            "error": "unknown_coupon"
+          },
+          "passed": true
+        },
+        {
+          "id": "control-first-redeem",
+          "command": "curl --noproxy '*' --silent --show-error --include --http1.1 --connect-timeout 1 --max-time 3 --request POST --header 'X-Coupon-Code: CONTROL1' http://127.0.0.1:56985/redeem",
+          "expected_status": 200,
+          "observed_status": 200,
+          "observed_body": {
+            "code": "CONTROL1",
+            "status": "redeemed"
+          },
+          "passed": true
+        },
+        {
+          "id": "control-second-redeem",
+          "command": "curl --noproxy '*' --silent --show-error --include --http1.1 --connect-timeout 1 --max-time 3 --request POST --header 'X-Coupon-Code: CONTROL1' http://127.0.0.1:56985/redeem",
+          "expected_status": 409,
+          "observed_status": 409,
+          "observed_body": {
+            "error": "coupon_exhausted"
+          },
+          "passed": true
+        },
+        {
+          "id": "burst-final-status",
+          "command": "curl --noproxy '*' --silent --show-error --include --http1.1 --connect-timeout 1 --max-time 3 --request GET 'http://127.0.0.1:56985/status?code=SAVE10'",
+          "expected_status": 200,
+          "observed_status": 200,
+          "observed_body": {
+            "code": "SAVE10",
+            "uses_remaining": 0
+          },
+          "passed": true
+        }
+      ],
+      "burst": {
+        "coupon": "SAVE10",
+        "requests_sent": 16,
+        "successful_200_count": 1,
+        "expected_successful_count": 1,
+        "results": [
+          {
+            "status": 200,
+            "body": {
+              "code": "SAVE10",
+              "status": "redeemed"
+            },
+            "elapsed_ms": 1.59
+          },
+          {
+            "status": 409,
+            "body": {
+              "error": "coupon_exhausted"
+            },
+            "elapsed_ms": 10.496
+          },
+          {
+            "status": 409,
+            "body": {
+              "error": "coupon_exhausted"
+            },
+            "elapsed_ms": 2.062
+          },
+          {
+            "status": 409,
+            "body": {
+              "error": "coupon_exhausted"
+            },
+            "elapsed_ms": 11.581
+          },
+          {
+            "status": 409,
+            "body": {
+              "error": "coupon_exhausted"
+            },
+            "elapsed_ms": 4.967
+          },
+          {
+            "status": 409,
+            "body": {
+              "error": "coupon_exhausted"
+            },
+            "elapsed_ms": 1.269
+          },
+          {
+            "status": 409,
+            "body": {
+              "error": "coupon_exhausted"
+            },
+            "elapsed_ms": 2.06
+          },
+          {
+            "status": 409,
+            "body": {
+              "error": "coupon_exhausted"
+            },
+            "elapsed_ms": 5.334
+          },
+          {
+            "status": 409,
+            "body": {
+              "error": "coupon_exhausted"
+            },
+            "elapsed_ms": 4.598
+          },
+          {
+            "status": 409,
+            "body": {
+              "error": "coupon_exhausted"
+            },
+            "elapsed_ms": 3.106
+          },
+          {
+            "status": 409,
+            "body": {
+              "error": "coupon_exhausted"
+            },
+            "elapsed_ms": 4.2
+          },
+          {
+            "status": 409,
+            "body": {
+              "error": "coupon_exhausted"
+            },
+            "elapsed_ms": 5.649
+          },
+          {
+            "status": 409,
+            "body": {
+              "error": "coupon_exhausted"
+            },
+            "elapsed_ms": 3.836
+          },
+          {
+            "status": 409,
+            "body": {
+              "error": "coupon_exhausted"
+            },
+            "elapsed_ms": 4.113
+          },
+          {
+            "status": 409,
+            "body": {
+              "error": "coupon_exhausted"
+            },
+            "elapsed_ms": 8.053
+          },
+          {
+            "status": 409,
+            "body": {
+              "error": "coupon_exhausted"
+            },
+            "elapsed_ms": 3.805
+          }
+        ]
+      },
+      "final_uses_remaining": 0
+    },
+    {
+      "label": "fixed",
+      "mode": "fixed",
+      "delay_seconds": 0.0,
+      "round": 3,
+      "server": {
+        "fixture_version": "1.0.0",
+        "mode": "fixed",
+        "delay_seconds": 0.0,
+        "base_url": "http://127.0.0.1:57006",
+        "seed_coupons": {
+          "SAVE10": 1,
+          "CONTROL1": 1
+        }
+      },
+      "server_command": "python3 -u fixture.py --mode fixed --port 0 --delay 0.0",
+      "steps": [
+        {
+          "id": "unknown-coupon",
+          "command": "curl --noproxy '*' --silent --show-error --include --http1.1 --connect-timeout 1 --max-time 3 --request GET 'http://127.0.0.1:57006/status?code=NOPE'",
+          "expected_status": 404,
+          "observed_status": 404,
+          "observed_body": {
+            "error": "unknown_coupon"
+          },
+          "passed": true
+        },
+        {
+          "id": "control-first-redeem",
+          "command": "curl --noproxy '*' --silent --show-error --include --http1.1 --connect-timeout 1 --max-time 3 --request POST --header 'X-Coupon-Code: CONTROL1' http://127.0.0.1:57006/redeem",
+          "expected_status": 200,
+          "observed_status": 200,
+          "observed_body": {
+            "code": "CONTROL1",
+            "status": "redeemed"
+          },
+          "passed": true
+        },
+        {
+          "id": "control-second-redeem",
+          "command": "curl --noproxy '*' --silent --show-error --include --http1.1 --connect-timeout 1 --max-time 3 --request POST --header 'X-Coupon-Code: CONTROL1' http://127.0.0.1:57006/redeem",
+          "expected_status": 409,
+          "observed_status": 409,
+          "observed_body": {
+            "error": "coupon_exhausted"
+          },
+          "passed": true
+        },
+        {
+          "id": "burst-final-status",
+          "command": "curl --noproxy '*' --silent --show-error --include --http1.1 --connect-timeout 1 --max-time 3 --request GET 'http://127.0.0.1:57006/status?code=SAVE10'",
+          "expected_status": 200,
+          "observed_status": 200,
+          "observed_body": {
+            "code": "SAVE10",
+            "uses_remaining": 0
+          },
+          "passed": true
+        }
+      ],
+      "burst": {
+        "coupon": "SAVE10",
+        "requests_sent": 16,
+        "successful_200_count": 1,
+        "expected_successful_count": 1,
+        "results": [
+          {
+            "status": 409,
+            "body": {
+              "error": "coupon_exhausted"
+            },
+            "elapsed_ms": 10.176
+          },
+          {
+            "status": 200,
+            "body": {
+              "code": "SAVE10",
+              "status": "redeemed"
+            },
+            "elapsed_ms": 0.993
+          },
+          {
+            "status": 409,
+            "body": {
+              "error": "coupon_exhausted"
+            },
+            "elapsed_ms": 2.121
+          },
+          {
+            "status": 409,
+            "body": {
+              "error": "coupon_exhausted"
+            },
+            "elapsed_ms": 8.063
+          },
+          {
+            "status": 409,
+            "body": {
+              "error": "coupon_exhausted"
+            },
+            "elapsed_ms": 3.874
+          },
+          {
+            "status": 409,
+            "body": {
+              "error": "coupon_exhausted"
+            },
+            "elapsed_ms": 4.422
+          },
+          {
+            "status": 409,
+            "body": {
+              "error": "coupon_exhausted"
+            },
+            "elapsed_ms": 3.815
+          },
+          {
+            "status": 409,
+            "body": {
+              "error": "coupon_exhausted"
+            },
+            "elapsed_ms": 3.65
+          },
+          {
+            "status": 409,
+            "body": {
+              "error": "coupon_exhausted"
+            },
+            "elapsed_ms": 7.529
+          },
+          {
+            "status": 409,
+            "body": {
+              "error": "coupon_exhausted"
+            },
+            "elapsed_ms": 4.158
+          },
+          {
+            "status": 409,
+            "body": {
+              "error": "coupon_exhausted"
+            },
+            "elapsed_ms": 3.821
+          },
+          {
+            "status": 409,
+            "body": {
+              "error": "coupon_exhausted"
+            },
+            "elapsed_ms": 7.463
+          },
+          {
+            "status": 409,
+            "body": {
+              "error": "coupon_exhausted"
+            },
+            "elapsed_ms": 3.727
+          },
+          {
+            "status": 409,
+            "body": {
+              "error": "coupon_exhausted"
+            },
+            "elapsed_ms": 3.78
+          },
+          {
+            "status": 409,
+            "body": {
+              "error": "coupon_exhausted"
+            },
+            "elapsed_ms": 5.335
+          },
+          {
+            "status": 409,
+            "body": {
+              "error": "coupon_exhausted"
+            },
+            "elapsed_ms": 5.182
+          }
+        ]
+      },
+      "final_uses_remaining": 0
+    },
+    {
+      "label": "fixed",
+      "mode": "fixed",
+      "delay_seconds": 0.0,
+      "round": 4,
+      "server": {
+        "fixture_version": "1.0.0",
+        "mode": "fixed",
+        "delay_seconds": 0.0,
+        "base_url": "http://127.0.0.1:57027",
+        "seed_coupons": {
+          "SAVE10": 1,
+          "CONTROL1": 1
+        }
+      },
+      "server_command": "python3 -u fixture.py --mode fixed --port 0 --delay 0.0",
+      "steps": [
+        {
+          "id": "unknown-coupon",
+          "command": "curl --noproxy '*' --silent --show-error --include --http1.1 --connect-timeout 1 --max-time 3 --request GET 'http://127.0.0.1:57027/status?code=NOPE'",
+          "expected_status": 404,
+          "observed_status": 404,
+          "observed_body": {
+            "error": "unknown_coupon"
+          },
+          "passed": true
+        },
+        {
+          "id": "control-first-redeem",
+          "command": "curl --noproxy '*' --silent --show-error --include --http1.1 --connect-timeout 1 --max-time 3 --request POST --header 'X-Coupon-Code: CONTROL1' http://127.0.0.1:57027/redeem",
+          "expected_status": 200,
+          "observed_status": 200,
+          "observed_body": {
+            "code": "CONTROL1",
+            "status": "redeemed"
+          },
+          "passed": true
+        },
+        {
+          "id": "control-second-redeem",
+          "command": "curl --noproxy '*' --silent --show-error --include --http1.1 --connect-timeout 1 --max-time 3 --request POST --header 'X-Coupon-Code: CONTROL1' http://127.0.0.1:57027/redeem",
+          "expected_status": 409,
+          "observed_status": 409,
+          "observed_body": {
+            "error": "coupon_exhausted"
+          },
+          "passed": true
+        },
+        {
+          "id": "burst-final-status",
+          "command": "curl --noproxy '*' --silent --show-error --include --http1.1 --connect-timeout 1 --max-time 3 --request GET 'http://127.0.0.1:57027/status?code=SAVE10'",
+          "expected_status": 200,
+          "observed_status": 200,
+          "observed_body": {
+            "code": "SAVE10",
+            "uses_remaining": 0
+          },
+          "passed": true
+        }
+      ],
+      "burst": {
+        "coupon": "SAVE10",
+        "requests_sent": 16,
+        "successful_200_count": 1,
+        "expected_successful_count": 1,
+        "results": [
+          {
+            "status": 409,
+            "body": {
+              "error": "coupon_exhausted"
+            },
+            "elapsed_ms": 8.075
+          },
+          {
+            "status": 200,
+            "body": {
+              "code": "SAVE10",
+              "status": "redeemed"
+            },
+            "elapsed_ms": 1.155
+          },
+          {
+            "status": 409,
+            "body": {
+              "error": "coupon_exhausted"
+            },
+            "elapsed_ms": 2.519
+          },
+          {
+            "status": 409,
+            "body": {
+              "error": "coupon_exhausted"
+            },
+            "elapsed_ms": 1.319
+          },
+          {
+            "status": 409,
+            "body": {
+              "error": "coupon_exhausted"
+            },
+            "elapsed_ms": 2.36
+          },
+          {
+            "status": 409,
+            "body": {
+              "error": "coupon_exhausted"
+            },
+            "elapsed_ms": 9.628
+          },
+          {
+            "status": 409,
+            "body": {
+              "error": "coupon_exhausted"
+            },
+            "elapsed_ms": 2.179
+          },
+          {
+            "status": 409,
+            "body": {
+              "error": "coupon_exhausted"
+            },
+            "elapsed_ms": 1.855
+          },
+          {
+            "status": 409,
+            "body": {
+              "error": "coupon_exhausted"
+            },
+            "elapsed_ms": 9.477
+          },
+          {
+            "status": 409,
+            "body": {
+              "error": "coupon_exhausted"
+            },
+            "elapsed_ms": 5.688
+          },
+          {
+            "status": 409,
+            "body": {
+              "error": "coupon_exhausted"
+            },
+            "elapsed_ms": 1.855
+          },
+          {
+            "status": 409,
+            "body": {
+              "error": "coupon_exhausted"
+            },
+            "elapsed_ms": 1.926
+          },
+          {
+            "status": 409,
+            "body": {
+              "error": "coupon_exhausted"
+            },
+            "elapsed_ms": 1.808
+          },
+          {
+            "status": 409,
+            "body": {
+              "error": "coupon_exhausted"
+            },
+            "elapsed_ms": 5.636
+          },
+          {
+            "status": 409,
+            "body": {
+              "error": "coupon_exhausted"
+            },
+            "elapsed_ms": 1.707
+          },
+          {
+            "status": 409,
+            "body": {
+              "error": "coupon_exhausted"
+            },
+            "elapsed_ms": 1.522
+          }
+        ]
+      },
+      "final_uses_remaining": 0
+    }
+  ],
+  "failures": [],
+  "summary": {
+    "vulnerable-baseline": {
+      "successful_200_counts_by_round": [
+        3,
+        1,
+        8,
+        1,
+        4
+      ],
+      "final_uses_remaining_by_round": [
+        -2,
+        0,
+        -7,
+        0,
+        -3
+      ]
+    },
+    "vulnerable-widened": {
+      "successful_200_counts_by_round": [
+        16,
+        16,
+        16,
+        16,
+        16
+      ],
+      "final_uses_remaining_by_round": [
+        -15,
+        -15,
+        -15,
+        -15,
+        -15
+      ]
+    },
+    "fixed": {
+      "successful_200_counts_by_round": [
+        1,
+        1,
+        1,
+        1,
+        1
+      ],
+      "final_uses_remaining_by_round": [
+        0,
+        0,
+        0,
+        0,
+        0
+      ]
+    }
+  },
+  "finished_at": "2026-11-10T22:53:41.395112+00:00",
+  "all_demonstration_checks_passed": true
+}

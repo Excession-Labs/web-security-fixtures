@@ -1,0 +1,2166 @@
+{
+  "schema_version": 1,
+  "fixture_version": "1.0.0",
+  "started_at": "2026-11-10T22:47:08.320936+00:00",
+  "method": "Real curl subprocesses against two locally spawned fixture modes",
+  "scope": {
+    "hosts": [
+      "127.0.0.1"
+    ],
+    "methods": [
+      "GET",
+      "DELETE"
+    ],
+    "paths": [
+      "/api/me",
+      "/api/admin/users",
+      "/api/admin/audit-log",
+      "/api/admin/accounts/{id}",
+      "/api/admin/debug"
+    ],
+    "data": "Two synthetic sessions and four synthetic accounts; all tokens are public demo values"
+  },
+  "versions": {
+    "python": "3.15.2",
+    "os": "Darwin",
+    "architecture": "arm64",
+    "curl": "curl 8.7.1 (x86_64-apple-darwin24.0) libcurl/8.7.1 (SecureTransport) LibreSSL/3.3.6 zlib/1.2.12 nghttp2/1.64.0"
+  },
+  "sha256": {
+    "fixture.py": "b85b8ef070ace9a05607aedb9131b801284028ebbcef8912de5b0867c1914f64",
+    "verify.py": "2e38cdea5df4033620d7978cbac2e327b7a3505c61e2538c3062e03c5d6ff6a3"
+  },
+  "reproduction_command": "python3 verify.py --output recorded-run",
+  "agent_execution": {
+    "executed": false,
+    "note": "HTTP verification was scripted; no model or Excession agent ran"
+  },
+  "cases": [
+    {
+      "id": "vulnerable/me/anonymous",
+      "started_at": "2026-11-10T22:47:08.368347+00:00",
+      "elapsed_ms": 8.917,
+      "server": {
+        "fixture_version": "1.0.0",
+        "mode": "vulnerable",
+        "base_url": "http://127.0.0.1:53441"
+      },
+      "command": [
+        "curl",
+        "--noproxy",
+        "*",
+        "--silent",
+        "--show-error",
+        "--include",
+        "--http1.1",
+        "--connect-timeout",
+        "1",
+        "--max-time",
+        "3",
+        "--request",
+        "GET",
+        "http://127.0.0.1:53441/api/me"
+      ],
+      "curl_exit_code": 0,
+      "stderr": "",
+      "identity": "anonymous",
+      "method": "GET",
+      "path": "/api/me",
+      "secure_expected_status": 401,
+      "demonstration_expected_status": 401,
+      "observed_status": 401,
+      "observed_body": {
+        "error": "authentication_required"
+      },
+      "matches_demonstration": true,
+      "authorization_boundary_holds": true,
+      "response_file": "vulnerable-me-anonymous.http",
+      "response_sha256": "a46c7c26ae247fb7e1be6fb5ca783b329658f3831afc003a720036d09ec10d70"
+    },
+    {
+      "id": "vulnerable/me/user",
+      "started_at": "2026-11-10T22:47:08.377340+00:00",
+      "elapsed_ms": 8.331,
+      "server": {
+        "fixture_version": "1.0.0",
+        "mode": "vulnerable",
+        "base_url": "http://127.0.0.1:53441"
+      },
+      "command": [
+        "curl",
+        "--noproxy",
+        "*",
+        "--silent",
+        "--show-error",
+        "--include",
+        "--http1.1",
+        "--connect-timeout",
+        "1",
+        "--max-time",
+        "3",
+        "--request",
+        "GET",
+        "--header",
+        "Authorization: Bearer demo-user-token",
+        "http://127.0.0.1:53441/api/me"
+      ],
+      "curl_exit_code": 0,
+      "stderr": "",
+      "identity": "user",
+      "method": "GET",
+      "path": "/api/me",
+      "secure_expected_status": 200,
+      "demonstration_expected_status": 200,
+      "observed_status": 200,
+      "observed_body": {
+        "menu": [
+          "Dashboard",
+          "Reports"
+        ],
+        "name": "user",
+        "role": "user"
+      },
+      "matches_demonstration": true,
+      "authorization_boundary_holds": true,
+      "response_file": "vulnerable-me-user.http",
+      "response_sha256": "80b36d4fae59421ad2b876005cfdfe0a0080b49a58157acc3ed7dec9a90fc8af"
+    },
+    {
+      "id": "vulnerable/me/user-forged-role",
+      "started_at": "2026-11-10T22:47:08.385719+00:00",
+      "elapsed_ms": 7.934,
+      "server": {
+        "fixture_version": "1.0.0",
+        "mode": "vulnerable",
+        "base_url": "http://127.0.0.1:53441"
+      },
+      "command": [
+        "curl",
+        "--noproxy",
+        "*",
+        "--silent",
+        "--show-error",
+        "--include",
+        "--http1.1",
+        "--connect-timeout",
+        "1",
+        "--max-time",
+        "3",
+        "--request",
+        "GET",
+        "--header",
+        "Authorization: Bearer demo-user-token",
+        "--header",
+        "X-Role: admin",
+        "http://127.0.0.1:53441/api/me"
+      ],
+      "curl_exit_code": 0,
+      "stderr": "",
+      "identity": "user-forged-role",
+      "method": "GET",
+      "path": "/api/me",
+      "secure_expected_status": 200,
+      "demonstration_expected_status": 200,
+      "observed_status": 200,
+      "observed_body": {
+        "menu": [
+          "Dashboard",
+          "Reports"
+        ],
+        "name": "user",
+        "role": "user"
+      },
+      "matches_demonstration": true,
+      "authorization_boundary_holds": true,
+      "response_file": "vulnerable-me-user-forged-role.http",
+      "response_sha256": "80b36d4fae59421ad2b876005cfdfe0a0080b49a58157acc3ed7dec9a90fc8af"
+    },
+    {
+      "id": "vulnerable/me/admin",
+      "started_at": "2026-11-10T22:47:08.393699+00:00",
+      "elapsed_ms": 7.589,
+      "server": {
+        "fixture_version": "1.0.0",
+        "mode": "vulnerable",
+        "base_url": "http://127.0.0.1:53441"
+      },
+      "command": [
+        "curl",
+        "--noproxy",
+        "*",
+        "--silent",
+        "--show-error",
+        "--include",
+        "--http1.1",
+        "--connect-timeout",
+        "1",
+        "--max-time",
+        "3",
+        "--request",
+        "GET",
+        "--header",
+        "Authorization: Bearer demo-admin-token",
+        "http://127.0.0.1:53441/api/me"
+      ],
+      "curl_exit_code": 0,
+      "stderr": "",
+      "identity": "admin",
+      "method": "GET",
+      "path": "/api/me",
+      "secure_expected_status": 200,
+      "demonstration_expected_status": 200,
+      "observed_status": 200,
+      "observed_body": {
+        "menu": [
+          "Dashboard",
+          "Reports",
+          "Users",
+          "Audit log"
+        ],
+        "name": "admin",
+        "role": "admin"
+      },
+      "matches_demonstration": true,
+      "authorization_boundary_holds": true,
+      "response_file": "vulnerable-me-admin.http",
+      "response_sha256": "862f6deb38d07fe9f7eaaf8e2aabcd086ba618e86ff5b21d2d97b4dcf68c4d72"
+    },
+    {
+      "id": "vulnerable/admin-users/anonymous",
+      "started_at": "2026-11-10T22:47:08.401346+00:00",
+      "elapsed_ms": 8.883,
+      "server": {
+        "fixture_version": "1.0.0",
+        "mode": "vulnerable",
+        "base_url": "http://127.0.0.1:53441"
+      },
+      "command": [
+        "curl",
+        "--noproxy",
+        "*",
+        "--silent",
+        "--show-error",
+        "--include",
+        "--http1.1",
+        "--connect-timeout",
+        "1",
+        "--max-time",
+        "3",
+        "--request",
+        "GET",
+        "http://127.0.0.1:53441/api/admin/users"
+      ],
+      "curl_exit_code": 0,
+      "stderr": "",
+      "identity": "anonymous",
+      "method": "GET",
+      "path": "/api/admin/users",
+      "secure_expected_status": 401,
+      "demonstration_expected_status": 401,
+      "observed_status": 401,
+      "observed_body": {
+        "error": "authentication_required"
+      },
+      "matches_demonstration": true,
+      "authorization_boundary_holds": true,
+      "response_file": "vulnerable-admin-users-anonymous.http",
+      "response_sha256": "a46c7c26ae247fb7e1be6fb5ca783b329658f3831afc003a720036d09ec10d70"
+    },
+    {
+      "id": "vulnerable/admin-users/user",
+      "started_at": "2026-11-10T22:47:08.410276+00:00",
+      "elapsed_ms": 7.755,
+      "server": {
+        "fixture_version": "1.0.0",
+        "mode": "vulnerable",
+        "base_url": "http://127.0.0.1:53441"
+      },
+      "command": [
+        "curl",
+        "--noproxy",
+        "*",
+        "--silent",
+        "--show-error",
+        "--include",
+        "--http1.1",
+        "--connect-timeout",
+        "1",
+        "--max-time",
+        "3",
+        "--request",
+        "GET",
+        "--header",
+        "Authorization: Bearer demo-user-token",
+        "http://127.0.0.1:53441/api/admin/users"
+      ],
+      "curl_exit_code": 0,
+      "stderr": "",
+      "identity": "user",
+      "method": "GET",
+      "path": "/api/admin/users",
+      "secure_expected_status": 403,
+      "demonstration_expected_status": 200,
+      "observed_status": 200,
+      "observed_body": {
+        "accounts": [
+          {
+            "email": "ten@example.test",
+            "id": "acct-10",
+            "role": "user"
+          },
+          {
+            "email": "seven@example.test",
+            "id": "acct-7",
+            "role": "user"
+          },
+          {
+            "email": "eight@example.test",
+            "id": "acct-8",
+            "role": "user"
+          },
+          {
+            "email": "nine@example.test",
+            "id": "acct-9",
+            "role": "user"
+          }
+        ]
+      },
+      "matches_demonstration": true,
+      "authorization_boundary_holds": false,
+      "response_file": "vulnerable-admin-users-user.http",
+      "response_sha256": "b78d962ad966225d0f947d072a559fd9c8208cb39bd57af1a45209a108c338db"
+    },
+    {
+      "id": "vulnerable/admin-users/user-forged-role",
+      "started_at": "2026-11-10T22:47:08.418081+00:00",
+      "elapsed_ms": 7.357,
+      "server": {
+        "fixture_version": "1.0.0",
+        "mode": "vulnerable",
+        "base_url": "http://127.0.0.1:53441"
+      },
+      "command": [
+        "curl",
+        "--noproxy",
+        "*",
+        "--silent",
+        "--show-error",
+        "--include",
+        "--http1.1",
+        "--connect-timeout",
+        "1",
+        "--max-time",
+        "3",
+        "--request",
+        "GET",
+        "--header",
+        "Authorization: Bearer demo-user-token",
+        "--header",
+        "X-Role: admin",
+        "http://127.0.0.1:53441/api/admin/users"
+      ],
+      "curl_exit_code": 0,
+      "stderr": "",
+      "identity": "user-forged-role",
+      "method": "GET",
+      "path": "/api/admin/users",
+      "secure_expected_status": 403,
+      "demonstration_expected_status": 200,
+      "observed_status": 200,
+      "observed_body": {
+        "accounts": [
+          {
+            "email": "ten@example.test",
+            "id": "acct-10",
+            "role": "user"
+          },
+          {
+            "email": "seven@example.test",
+            "id": "acct-7",
+            "role": "user"
+          },
+          {
+            "email": "eight@example.test",
+            "id": "acct-8",
+            "role": "user"
+          },
+          {
+            "email": "nine@example.test",
+            "id": "acct-9",
+            "role": "user"
+          }
+        ]
+      },
+      "matches_demonstration": true,
+      "authorization_boundary_holds": false,
+      "response_file": "vulnerable-admin-users-user-forged-role.http",
+      "response_sha256": "b78d962ad966225d0f947d072a559fd9c8208cb39bd57af1a45209a108c338db"
+    },
+    {
+      "id": "vulnerable/admin-users/admin",
+      "started_at": "2026-11-10T22:47:08.425491+00:00",
+      "elapsed_ms": 7.354,
+      "server": {
+        "fixture_version": "1.0.0",
+        "mode": "vulnerable",
+        "base_url": "http://127.0.0.1:53441"
+      },
+      "command": [
+        "curl",
+        "--noproxy",
+        "*",
+        "--silent",
+        "--show-error",
+        "--include",
+        "--http1.1",
+        "--connect-timeout",
+        "1",
+        "--max-time",
+        "3",
+        "--request",
+        "GET",
+        "--header",
+        "Authorization: Bearer demo-admin-token",
+        "http://127.0.0.1:53441/api/admin/users"
+      ],
+      "curl_exit_code": 0,
+      "stderr": "",
+      "identity": "admin",
+      "method": "GET",
+      "path": "/api/admin/users",
+      "secure_expected_status": 200,
+      "demonstration_expected_status": 200,
+      "observed_status": 200,
+      "observed_body": {
+        "accounts": [
+          {
+            "email": "ten@example.test",
+            "id": "acct-10",
+            "role": "user"
+          },
+          {
+            "email": "seven@example.test",
+            "id": "acct-7",
+            "role": "user"
+          },
+          {
+            "email": "eight@example.test",
+            "id": "acct-8",
+            "role": "user"
+          },
+          {
+            "email": "nine@example.test",
+            "id": "acct-9",
+            "role": "user"
+          }
+        ]
+      },
+      "matches_demonstration": true,
+      "authorization_boundary_holds": true,
+      "response_file": "vulnerable-admin-users-admin.http",
+      "response_sha256": "b78d962ad966225d0f947d072a559fd9c8208cb39bd57af1a45209a108c338db"
+    },
+    {
+      "id": "vulnerable/admin-audit-log/anonymous",
+      "started_at": "2026-11-10T22:47:08.432899+00:00",
+      "elapsed_ms": 8.358,
+      "server": {
+        "fixture_version": "1.0.0",
+        "mode": "vulnerable",
+        "base_url": "http://127.0.0.1:53441"
+      },
+      "command": [
+        "curl",
+        "--noproxy",
+        "*",
+        "--silent",
+        "--show-error",
+        "--include",
+        "--http1.1",
+        "--connect-timeout",
+        "1",
+        "--max-time",
+        "3",
+        "--request",
+        "GET",
+        "http://127.0.0.1:53441/api/admin/audit-log"
+      ],
+      "curl_exit_code": 0,
+      "stderr": "",
+      "identity": "anonymous",
+      "method": "GET",
+      "path": "/api/admin/audit-log",
+      "secure_expected_status": 401,
+      "demonstration_expected_status": 401,
+      "observed_status": 401,
+      "observed_body": {
+        "error": "authentication_required"
+      },
+      "matches_demonstration": true,
+      "authorization_boundary_holds": true,
+      "response_file": "vulnerable-admin-audit-log-anonymous.http",
+      "response_sha256": "a46c7c26ae247fb7e1be6fb5ca783b329658f3831afc003a720036d09ec10d70"
+    },
+    {
+      "id": "vulnerable/admin-audit-log/user",
+      "started_at": "2026-11-10T22:47:08.441309+00:00",
+      "elapsed_ms": 8.384,
+      "server": {
+        "fixture_version": "1.0.0",
+        "mode": "vulnerable",
+        "base_url": "http://127.0.0.1:53441"
+      },
+      "command": [
+        "curl",
+        "--noproxy",
+        "*",
+        "--silent",
+        "--show-error",
+        "--include",
+        "--http1.1",
+        "--connect-timeout",
+        "1",
+        "--max-time",
+        "3",
+        "--request",
+        "GET",
+        "--header",
+        "Authorization: Bearer demo-user-token",
+        "http://127.0.0.1:53441/api/admin/audit-log"
+      ],
+      "curl_exit_code": 0,
+      "stderr": "",
+      "identity": "user",
+      "method": "GET",
+      "path": "/api/admin/audit-log",
+      "secure_expected_status": 403,
+      "demonstration_expected_status": 403,
+      "observed_status": 403,
+      "observed_body": {
+        "error": "forbidden"
+      },
+      "matches_demonstration": true,
+      "authorization_boundary_holds": true,
+      "response_file": "vulnerable-admin-audit-log-user.http",
+      "response_sha256": "8fcded257ab75d60c1ce0d93f268552a18f2fda4257a7c7829e05a1e22bfb907"
+    },
+    {
+      "id": "vulnerable/admin-audit-log/user-forged-role",
+      "started_at": "2026-11-10T22:47:08.449739+00:00",
+      "elapsed_ms": 7.491,
+      "server": {
+        "fixture_version": "1.0.0",
+        "mode": "vulnerable",
+        "base_url": "http://127.0.0.1:53441"
+      },
+      "command": [
+        "curl",
+        "--noproxy",
+        "*",
+        "--silent",
+        "--show-error",
+        "--include",
+        "--http1.1",
+        "--connect-timeout",
+        "1",
+        "--max-time",
+        "3",
+        "--request",
+        "GET",
+        "--header",
+        "Authorization: Bearer demo-user-token",
+        "--header",
+        "X-Role: admin",
+        "http://127.0.0.1:53441/api/admin/audit-log"
+      ],
+      "curl_exit_code": 0,
+      "stderr": "",
+      "identity": "user-forged-role",
+      "method": "GET",
+      "path": "/api/admin/audit-log",
+      "secure_expected_status": 403,
+      "demonstration_expected_status": 200,
+      "observed_status": 200,
+      "observed_body": {
+        "events": [
+          {
+            "at": "2026-11-10T09:00:00Z",
+            "event": "synthetic login",
+            "who": "admin"
+          }
+        ]
+      },
+      "matches_demonstration": true,
+      "authorization_boundary_holds": false,
+      "response_file": "vulnerable-admin-audit-log-user-forged-role.http",
+      "response_sha256": "c386bf30390c53f369d00233ebe90d0edf565b7b3190f8a609d01b32379a82db"
+    },
+    {
+      "id": "vulnerable/admin-audit-log/admin",
+      "started_at": "2026-11-10T22:47:08.457277+00:00",
+      "elapsed_ms": 8.1,
+      "server": {
+        "fixture_version": "1.0.0",
+        "mode": "vulnerable",
+        "base_url": "http://127.0.0.1:53441"
+      },
+      "command": [
+        "curl",
+        "--noproxy",
+        "*",
+        "--silent",
+        "--show-error",
+        "--include",
+        "--http1.1",
+        "--connect-timeout",
+        "1",
+        "--max-time",
+        "3",
+        "--request",
+        "GET",
+        "--header",
+        "Authorization: Bearer demo-admin-token",
+        "http://127.0.0.1:53441/api/admin/audit-log"
+      ],
+      "curl_exit_code": 0,
+      "stderr": "",
+      "identity": "admin",
+      "method": "GET",
+      "path": "/api/admin/audit-log",
+      "secure_expected_status": 200,
+      "demonstration_expected_status": 200,
+      "observed_status": 200,
+      "observed_body": {
+        "events": [
+          {
+            "at": "2026-11-10T09:00:00Z",
+            "event": "synthetic login",
+            "who": "admin"
+          }
+        ]
+      },
+      "matches_demonstration": true,
+      "authorization_boundary_holds": true,
+      "response_file": "vulnerable-admin-audit-log-admin.http",
+      "response_sha256": "c386bf30390c53f369d00233ebe90d0edf565b7b3190f8a609d01b32379a82db"
+    },
+    {
+      "id": "vulnerable/admin-account-get/anonymous",
+      "started_at": "2026-11-10T22:47:08.465529+00:00",
+      "elapsed_ms": 8.721,
+      "server": {
+        "fixture_version": "1.0.0",
+        "mode": "vulnerable",
+        "base_url": "http://127.0.0.1:53441"
+      },
+      "command": [
+        "curl",
+        "--noproxy",
+        "*",
+        "--silent",
+        "--show-error",
+        "--include",
+        "--http1.1",
+        "--connect-timeout",
+        "1",
+        "--max-time",
+        "3",
+        "--request",
+        "GET",
+        "http://127.0.0.1:53441/api/admin/accounts/acct-7"
+      ],
+      "curl_exit_code": 0,
+      "stderr": "",
+      "identity": "anonymous",
+      "method": "GET",
+      "path": "/api/admin/accounts/acct-7",
+      "secure_expected_status": 401,
+      "demonstration_expected_status": 401,
+      "observed_status": 401,
+      "observed_body": {
+        "error": "authentication_required"
+      },
+      "matches_demonstration": true,
+      "authorization_boundary_holds": true,
+      "response_file": "vulnerable-admin-account-get-anonymous.http",
+      "response_sha256": "a46c7c26ae247fb7e1be6fb5ca783b329658f3831afc003a720036d09ec10d70"
+    },
+    {
+      "id": "vulnerable/admin-account-get/user",
+      "started_at": "2026-11-10T22:47:08.474320+00:00",
+      "elapsed_ms": 8.323,
+      "server": {
+        "fixture_version": "1.0.0",
+        "mode": "vulnerable",
+        "base_url": "http://127.0.0.1:53441"
+      },
+      "command": [
+        "curl",
+        "--noproxy",
+        "*",
+        "--silent",
+        "--show-error",
+        "--include",
+        "--http1.1",
+        "--connect-timeout",
+        "1",
+        "--max-time",
+        "3",
+        "--request",
+        "GET",
+        "--header",
+        "Authorization: Bearer demo-user-token",
+        "http://127.0.0.1:53441/api/admin/accounts/acct-7"
+      ],
+      "curl_exit_code": 0,
+      "stderr": "",
+      "identity": "user",
+      "method": "GET",
+      "path": "/api/admin/accounts/acct-7",
+      "secure_expected_status": 403,
+      "demonstration_expected_status": 403,
+      "observed_status": 403,
+      "observed_body": {
+        "error": "forbidden"
+      },
+      "matches_demonstration": true,
+      "authorization_boundary_holds": true,
+      "response_file": "vulnerable-admin-account-get-user.http",
+      "response_sha256": "8fcded257ab75d60c1ce0d93f268552a18f2fda4257a7c7829e05a1e22bfb907"
+    },
+    {
+      "id": "vulnerable/admin-account-get/user-forged-role",
+      "started_at": "2026-11-10T22:47:08.482694+00:00",
+      "elapsed_ms": 9.066,
+      "server": {
+        "fixture_version": "1.0.0",
+        "mode": "vulnerable",
+        "base_url": "http://127.0.0.1:53441"
+      },
+      "command": [
+        "curl",
+        "--noproxy",
+        "*",
+        "--silent",
+        "--show-error",
+        "--include",
+        "--http1.1",
+        "--connect-timeout",
+        "1",
+        "--max-time",
+        "3",
+        "--request",
+        "GET",
+        "--header",
+        "Authorization: Bearer demo-user-token",
+        "--header",
+        "X-Role: admin",
+        "http://127.0.0.1:53441/api/admin/accounts/acct-7"
+      ],
+      "curl_exit_code": 0,
+      "stderr": "",
+      "identity": "user-forged-role",
+      "method": "GET",
+      "path": "/api/admin/accounts/acct-7",
+      "secure_expected_status": 403,
+      "demonstration_expected_status": 403,
+      "observed_status": 403,
+      "observed_body": {
+        "error": "forbidden"
+      },
+      "matches_demonstration": true,
+      "authorization_boundary_holds": true,
+      "response_file": "vulnerable-admin-account-get-user-forged-role.http",
+      "response_sha256": "8fcded257ab75d60c1ce0d93f268552a18f2fda4257a7c7829e05a1e22bfb907"
+    },
+    {
+      "id": "vulnerable/admin-account-get/admin",
+      "started_at": "2026-11-10T22:47:08.491816+00:00",
+      "elapsed_ms": 10.283,
+      "server": {
+        "fixture_version": "1.0.0",
+        "mode": "vulnerable",
+        "base_url": "http://127.0.0.1:53441"
+      },
+      "command": [
+        "curl",
+        "--noproxy",
+        "*",
+        "--silent",
+        "--show-error",
+        "--include",
+        "--http1.1",
+        "--connect-timeout",
+        "1",
+        "--max-time",
+        "3",
+        "--request",
+        "GET",
+        "--header",
+        "Authorization: Bearer demo-admin-token",
+        "http://127.0.0.1:53441/api/admin/accounts/acct-7"
+      ],
+      "curl_exit_code": 0,
+      "stderr": "",
+      "identity": "admin",
+      "method": "GET",
+      "path": "/api/admin/accounts/acct-7",
+      "secure_expected_status": 200,
+      "demonstration_expected_status": 200,
+      "observed_status": 200,
+      "observed_body": {
+        "email": "seven@example.test",
+        "id": "acct-7",
+        "role": "user"
+      },
+      "matches_demonstration": true,
+      "authorization_boundary_holds": true,
+      "response_file": "vulnerable-admin-account-get-admin.http",
+      "response_sha256": "3ccd51ec83fa02dd1dc312560b56495fa9ff6ba350e1cb3cce7874863f56d633"
+    },
+    {
+      "id": "vulnerable/admin-account-delete/anonymous",
+      "started_at": "2026-11-10T22:47:08.502159+00:00",
+      "elapsed_ms": 10.77,
+      "server": {
+        "fixture_version": "1.0.0",
+        "mode": "vulnerable",
+        "base_url": "http://127.0.0.1:53441"
+      },
+      "command": [
+        "curl",
+        "--noproxy",
+        "*",
+        "--silent",
+        "--show-error",
+        "--include",
+        "--http1.1",
+        "--connect-timeout",
+        "1",
+        "--max-time",
+        "3",
+        "--request",
+        "DELETE",
+        "http://127.0.0.1:53441/api/admin/accounts/acct-7"
+      ],
+      "curl_exit_code": 0,
+      "stderr": "",
+      "identity": "anonymous",
+      "method": "DELETE",
+      "path": "/api/admin/accounts/acct-7",
+      "secure_expected_status": 401,
+      "demonstration_expected_status": 401,
+      "observed_status": 401,
+      "observed_body": {
+        "error": "authentication_required"
+      },
+      "matches_demonstration": true,
+      "authorization_boundary_holds": true,
+      "response_file": "vulnerable-admin-account-delete-anonymous.http",
+      "response_sha256": "a46c7c26ae247fb7e1be6fb5ca783b329658f3831afc003a720036d09ec10d70"
+    },
+    {
+      "id": "vulnerable/admin-account-delete/user",
+      "started_at": "2026-11-10T22:47:08.513001+00:00",
+      "elapsed_ms": 9.403,
+      "server": {
+        "fixture_version": "1.0.0",
+        "mode": "vulnerable",
+        "base_url": "http://127.0.0.1:53441"
+      },
+      "command": [
+        "curl",
+        "--noproxy",
+        "*",
+        "--silent",
+        "--show-error",
+        "--include",
+        "--http1.1",
+        "--connect-timeout",
+        "1",
+        "--max-time",
+        "3",
+        "--request",
+        "DELETE",
+        "--header",
+        "Authorization: Bearer demo-user-token",
+        "http://127.0.0.1:53441/api/admin/accounts/acct-8"
+      ],
+      "curl_exit_code": 0,
+      "stderr": "",
+      "identity": "user",
+      "method": "DELETE",
+      "path": "/api/admin/accounts/acct-8",
+      "secure_expected_status": 403,
+      "demonstration_expected_status": 204,
+      "observed_status": 204,
+      "observed_body": null,
+      "matches_demonstration": true,
+      "authorization_boundary_holds": false,
+      "response_file": "vulnerable-admin-account-delete-user.http",
+      "response_sha256": "3bab80f2b5b8f712a9bd53bda0c723c788610ab5589aac8cf3790aca740eb46f"
+    },
+    {
+      "id": "vulnerable/admin-account-delete/user-forged-role",
+      "started_at": "2026-11-10T22:47:08.522485+00:00",
+      "elapsed_ms": 11.879,
+      "server": {
+        "fixture_version": "1.0.0",
+        "mode": "vulnerable",
+        "base_url": "http://127.0.0.1:53441"
+      },
+      "command": [
+        "curl",
+        "--noproxy",
+        "*",
+        "--silent",
+        "--show-error",
+        "--include",
+        "--http1.1",
+        "--connect-timeout",
+        "1",
+        "--max-time",
+        "3",
+        "--request",
+        "DELETE",
+        "--header",
+        "Authorization: Bearer demo-user-token",
+        "--header",
+        "X-Role: admin",
+        "http://127.0.0.1:53441/api/admin/accounts/acct-9"
+      ],
+      "curl_exit_code": 0,
+      "stderr": "",
+      "identity": "user-forged-role",
+      "method": "DELETE",
+      "path": "/api/admin/accounts/acct-9",
+      "secure_expected_status": 403,
+      "demonstration_expected_status": 204,
+      "observed_status": 204,
+      "observed_body": null,
+      "matches_demonstration": true,
+      "authorization_boundary_holds": false,
+      "response_file": "vulnerable-admin-account-delete-user-forged-role.http",
+      "response_sha256": "3bab80f2b5b8f712a9bd53bda0c723c788610ab5589aac8cf3790aca740eb46f"
+    },
+    {
+      "id": "vulnerable/admin-account-delete/admin",
+      "started_at": "2026-11-10T22:47:08.534456+00:00",
+      "elapsed_ms": 7.876,
+      "server": {
+        "fixture_version": "1.0.0",
+        "mode": "vulnerable",
+        "base_url": "http://127.0.0.1:53441"
+      },
+      "command": [
+        "curl",
+        "--noproxy",
+        "*",
+        "--silent",
+        "--show-error",
+        "--include",
+        "--http1.1",
+        "--connect-timeout",
+        "1",
+        "--max-time",
+        "3",
+        "--request",
+        "DELETE",
+        "--header",
+        "Authorization: Bearer demo-admin-token",
+        "http://127.0.0.1:53441/api/admin/accounts/acct-10"
+      ],
+      "curl_exit_code": 0,
+      "stderr": "",
+      "identity": "admin",
+      "method": "DELETE",
+      "path": "/api/admin/accounts/acct-10",
+      "secure_expected_status": 204,
+      "demonstration_expected_status": 204,
+      "observed_status": 204,
+      "observed_body": null,
+      "matches_demonstration": true,
+      "authorization_boundary_holds": true,
+      "response_file": "vulnerable-admin-account-delete-admin.http",
+      "response_sha256": "3bab80f2b5b8f712a9bd53bda0c723c788610ab5589aac8cf3790aca740eb46f"
+    },
+    {
+      "id": "vulnerable/state-check/admin-reads-acct-8",
+      "started_at": "2026-11-10T22:47:08.542394+00:00",
+      "elapsed_ms": 11.116,
+      "server": {
+        "fixture_version": "1.0.0",
+        "mode": "vulnerable",
+        "base_url": "http://127.0.0.1:53441"
+      },
+      "command": [
+        "curl",
+        "--noproxy",
+        "*",
+        "--silent",
+        "--show-error",
+        "--include",
+        "--http1.1",
+        "--connect-timeout",
+        "1",
+        "--max-time",
+        "3",
+        "--request",
+        "GET",
+        "--header",
+        "Authorization: Bearer demo-admin-token",
+        "http://127.0.0.1:53441/api/admin/accounts/acct-8"
+      ],
+      "curl_exit_code": 0,
+      "stderr": "",
+      "identity": "admin",
+      "method": "GET",
+      "path": "/api/admin/accounts/acct-8",
+      "secure_expected_status": 200,
+      "demonstration_expected_status": 404,
+      "observed_status": 404,
+      "observed_body": {
+        "error": "not_found"
+      },
+      "matches_demonstration": true,
+      "authorization_boundary_holds": false,
+      "response_file": "vulnerable-state-check-admin-reads-acct-8.http",
+      "response_sha256": "294c020a1460ec5eb17dddef442fa1aa37c78586c57a81565c350b9670241e91"
+    },
+    {
+      "id": "vulnerable/unlisted-route/admin",
+      "started_at": "2026-11-10T22:47:08.553581+00:00",
+      "elapsed_ms": 7.813,
+      "server": {
+        "fixture_version": "1.0.0",
+        "mode": "vulnerable",
+        "base_url": "http://127.0.0.1:53441"
+      },
+      "command": [
+        "curl",
+        "--noproxy",
+        "*",
+        "--silent",
+        "--show-error",
+        "--include",
+        "--http1.1",
+        "--connect-timeout",
+        "1",
+        "--max-time",
+        "3",
+        "--request",
+        "GET",
+        "--header",
+        "Authorization: Bearer demo-admin-token",
+        "http://127.0.0.1:53441/api/admin/debug"
+      ],
+      "curl_exit_code": 0,
+      "stderr": "",
+      "identity": "admin",
+      "method": "GET",
+      "path": "/api/admin/debug",
+      "secure_expected_status": 403,
+      "demonstration_expected_status": 200,
+      "observed_status": 200,
+      "observed_body": {
+        "debug": "synthetic build info"
+      },
+      "matches_demonstration": true,
+      "authorization_boundary_holds": false,
+      "response_file": "vulnerable-unlisted-route-admin.http",
+      "response_sha256": "c97ff711cfcbc0437f80724e0946ac0e3987e3d0c8b1467e6ebb8e6d844b6a44"
+    },
+    {
+      "id": "vulnerable/unlisted-route/user",
+      "started_at": "2026-11-10T22:47:08.561458+00:00",
+      "elapsed_ms": 7.842,
+      "server": {
+        "fixture_version": "1.0.0",
+        "mode": "vulnerable",
+        "base_url": "http://127.0.0.1:53441"
+      },
+      "command": [
+        "curl",
+        "--noproxy",
+        "*",
+        "--silent",
+        "--show-error",
+        "--include",
+        "--http1.1",
+        "--connect-timeout",
+        "1",
+        "--max-time",
+        "3",
+        "--request",
+        "GET",
+        "--header",
+        "Authorization: Bearer demo-user-token",
+        "http://127.0.0.1:53441/api/admin/debug"
+      ],
+      "curl_exit_code": 0,
+      "stderr": "",
+      "identity": "user",
+      "method": "GET",
+      "path": "/api/admin/debug",
+      "secure_expected_status": 403,
+      "demonstration_expected_status": 200,
+      "observed_status": 200,
+      "observed_body": {
+        "debug": "synthetic build info"
+      },
+      "matches_demonstration": true,
+      "authorization_boundary_holds": false,
+      "response_file": "vulnerable-unlisted-route-user.http",
+      "response_sha256": "c97ff711cfcbc0437f80724e0946ac0e3987e3d0c8b1467e6ebb8e6d844b6a44"
+    },
+    {
+      "id": "fixed/me/anonymous",
+      "started_at": "2026-11-10T22:47:08.603536+00:00",
+      "elapsed_ms": 9.818,
+      "server": {
+        "fixture_version": "1.0.0",
+        "mode": "fixed",
+        "base_url": "http://127.0.0.1:53466"
+      },
+      "command": [
+        "curl",
+        "--noproxy",
+        "*",
+        "--silent",
+        "--show-error",
+        "--include",
+        "--http1.1",
+        "--connect-timeout",
+        "1",
+        "--max-time",
+        "3",
+        "--request",
+        "GET",
+        "http://127.0.0.1:53466/api/me"
+      ],
+      "curl_exit_code": 0,
+      "stderr": "",
+      "identity": "anonymous",
+      "method": "GET",
+      "path": "/api/me",
+      "secure_expected_status": 401,
+      "demonstration_expected_status": 401,
+      "observed_status": 401,
+      "observed_body": {
+        "error": "authentication_required"
+      },
+      "matches_demonstration": true,
+      "authorization_boundary_holds": true,
+      "response_file": "fixed-me-anonymous.http",
+      "response_sha256": "a46c7c26ae247fb7e1be6fb5ca783b329658f3831afc003a720036d09ec10d70"
+    },
+    {
+      "id": "fixed/me/user",
+      "started_at": "2026-11-10T22:47:08.613411+00:00",
+      "elapsed_ms": 7.116,
+      "server": {
+        "fixture_version": "1.0.0",
+        "mode": "fixed",
+        "base_url": "http://127.0.0.1:53466"
+      },
+      "command": [
+        "curl",
+        "--noproxy",
+        "*",
+        "--silent",
+        "--show-error",
+        "--include",
+        "--http1.1",
+        "--connect-timeout",
+        "1",
+        "--max-time",
+        "3",
+        "--request",
+        "GET",
+        "--header",
+        "Authorization: Bearer demo-user-token",
+        "http://127.0.0.1:53466/api/me"
+      ],
+      "curl_exit_code": 0,
+      "stderr": "",
+      "identity": "user",
+      "method": "GET",
+      "path": "/api/me",
+      "secure_expected_status": 200,
+      "demonstration_expected_status": 200,
+      "observed_status": 200,
+      "observed_body": {
+        "menu": [
+          "Dashboard",
+          "Reports"
+        ],
+        "name": "user",
+        "role": "user"
+      },
+      "matches_demonstration": true,
+      "authorization_boundary_holds": true,
+      "response_file": "fixed-me-user.http",
+      "response_sha256": "80b36d4fae59421ad2b876005cfdfe0a0080b49a58157acc3ed7dec9a90fc8af"
+    },
+    {
+      "id": "fixed/me/user-forged-role",
+      "started_at": "2026-11-10T22:47:08.620572+00:00",
+      "elapsed_ms": 7.167,
+      "server": {
+        "fixture_version": "1.0.0",
+        "mode": "fixed",
+        "base_url": "http://127.0.0.1:53466"
+      },
+      "command": [
+        "curl",
+        "--noproxy",
+        "*",
+        "--silent",
+        "--show-error",
+        "--include",
+        "--http1.1",
+        "--connect-timeout",
+        "1",
+        "--max-time",
+        "3",
+        "--request",
+        "GET",
+        "--header",
+        "Authorization: Bearer demo-user-token",
+        "--header",
+        "X-Role: admin",
+        "http://127.0.0.1:53466/api/me"
+      ],
+      "curl_exit_code": 0,
+      "stderr": "",
+      "identity": "user-forged-role",
+      "method": "GET",
+      "path": "/api/me",
+      "secure_expected_status": 200,
+      "demonstration_expected_status": 200,
+      "observed_status": 200,
+      "observed_body": {
+        "menu": [
+          "Dashboard",
+          "Reports"
+        ],
+        "name": "user",
+        "role": "user"
+      },
+      "matches_demonstration": true,
+      "authorization_boundary_holds": true,
+      "response_file": "fixed-me-user-forged-role.http",
+      "response_sha256": "80b36d4fae59421ad2b876005cfdfe0a0080b49a58157acc3ed7dec9a90fc8af"
+    },
+    {
+      "id": "fixed/me/admin",
+      "started_at": "2026-11-10T22:47:08.627795+00:00",
+      "elapsed_ms": 6.637,
+      "server": {
+        "fixture_version": "1.0.0",
+        "mode": "fixed",
+        "base_url": "http://127.0.0.1:53466"
+      },
+      "command": [
+        "curl",
+        "--noproxy",
+        "*",
+        "--silent",
+        "--show-error",
+        "--include",
+        "--http1.1",
+        "--connect-timeout",
+        "1",
+        "--max-time",
+        "3",
+        "--request",
+        "GET",
+        "--header",
+        "Authorization: Bearer demo-admin-token",
+        "http://127.0.0.1:53466/api/me"
+      ],
+      "curl_exit_code": 0,
+      "stderr": "",
+      "identity": "admin",
+      "method": "GET",
+      "path": "/api/me",
+      "secure_expected_status": 200,
+      "demonstration_expected_status": 200,
+      "observed_status": 200,
+      "observed_body": {
+        "menu": [
+          "Dashboard",
+          "Reports",
+          "Users",
+          "Audit log"
+        ],
+        "name": "admin",
+        "role": "admin"
+      },
+      "matches_demonstration": true,
+      "authorization_boundary_holds": true,
+      "response_file": "fixed-me-admin.http",
+      "response_sha256": "862f6deb38d07fe9f7eaaf8e2aabcd086ba618e86ff5b21d2d97b4dcf68c4d72"
+    },
+    {
+      "id": "fixed/admin-users/anonymous",
+      "started_at": "2026-11-10T22:47:08.634479+00:00",
+      "elapsed_ms": 6.743,
+      "server": {
+        "fixture_version": "1.0.0",
+        "mode": "fixed",
+        "base_url": "http://127.0.0.1:53466"
+      },
+      "command": [
+        "curl",
+        "--noproxy",
+        "*",
+        "--silent",
+        "--show-error",
+        "--include",
+        "--http1.1",
+        "--connect-timeout",
+        "1",
+        "--max-time",
+        "3",
+        "--request",
+        "GET",
+        "http://127.0.0.1:53466/api/admin/users"
+      ],
+      "curl_exit_code": 0,
+      "stderr": "",
+      "identity": "anonymous",
+      "method": "GET",
+      "path": "/api/admin/users",
+      "secure_expected_status": 401,
+      "demonstration_expected_status": 401,
+      "observed_status": 401,
+      "observed_body": {
+        "error": "authentication_required"
+      },
+      "matches_demonstration": true,
+      "authorization_boundary_holds": true,
+      "response_file": "fixed-admin-users-anonymous.http",
+      "response_sha256": "a46c7c26ae247fb7e1be6fb5ca783b329658f3831afc003a720036d09ec10d70"
+    },
+    {
+      "id": "fixed/admin-users/user",
+      "started_at": "2026-11-10T22:47:08.641272+00:00",
+      "elapsed_ms": 6.501,
+      "server": {
+        "fixture_version": "1.0.0",
+        "mode": "fixed",
+        "base_url": "http://127.0.0.1:53466"
+      },
+      "command": [
+        "curl",
+        "--noproxy",
+        "*",
+        "--silent",
+        "--show-error",
+        "--include",
+        "--http1.1",
+        "--connect-timeout",
+        "1",
+        "--max-time",
+        "3",
+        "--request",
+        "GET",
+        "--header",
+        "Authorization: Bearer demo-user-token",
+        "http://127.0.0.1:53466/api/admin/users"
+      ],
+      "curl_exit_code": 0,
+      "stderr": "",
+      "identity": "user",
+      "method": "GET",
+      "path": "/api/admin/users",
+      "secure_expected_status": 403,
+      "demonstration_expected_status": 403,
+      "observed_status": 403,
+      "observed_body": {
+        "error": "forbidden"
+      },
+      "matches_demonstration": true,
+      "authorization_boundary_holds": true,
+      "response_file": "fixed-admin-users-user.http",
+      "response_sha256": "8fcded257ab75d60c1ce0d93f268552a18f2fda4257a7c7829e05a1e22bfb907"
+    },
+    {
+      "id": "fixed/admin-users/user-forged-role",
+      "started_at": "2026-11-10T22:47:08.647828+00:00",
+      "elapsed_ms": 7.803,
+      "server": {
+        "fixture_version": "1.0.0",
+        "mode": "fixed",
+        "base_url": "http://127.0.0.1:53466"
+      },
+      "command": [
+        "curl",
+        "--noproxy",
+        "*",
+        "--silent",
+        "--show-error",
+        "--include",
+        "--http1.1",
+        "--connect-timeout",
+        "1",
+        "--max-time",
+        "3",
+        "--request",
+        "GET",
+        "--header",
+        "Authorization: Bearer demo-user-token",
+        "--header",
+        "X-Role: admin",
+        "http://127.0.0.1:53466/api/admin/users"
+      ],
+      "curl_exit_code": 0,
+      "stderr": "",
+      "identity": "user-forged-role",
+      "method": "GET",
+      "path": "/api/admin/users",
+      "secure_expected_status": 403,
+      "demonstration_expected_status": 403,
+      "observed_status": 403,
+      "observed_body": {
+        "error": "forbidden"
+      },
+      "matches_demonstration": true,
+      "authorization_boundary_holds": true,
+      "response_file": "fixed-admin-users-user-forged-role.http",
+      "response_sha256": "8fcded257ab75d60c1ce0d93f268552a18f2fda4257a7c7829e05a1e22bfb907"
+    },
+    {
+      "id": "fixed/admin-users/admin",
+      "started_at": "2026-11-10T22:47:08.655681+00:00",
+      "elapsed_ms": 6.652,
+      "server": {
+        "fixture_version": "1.0.0",
+        "mode": "fixed",
+        "base_url": "http://127.0.0.1:53466"
+      },
+      "command": [
+        "curl",
+        "--noproxy",
+        "*",
+        "--silent",
+        "--show-error",
+        "--include",
+        "--http1.1",
+        "--connect-timeout",
+        "1",
+        "--max-time",
+        "3",
+        "--request",
+        "GET",
+        "--header",
+        "Authorization: Bearer demo-admin-token",
+        "http://127.0.0.1:53466/api/admin/users"
+      ],
+      "curl_exit_code": 0,
+      "stderr": "",
+      "identity": "admin",
+      "method": "GET",
+      "path": "/api/admin/users",
+      "secure_expected_status": 200,
+      "demonstration_expected_status": 200,
+      "observed_status": 200,
+      "observed_body": {
+        "accounts": [
+          {
+            "email": "ten@example.test",
+            "id": "acct-10",
+            "role": "user"
+          },
+          {
+            "email": "seven@example.test",
+            "id": "acct-7",
+            "role": "user"
+          },
+          {
+            "email": "eight@example.test",
+            "id": "acct-8",
+            "role": "user"
+          },
+          {
+            "email": "nine@example.test",
+            "id": "acct-9",
+            "role": "user"
+          }
+        ]
+      },
+      "matches_demonstration": true,
+      "authorization_boundary_holds": true,
+      "response_file": "fixed-admin-users-admin.http",
+      "response_sha256": "b78d962ad966225d0f947d072a559fd9c8208cb39bd57af1a45209a108c338db"
+    },
+    {
+      "id": "fixed/admin-audit-log/anonymous",
+      "started_at": "2026-11-10T22:47:08.662381+00:00",
+      "elapsed_ms": 6.714,
+      "server": {
+        "fixture_version": "1.0.0",
+        "mode": "fixed",
+        "base_url": "http://127.0.0.1:53466"
+      },
+      "command": [
+        "curl",
+        "--noproxy",
+        "*",
+        "--silent",
+        "--show-error",
+        "--include",
+        "--http1.1",
+        "--connect-timeout",
+        "1",
+        "--max-time",
+        "3",
+        "--request",
+        "GET",
+        "http://127.0.0.1:53466/api/admin/audit-log"
+      ],
+      "curl_exit_code": 0,
+      "stderr": "",
+      "identity": "anonymous",
+      "method": "GET",
+      "path": "/api/admin/audit-log",
+      "secure_expected_status": 401,
+      "demonstration_expected_status": 401,
+      "observed_status": 401,
+      "observed_body": {
+        "error": "authentication_required"
+      },
+      "matches_demonstration": true,
+      "authorization_boundary_holds": true,
+      "response_file": "fixed-admin-audit-log-anonymous.http",
+      "response_sha256": "a46c7c26ae247fb7e1be6fb5ca783b329658f3831afc003a720036d09ec10d70"
+    },
+    {
+      "id": "fixed/admin-audit-log/user",
+      "started_at": "2026-11-10T22:47:08.669145+00:00",
+      "elapsed_ms": 7.989,
+      "server": {
+        "fixture_version": "1.0.0",
+        "mode": "fixed",
+        "base_url": "http://127.0.0.1:53466"
+      },
+      "command": [
+        "curl",
+        "--noproxy",
+        "*",
+        "--silent",
+        "--show-error",
+        "--include",
+        "--http1.1",
+        "--connect-timeout",
+        "1",
+        "--max-time",
+        "3",
+        "--request",
+        "GET",
+        "--header",
+        "Authorization: Bearer demo-user-token",
+        "http://127.0.0.1:53466/api/admin/audit-log"
+      ],
+      "curl_exit_code": 0,
+      "stderr": "",
+      "identity": "user",
+      "method": "GET",
+      "path": "/api/admin/audit-log",
+      "secure_expected_status": 403,
+      "demonstration_expected_status": 403,
+      "observed_status": 403,
+      "observed_body": {
+        "error": "forbidden"
+      },
+      "matches_demonstration": true,
+      "authorization_boundary_holds": true,
+      "response_file": "fixed-admin-audit-log-user.http",
+      "response_sha256": "8fcded257ab75d60c1ce0d93f268552a18f2fda4257a7c7829e05a1e22bfb907"
+    },
+    {
+      "id": "fixed/admin-audit-log/user-forged-role",
+      "started_at": "2026-11-10T22:47:08.677185+00:00",
+      "elapsed_ms": 7.492,
+      "server": {
+        "fixture_version": "1.0.0",
+        "mode": "fixed",
+        "base_url": "http://127.0.0.1:53466"
+      },
+      "command": [
+        "curl",
+        "--noproxy",
+        "*",
+        "--silent",
+        "--show-error",
+        "--include",
+        "--http1.1",
+        "--connect-timeout",
+        "1",
+        "--max-time",
+        "3",
+        "--request",
+        "GET",
+        "--header",
+        "Authorization: Bearer demo-user-token",
+        "--header",
+        "X-Role: admin",
+        "http://127.0.0.1:53466/api/admin/audit-log"
+      ],
+      "curl_exit_code": 0,
+      "stderr": "",
+      "identity": "user-forged-role",
+      "method": "GET",
+      "path": "/api/admin/audit-log",
+      "secure_expected_status": 403,
+      "demonstration_expected_status": 403,
+      "observed_status": 403,
+      "observed_body": {
+        "error": "forbidden"
+      },
+      "matches_demonstration": true,
+      "authorization_boundary_holds": true,
+      "response_file": "fixed-admin-audit-log-user-forged-role.http",
+      "response_sha256": "8fcded257ab75d60c1ce0d93f268552a18f2fda4257a7c7829e05a1e22bfb907"
+    },
+    {
+      "id": "fixed/admin-audit-log/admin",
+      "started_at": "2026-11-10T22:47:08.684722+00:00",
+      "elapsed_ms": 6.773,
+      "server": {
+        "fixture_version": "1.0.0",
+        "mode": "fixed",
+        "base_url": "http://127.0.0.1:53466"
+      },
+      "command": [
+        "curl",
+        "--noproxy",
+        "*",
+        "--silent",
+        "--show-error",
+        "--include",
+        "--http1.1",
+        "--connect-timeout",
+        "1",
+        "--max-time",
+        "3",
+        "--request",
+        "GET",
+        "--header",
+        "Authorization: Bearer demo-admin-token",
+        "http://127.0.0.1:53466/api/admin/audit-log"
+      ],
+      "curl_exit_code": 0,
+      "stderr": "",
+      "identity": "admin",
+      "method": "GET",
+      "path": "/api/admin/audit-log",
+      "secure_expected_status": 200,
+      "demonstration_expected_status": 200,
+      "observed_status": 200,
+      "observed_body": {
+        "events": [
+          {
+            "at": "2026-11-10T09:00:00Z",
+            "event": "synthetic login",
+            "who": "admin"
+          }
+        ]
+      },
+      "matches_demonstration": true,
+      "authorization_boundary_holds": true,
+      "response_file": "fixed-admin-audit-log-admin.http",
+      "response_sha256": "c386bf30390c53f369d00233ebe90d0edf565b7b3190f8a609d01b32379a82db"
+    },
+    {
+      "id": "fixed/admin-account-get/anonymous",
+      "started_at": "2026-11-10T22:47:08.691540+00:00",
+      "elapsed_ms": 6.693,
+      "server": {
+        "fixture_version": "1.0.0",
+        "mode": "fixed",
+        "base_url": "http://127.0.0.1:53466"
+      },
+      "command": [
+        "curl",
+        "--noproxy",
+        "*",
+        "--silent",
+        "--show-error",
+        "--include",
+        "--http1.1",
+        "--connect-timeout",
+        "1",
+        "--max-time",
+        "3",
+        "--request",
+        "GET",
+        "http://127.0.0.1:53466/api/admin/accounts/acct-7"
+      ],
+      "curl_exit_code": 0,
+      "stderr": "",
+      "identity": "anonymous",
+      "method": "GET",
+      "path": "/api/admin/accounts/acct-7",
+      "secure_expected_status": 401,
+      "demonstration_expected_status": 401,
+      "observed_status": 401,
+      "observed_body": {
+        "error": "authentication_required"
+      },
+      "matches_demonstration": true,
+      "authorization_boundary_holds": true,
+      "response_file": "fixed-admin-account-get-anonymous.http",
+      "response_sha256": "a46c7c26ae247fb7e1be6fb5ca783b329658f3831afc003a720036d09ec10d70"
+    },
+    {
+      "id": "fixed/admin-account-get/user",
+      "started_at": "2026-11-10T22:47:08.698281+00:00",
+      "elapsed_ms": 8.506,
+      "server": {
+        "fixture_version": "1.0.0",
+        "mode": "fixed",
+        "base_url": "http://127.0.0.1:53466"
+      },
+      "command": [
+        "curl",
+        "--noproxy",
+        "*",
+        "--silent",
+        "--show-error",
+        "--include",
+        "--http1.1",
+        "--connect-timeout",
+        "1",
+        "--max-time",
+        "3",
+        "--request",
+        "GET",
+        "--header",
+        "Authorization: Bearer demo-user-token",
+        "http://127.0.0.1:53466/api/admin/accounts/acct-7"
+      ],
+      "curl_exit_code": 0,
+      "stderr": "",
+      "identity": "user",
+      "method": "GET",
+      "path": "/api/admin/accounts/acct-7",
+      "secure_expected_status": 403,
+      "demonstration_expected_status": 403,
+      "observed_status": 403,
+      "observed_body": {
+        "error": "forbidden"
+      },
+      "matches_demonstration": true,
+      "authorization_boundary_holds": true,
+      "response_file": "fixed-admin-account-get-user.http",
+      "response_sha256": "8fcded257ab75d60c1ce0d93f268552a18f2fda4257a7c7829e05a1e22bfb907"
+    },
+    {
+      "id": "fixed/admin-account-get/user-forged-role",
+      "started_at": "2026-11-10T22:47:08.706840+00:00",
+      "elapsed_ms": 7.598,
+      "server": {
+        "fixture_version": "1.0.0",
+        "mode": "fixed",
+        "base_url": "http://127.0.0.1:53466"
+      },
+      "command": [
+        "curl",
+        "--noproxy",
+        "*",
+        "--silent",
+        "--show-error",
+        "--include",
+        "--http1.1",
+        "--connect-timeout",
+        "1",
+        "--max-time",
+        "3",
+        "--request",
+        "GET",
+        "--header",
+        "Authorization: Bearer demo-user-token",
+        "--header",
+        "X-Role: admin",
+        "http://127.0.0.1:53466/api/admin/accounts/acct-7"
+      ],
+      "curl_exit_code": 0,
+      "stderr": "",
+      "identity": "user-forged-role",
+      "method": "GET",
+      "path": "/api/admin/accounts/acct-7",
+      "secure_expected_status": 403,
+      "demonstration_expected_status": 403,
+      "observed_status": 403,
+      "observed_body": {
+        "error": "forbidden"
+      },
+      "matches_demonstration": true,
+      "authorization_boundary_holds": true,
+      "response_file": "fixed-admin-account-get-user-forged-role.http",
+      "response_sha256": "8fcded257ab75d60c1ce0d93f268552a18f2fda4257a7c7829e05a1e22bfb907"
+    },
+    {
+      "id": "fixed/admin-account-get/admin",
+      "started_at": "2026-11-10T22:47:08.714488+00:00",
+      "elapsed_ms": 7.08,
+      "server": {
+        "fixture_version": "1.0.0",
+        "mode": "fixed",
+        "base_url": "http://127.0.0.1:53466"
+      },
+      "command": [
+        "curl",
+        "--noproxy",
+        "*",
+        "--silent",
+        "--show-error",
+        "--include",
+        "--http1.1",
+        "--connect-timeout",
+        "1",
+        "--max-time",
+        "3",
+        "--request",
+        "GET",
+        "--header",
+        "Authorization: Bearer demo-admin-token",
+        "http://127.0.0.1:53466/api/admin/accounts/acct-7"
+      ],
+      "curl_exit_code": 0,
+      "stderr": "",
+      "identity": "admin",
+      "method": "GET",
+      "path": "/api/admin/accounts/acct-7",
+      "secure_expected_status": 200,
+      "demonstration_expected_status": 200,
+      "observed_status": 200,
+      "observed_body": {
+        "email": "seven@example.test",
+        "id": "acct-7",
+        "role": "user"
+      },
+      "matches_demonstration": true,
+      "authorization_boundary_holds": true,
+      "response_file": "fixed-admin-account-get-admin.http",
+      "response_sha256": "3ccd51ec83fa02dd1dc312560b56495fa9ff6ba350e1cb3cce7874863f56d633"
+    },
+    {
+      "id": "fixed/admin-account-delete/anonymous",
+      "started_at": "2026-11-10T22:47:08.721616+00:00",
+      "elapsed_ms": 7.094,
+      "server": {
+        "fixture_version": "1.0.0",
+        "mode": "fixed",
+        "base_url": "http://127.0.0.1:53466"
+      },
+      "command": [
+        "curl",
+        "--noproxy",
+        "*",
+        "--silent",
+        "--show-error",
+        "--include",
+        "--http1.1",
+        "--connect-timeout",
+        "1",
+        "--max-time",
+        "3",
+        "--request",
+        "DELETE",
+        "http://127.0.0.1:53466/api/admin/accounts/acct-7"
+      ],
+      "curl_exit_code": 0,
+      "stderr": "",
+      "identity": "anonymous",
+      "method": "DELETE",
+      "path": "/api/admin/accounts/acct-7",
+      "secure_expected_status": 401,
+      "demonstration_expected_status": 401,
+      "observed_status": 401,
+      "observed_body": {
+        "error": "authentication_required"
+      },
+      "matches_demonstration": true,
+      "authorization_boundary_holds": true,
+      "response_file": "fixed-admin-account-delete-anonymous.http",
+      "response_sha256": "a46c7c26ae247fb7e1be6fb5ca783b329658f3831afc003a720036d09ec10d70"
+    },
+    {
+      "id": "fixed/admin-account-delete/user",
+      "started_at": "2026-11-10T22:47:08.728756+00:00",
+      "elapsed_ms": 6.5,
+      "server": {
+        "fixture_version": "1.0.0",
+        "mode": "fixed",
+        "base_url": "http://127.0.0.1:53466"
+      },
+      "command": [
+        "curl",
+        "--noproxy",
+        "*",
+        "--silent",
+        "--show-error",
+        "--include",
+        "--http1.1",
+        "--connect-timeout",
+        "1",
+        "--max-time",
+        "3",
+        "--request",
+        "DELETE",
+        "--header",
+        "Authorization: Bearer demo-user-token",
+        "http://127.0.0.1:53466/api/admin/accounts/acct-8"
+      ],
+      "curl_exit_code": 0,
+      "stderr": "",
+      "identity": "user",
+      "method": "DELETE",
+      "path": "/api/admin/accounts/acct-8",
+      "secure_expected_status": 403,
+      "demonstration_expected_status": 403,
+      "observed_status": 403,
+      "observed_body": {
+        "error": "forbidden"
+      },
+      "matches_demonstration": true,
+      "authorization_boundary_holds": true,
+      "response_file": "fixed-admin-account-delete-user.http",
+      "response_sha256": "8fcded257ab75d60c1ce0d93f268552a18f2fda4257a7c7829e05a1e22bfb907"
+    },
+    {
+      "id": "fixed/admin-account-delete/user-forged-role",
+      "started_at": "2026-11-10T22:47:08.735309+00:00",
+      "elapsed_ms": 7.18,
+      "server": {
+        "fixture_version": "1.0.0",
+        "mode": "fixed",
+        "base_url": "http://127.0.0.1:53466"
+      },
+      "command": [
+        "curl",
+        "--noproxy",
+        "*",
+        "--silent",
+        "--show-error",
+        "--include",
+        "--http1.1",
+        "--connect-timeout",
+        "1",
+        "--max-time",
+        "3",
+        "--request",
+        "DELETE",
+        "--header",
+        "Authorization: Bearer demo-user-token",
+        "--header",
+        "X-Role: admin",
+        "http://127.0.0.1:53466/api/admin/accounts/acct-9"
+      ],
+      "curl_exit_code": 0,
+      "stderr": "",
+      "identity": "user-forged-role",
+      "method": "DELETE",
+      "path": "/api/admin/accounts/acct-9",
+      "secure_expected_status": 403,
+      "demonstration_expected_status": 403,
+      "observed_status": 403,
+      "observed_body": {
+        "error": "forbidden"
+      },
+      "matches_demonstration": true,
+      "authorization_boundary_holds": true,
+      "response_file": "fixed-admin-account-delete-user-forged-role.http",
+      "response_sha256": "8fcded257ab75d60c1ce0d93f268552a18f2fda4257a7c7829e05a1e22bfb907"
+    },
+    {
+      "id": "fixed/admin-account-delete/admin",
+      "started_at": "2026-11-10T22:47:08.742538+00:00",
+      "elapsed_ms": 6.975,
+      "server": {
+        "fixture_version": "1.0.0",
+        "mode": "fixed",
+        "base_url": "http://127.0.0.1:53466"
+      },
+      "command": [
+        "curl",
+        "--noproxy",
+        "*",
+        "--silent",
+        "--show-error",
+        "--include",
+        "--http1.1",
+        "--connect-timeout",
+        "1",
+        "--max-time",
+        "3",
+        "--request",
+        "DELETE",
+        "--header",
+        "Authorization: Bearer demo-admin-token",
+        "http://127.0.0.1:53466/api/admin/accounts/acct-10"
+      ],
+      "curl_exit_code": 0,
+      "stderr": "",
+      "identity": "admin",
+      "method": "DELETE",
+      "path": "/api/admin/accounts/acct-10",
+      "secure_expected_status": 204,
+      "demonstration_expected_status": 204,
+      "observed_status": 204,
+      "observed_body": null,
+      "matches_demonstration": true,
+      "authorization_boundary_holds": true,
+      "response_file": "fixed-admin-account-delete-admin.http",
+      "response_sha256": "3bab80f2b5b8f712a9bd53bda0c723c788610ab5589aac8cf3790aca740eb46f"
+    },
+    {
+      "id": "fixed/state-check/admin-reads-acct-8",
+      "started_at": "2026-11-10T22:47:08.749567+00:00",
+      "elapsed_ms": 6.919,
+      "server": {
+        "fixture_version": "1.0.0",
+        "mode": "fixed",
+        "base_url": "http://127.0.0.1:53466"
+      },
+      "command": [
+        "curl",
+        "--noproxy",
+        "*",
+        "--silent",
+        "--show-error",
+        "--include",
+        "--http1.1",
+        "--connect-timeout",
+        "1",
+        "--max-time",
+        "3",
+        "--request",
+        "GET",
+        "--header",
+        "Authorization: Bearer demo-admin-token",
+        "http://127.0.0.1:53466/api/admin/accounts/acct-8"
+      ],
+      "curl_exit_code": 0,
+      "stderr": "",
+      "identity": "admin",
+      "method": "GET",
+      "path": "/api/admin/accounts/acct-8",
+      "secure_expected_status": 200,
+      "demonstration_expected_status": 200,
+      "observed_status": 200,
+      "observed_body": {
+        "email": "eight@example.test",
+        "id": "acct-8",
+        "role": "user"
+      },
+      "matches_demonstration": true,
+      "authorization_boundary_holds": true,
+      "response_file": "fixed-state-check-admin-reads-acct-8.http",
+      "response_sha256": "18f012902d701c011b4293f3311d54ffc8c64fb5be80af9b23a8c532f8954950"
+    },
+    {
+      "id": "fixed/unlisted-route/admin",
+      "started_at": "2026-11-10T22:47:08.756547+00:00",
+      "elapsed_ms": 6.633,
+      "server": {
+        "fixture_version": "1.0.0",
+        "mode": "fixed",
+        "base_url": "http://127.0.0.1:53466"
+      },
+      "command": [
+        "curl",
+        "--noproxy",
+        "*",
+        "--silent",
+        "--show-error",
+        "--include",
+        "--http1.1",
+        "--connect-timeout",
+        "1",
+        "--max-time",
+        "3",
+        "--request",
+        "GET",
+        "--header",
+        "Authorization: Bearer demo-admin-token",
+        "http://127.0.0.1:53466/api/admin/debug"
+      ],
+      "curl_exit_code": 0,
+      "stderr": "",
+      "identity": "admin",
+      "method": "GET",
+      "path": "/api/admin/debug",
+      "secure_expected_status": 403,
+      "demonstration_expected_status": 403,
+      "observed_status": 403,
+      "observed_body": {
+        "error": "forbidden"
+      },
+      "matches_demonstration": true,
+      "authorization_boundary_holds": true,
+      "response_file": "fixed-unlisted-route-admin.http",
+      "response_sha256": "8fcded257ab75d60c1ce0d93f268552a18f2fda4257a7c7829e05a1e22bfb907"
+    },
+    {
+      "id": "fixed/unlisted-route/user",
+      "started_at": "2026-11-10T22:47:08.763227+00:00",
+      "elapsed_ms": 7.058,
+      "server": {
+        "fixture_version": "1.0.0",
+        "mode": "fixed",
+        "base_url": "http://127.0.0.1:53466"
+      },
+      "command": [
+        "curl",
+        "--noproxy",
+        "*",
+        "--silent",
+        "--show-error",
+        "--include",
+        "--http1.1",
+        "--connect-timeout",
+        "1",
+        "--max-time",
+        "3",
+        "--request",
+        "GET",
+        "--header",
+        "Authorization: Bearer demo-user-token",
+        "http://127.0.0.1:53466/api/admin/debug"
+      ],
+      "curl_exit_code": 0,
+      "stderr": "",
+      "identity": "user",
+      "method": "GET",
+      "path": "/api/admin/debug",
+      "secure_expected_status": 403,
+      "demonstration_expected_status": 403,
+      "observed_status": 403,
+      "observed_body": {
+        "error": "forbidden"
+      },
+      "matches_demonstration": true,
+      "authorization_boundary_holds": true,
+      "response_file": "fixed-unlisted-route-user.http",
+      "response_sha256": "8fcded257ab75d60c1ce0d93f268552a18f2fda4257a7c7829e05a1e22bfb907"
+    }
+  ],
+  "failures": [],
+  "finished_at": "2026-11-10T22:47:08.771629+00:00",
+  "boundary_failures_vulnerable": [
+    "vulnerable/admin-users/user",
+    "vulnerable/admin-users/user-forged-role",
+    "vulnerable/admin-audit-log/user-forged-role",
+    "vulnerable/admin-account-delete/user",
+    "vulnerable/admin-account-delete/user-forged-role",
+    "vulnerable/state-check/admin-reads-acct-8",
+    "vulnerable/unlisted-route/admin",
+    "vulnerable/unlisted-route/user"
+  ],
+  "boundary_failures_fixed": [],
+  "all_demonstration_checks_passed": true
+}

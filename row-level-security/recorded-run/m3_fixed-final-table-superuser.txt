@@ -1,0 +1,10 @@
+SELECT id, tenant_id, amount FROM invoices ORDER BY id;
+ id | tenant_id | amount 
+----+-----------+--------
+  1 | acme      |    100
+  2 | acme      |    300
+  3 | globex    |    400
+  4 | globex    |     75
+  6 | acme      |     10
+(5 rows)
+

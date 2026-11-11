@@ -1,0 +1,7 @@
+HTTP/1.0 200 OK
+Server: BaseHTTP Python/3.15.2
+Date: Tue, 10 Nov 2026 22:46:59 GMT
+Content-Type: application/json
+Content-Length: 97
+
+{"data": {"adminUserRecord": {"id": "bob", "email": "bob@example.invalid", "ssn_last4": "2222"}}}

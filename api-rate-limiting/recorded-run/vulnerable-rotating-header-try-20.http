@@ -1,0 +1,8 @@
+HTTP/1.0 200 OK
+Server: RateFixture/1.0.0 
+Date: Tue, 10 Nov 2026 22:46:42 GMT
+Content-Type: application/json
+Content-Length: 34
+Cache-Control: no-store
+
+{"status": "ok", "user": "alice"}

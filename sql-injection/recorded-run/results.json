@@ -1,0 +1,2511 @@
+{
+  "schema_version": 1,
+  "fixture_version": "1.0.0",
+  "started_at": "2026-11-10T22:46:49.648801+00:00",
+  "method": "Real curl subprocesses against three locally spawned fixture modes (in-memory sqlite3)",
+  "scope": {
+    "hosts": [
+      "127.0.0.1"
+    ],
+    "methods": [
+      "GET",
+      "POST"
+    ],
+    "paths": [
+      "/login",
+      "/search",
+      "/register",
+      "/history"
+    ],
+    "data": "Synthetic users, products and orders; demo passwords are public test strings"
+  },
+  "versions": {
+    "python": "3.15.2",
+    "sqlite3": "3.54.1",
+    "os": "Darwin",
+    "architecture": "arm64",
+    "curl": "curl 8.7.1 (x86_64-apple-darwin24.0) libcurl/8.7.1 (SecureTransport) LibreSSL/3.3.6 zlib/1.2.12 nghttp2/1.64.0"
+  },
+  "sha256": {
+    "fixture.py": "2021781cf422e64ddb01c353d3be824792b95de3faece70604756467636ce150",
+    "verify.py": "1f9b83fe0abd120ded62a3dec529c2d809ec4ac55364afd83563897a471698a2"
+  },
+  "reproduction_command": "python3 verify.py --output recorded-run",
+  "agent_execution": {
+    "executed": false,
+    "note": "HTTP verification was scripted; no model or agent ran"
+  },
+  "cases": [
+    {
+      "id": "vulnerable/login-valid",
+      "description": "alice logs in with the right password",
+      "started_at": "2026-11-10T22:46:49.708470+00:00",
+      "elapsed_ms": 10.487,
+      "server": {
+        "fixture_version": "1.0.0",
+        "mode": "vulnerable",
+        "base_url": "http://127.0.0.1:53155"
+      },
+      "command": [
+        "curl",
+        "--noproxy",
+        "*",
+        "--silent",
+        "--show-error",
+        "--include",
+        "--http1.1",
+        "--connect-timeout",
+        "1",
+        "--max-time",
+        "3",
+        "--request",
+        "POST",
+        "--header",
+        "Content-Type: application/json",
+        "--data",
+        "{\"username\": \"alice\", \"password\": \"demo-alice-pw\"}",
+        "http://127.0.0.1:53155/login"
+      ],
+      "curl_exit_code": 0,
+      "stderr": "",
+      "request": {
+        "method": "POST",
+        "path": "/login",
+        "json": {
+          "username": "alice",
+          "password": "demo-alice-pw"
+        }
+      },
+      "secure_expected": "200 login as alice",
+      "demonstration_expected": "200 login as alice",
+      "observed_status": 200,
+      "observed_body": {
+        "ok": true,
+        "user": "alice"
+      },
+      "matches_demonstration": true,
+      "secure_boundary_holds": true,
+      "response_file": "vulnerable-login-valid.http",
+      "response_sha256": "f1f177bfa3ede08b511d92b9002e9d98ede3891c17886927e27742408d77ccc8"
+    },
+    {
+      "id": "vulnerable/login-wrong-password",
+      "description": "alice with a wrong password",
+      "started_at": "2026-11-10T22:46:49.719070+00:00",
+      "elapsed_ms": 8.923,
+      "server": {
+        "fixture_version": "1.0.0",
+        "mode": "vulnerable",
+        "base_url": "http://127.0.0.1:53155"
+      },
+      "command": [
+        "curl",
+        "--noproxy",
+        "*",
+        "--silent",
+        "--show-error",
+        "--include",
+        "--http1.1",
+        "--connect-timeout",
+        "1",
+        "--max-time",
+        "3",
+        "--request",
+        "POST",
+        "--header",
+        "Content-Type: application/json",
+        "--data",
+        "{\"username\": \"alice\", \"password\": \"wrong\"}",
+        "http://127.0.0.1:53155/login"
+      ],
+      "curl_exit_code": 0,
+      "stderr": "",
+      "request": {
+        "method": "POST",
+        "path": "/login",
+        "json": {
+          "username": "alice",
+          "password": "wrong"
+        }
+      },
+      "secure_expected": "401 invalid_credentials",
+      "demonstration_expected": "401 invalid_credentials",
+      "observed_status": 401,
+      "observed_body": {
+        "error": "invalid_credentials"
+      },
+      "matches_demonstration": true,
+      "secure_boundary_holds": true,
+      "response_file": "vulnerable-login-wrong-password.http",
+      "response_sha256": "b5a6f33b4d90ba229015776a5607122f3f6247474c2f1bcc35994cc27c1c96db"
+    },
+    {
+      "id": "vulnerable/login-apostrophe-name",
+      "description": "o'brien logs in with the right password",
+      "started_at": "2026-11-10T22:46:49.728056+00:00",
+      "elapsed_ms": 7.652,
+      "server": {
+        "fixture_version": "1.0.0",
+        "mode": "vulnerable",
+        "base_url": "http://127.0.0.1:53155"
+      },
+      "command": [
+        "curl",
+        "--noproxy",
+        "*",
+        "--silent",
+        "--show-error",
+        "--include",
+        "--http1.1",
+        "--connect-timeout",
+        "1",
+        "--max-time",
+        "3",
+        "--request",
+        "POST",
+        "--header",
+        "Content-Type: application/json",
+        "--data",
+        "{\"username\": \"o'brien\", \"password\": \"demo-obrien-pw\"}",
+        "http://127.0.0.1:53155/login"
+      ],
+      "curl_exit_code": 0,
+      "stderr": "",
+      "request": {
+        "method": "POST",
+        "path": "/login",
+        "json": {
+          "username": "o'brien",
+          "password": "demo-obrien-pw"
+        }
+      },
+      "secure_expected": "200 login as o'brien",
+      "demonstration_expected": "500 database_error",
+      "observed_status": 500,
+      "observed_body": {
+        "error": "database_error"
+      },
+      "matches_demonstration": true,
+      "secure_boundary_holds": false,
+      "response_file": "vulnerable-login-apostrophe-name.http",
+      "response_sha256": "743775149078633d685c2532ca432f41b1149427619607551fb9d002300abc18"
+    },
+    {
+      "id": "vulnerable/login-bypass",
+      "description": "username alice'-- with a wrong password",
+      "started_at": "2026-11-10T22:46:49.735787+00:00",
+      "elapsed_ms": 7.614,
+      "server": {
+        "fixture_version": "1.0.0",
+        "mode": "vulnerable",
+        "base_url": "http://127.0.0.1:53155"
+      },
+      "command": [
+        "curl",
+        "--noproxy",
+        "*",
+        "--silent",
+        "--show-error",
+        "--include",
+        "--http1.1",
+        "--connect-timeout",
+        "1",
+        "--max-time",
+        "3",
+        "--request",
+        "POST",
+        "--header",
+        "Content-Type: application/json",
+        "--data",
+        "{\"username\": \"alice'--\", \"password\": \"wrong\"}",
+        "http://127.0.0.1:53155/login"
+      ],
+      "curl_exit_code": 0,
+      "stderr": "",
+      "request": {
+        "method": "POST",
+        "path": "/login",
+        "json": {
+          "username": "alice'--",
+          "password": "wrong"
+        }
+      },
+      "secure_expected": "401 invalid_credentials",
+      "demonstration_expected": "200 login as alice",
+      "observed_status": 200,
+      "observed_body": {
+        "ok": true,
+        "user": "alice"
+      },
+      "matches_demonstration": true,
+      "secure_boundary_holds": false,
+      "response_file": "vulnerable-login-bypass.http",
+      "response_sha256": "f1f177bfa3ede08b511d92b9002e9d98ede3891c17886927e27742408d77ccc8"
+    },
+    {
+      "id": "vulnerable/search-valid",
+      "description": "search for Widget",
+      "started_at": "2026-11-10T22:46:49.743450+00:00",
+      "elapsed_ms": 7.522,
+      "server": {
+        "fixture_version": "1.0.0",
+        "mode": "vulnerable",
+        "base_url": "http://127.0.0.1:53155"
+      },
+      "command": [
+        "curl",
+        "--noproxy",
+        "*",
+        "--silent",
+        "--show-error",
+        "--include",
+        "--http1.1",
+        "--connect-timeout",
+        "1",
+        "--max-time",
+        "3",
+        "--request",
+        "GET",
+        "--get",
+        "--data-urlencode",
+        "q=Widget",
+        "http://127.0.0.1:53155/search"
+      ],
+      "curl_exit_code": 0,
+      "stderr": "",
+      "request": {
+        "method": "GET",
+        "path": "/search",
+        "query": [
+          [
+            "q",
+            "Widget"
+          ]
+        ]
+      },
+      "secure_expected": "200 two rows",
+      "demonstration_expected": "200 two rows",
+      "observed_status": 200,
+      "observed_body": {
+        "results": [
+          {
+            "id": 2,
+            "name": "Widget large",
+            "price": 9.0
+          },
+          {
+            "id": 1,
+            "name": "Widget small",
+            "price": 4.5
+          }
+        ]
+      },
+      "matches_demonstration": true,
+      "secure_boundary_holds": true,
+      "response_file": "vulnerable-search-valid.http",
+      "response_sha256": "36667f8f0ae7c7b65cb203fccff74ddc5dfd38523c2a64ebba7bf47f777cde05"
+    },
+    {
+      "id": "vulnerable/search-union",
+      "description": "UNION SELECT from the users table through q",
+      "started_at": "2026-11-10T22:46:49.751027+00:00",
+      "elapsed_ms": 7.933,
+      "server": {
+        "fixture_version": "1.0.0",
+        "mode": "vulnerable",
+        "base_url": "http://127.0.0.1:53155"
+      },
+      "command": [
+        "curl",
+        "--noproxy",
+        "*",
+        "--silent",
+        "--show-error",
+        "--include",
+        "--http1.1",
+        "--connect-timeout",
+        "1",
+        "--max-time",
+        "3",
+        "--request",
+        "GET",
+        "--get",
+        "--data-urlencode",
+        "q=zzz' UNION SELECT id, username, pw_hash FROM users --",
+        "http://127.0.0.1:53155/search"
+      ],
+      "curl_exit_code": 0,
+      "stderr": "",
+      "request": {
+        "method": "GET",
+        "path": "/search",
+        "query": [
+          [
+            "q",
+            "zzz' UNION SELECT id, username, pw_hash FROM users --"
+          ]
+        ]
+      },
+      "secure_expected": "200 no rows",
+      "demonstration_expected": "200 users and hashes returned",
+      "observed_status": 200,
+      "observed_body": {
+        "results": [
+          {
+            "id": 1,
+            "name": "alice",
+            "price": "4d0c7400ae087ee00a5e7888478f0366688a3d1096544a3a5de852ac66ce3809"
+          },
+          {
+            "id": 2,
+            "name": "bob",
+            "price": "b973ce2e03f895897f4fb258dbb576bd582fed683d7002808bf61920db2c6264"
+          },
+          {
+            "id": 3,
+            "name": "o'brien",
+            "price": "e1c45299883551c38b5c63d167c20e92ec720d16a613a0d3a9da640429493206"
+          }
+        ]
+      },
+      "matches_demonstration": true,
+      "secure_boundary_holds": false,
+      "response_file": "vulnerable-search-union.http",
+      "response_sha256": "ee8298e298f056a8f1dfdd49aceb65db4a41225191a161dce75e743c95b8dd72"
+    },
+    {
+      "id": "vulnerable/sort-valid",
+      "description": "sort by price",
+      "started_at": "2026-11-10T22:46:49.759015+00:00",
+      "elapsed_ms": 7.567,
+      "server": {
+        "fixture_version": "1.0.0",
+        "mode": "vulnerable",
+        "base_url": "http://127.0.0.1:53155"
+      },
+      "command": [
+        "curl",
+        "--noproxy",
+        "*",
+        "--silent",
+        "--show-error",
+        "--include",
+        "--http1.1",
+        "--connect-timeout",
+        "1",
+        "--max-time",
+        "3",
+        "--request",
+        "GET",
+        "--get",
+        "--data-urlencode",
+        "q=",
+        "--data-urlencode",
+        "sort=price",
+        "http://127.0.0.1:53155/search"
+      ],
+      "curl_exit_code": 0,
+      "stderr": "",
+      "request": {
+        "method": "GET",
+        "path": "/search",
+        "query": [
+          [
+            "q",
+            ""
+          ],
+          [
+            "sort",
+            "price"
+          ]
+        ]
+      },
+      "secure_expected": "200 ids 4,1,3,2",
+      "demonstration_expected": "200 ids 4,1,3,2",
+      "observed_status": 200,
+      "observed_body": {
+        "results": [
+          {
+            "id": 4,
+            "name": "Cable",
+            "price": 2.0
+          },
+          {
+            "id": 1,
+            "name": "Widget small",
+            "price": 4.5
+          },
+          {
+            "id": 3,
+            "name": "Gadget",
+            "price": 7.25
+          },
+          {
+            "id": 2,
+            "name": "Widget large",
+            "price": 9.0
+          }
+        ]
+      },
+      "matches_demonstration": true,
+      "secure_boundary_holds": true,
+      "response_file": "vulnerable-sort-valid.http",
+      "response_sha256": "3318c0e586523442e539798d32f04c3467bdcda0c65f69b9610801e03d42e447"
+    },
+    {
+      "id": "vulnerable/sort-unknown-column",
+      "description": "sort by a column that does not exist",
+      "started_at": "2026-11-10T22:46:49.766634+00:00",
+      "elapsed_ms": 7.915,
+      "server": {
+        "fixture_version": "1.0.0",
+        "mode": "vulnerable",
+        "base_url": "http://127.0.0.1:53155"
+      },
+      "command": [
+        "curl",
+        "--noproxy",
+        "*",
+        "--silent",
+        "--show-error",
+        "--include",
+        "--http1.1",
+        "--connect-timeout",
+        "1",
+        "--max-time",
+        "3",
+        "--request",
+        "GET",
+        "--get",
+        "--data-urlencode",
+        "q=",
+        "--data-urlencode",
+        "sort=nosuchcolumn",
+        "http://127.0.0.1:53155/search"
+      ],
+      "curl_exit_code": 0,
+      "stderr": "",
+      "request": {
+        "method": "GET",
+        "path": "/search",
+        "query": [
+          [
+            "q",
+            ""
+          ],
+          [
+            "sort",
+            "nosuchcolumn"
+          ]
+        ]
+      },
+      "secure_expected": "400 invalid_sort",
+      "demonstration_expected": "500 database_error",
+      "observed_status": 500,
+      "observed_body": {
+        "error": "database_error"
+      },
+      "matches_demonstration": true,
+      "secure_boundary_holds": false,
+      "response_file": "vulnerable-sort-unknown-column.http",
+      "response_sha256": "743775149078633d685c2532ca432f41b1149427619607551fb9d002300abc18"
+    },
+    {
+      "id": "vulnerable/sort-oracle-true",
+      "description": "sort expression true when the first hash character of alice matches",
+      "started_at": "2026-11-10T22:46:49.774601+00:00",
+      "elapsed_ms": 8.004,
+      "server": {
+        "fixture_version": "1.0.0",
+        "mode": "vulnerable",
+        "base_url": "http://127.0.0.1:53155"
+      },
+      "command": [
+        "curl",
+        "--noproxy",
+        "*",
+        "--silent",
+        "--show-error",
+        "--include",
+        "--http1.1",
+        "--connect-timeout",
+        "1",
+        "--max-time",
+        "3",
+        "--request",
+        "GET",
+        "--get",
+        "--data-urlencode",
+        "q=",
+        "--data-urlencode",
+        "sort=CASE WHEN (SELECT substr(pw_hash,1,1) FROM users WHERE username='alice')='4' THEN price ELSE -price END",
+        "http://127.0.0.1:53155/search"
+      ],
+      "curl_exit_code": 0,
+      "stderr": "",
+      "request": {
+        "method": "GET",
+        "path": "/search",
+        "query": [
+          [
+            "q",
+            ""
+          ],
+          [
+            "sort",
+            "CASE WHEN (SELECT substr(pw_hash,1,1) FROM users WHERE username='alice')='4' THEN price ELSE -price END"
+          ]
+        ]
+      },
+      "secure_expected": "400 invalid_sort",
+      "demonstration_expected": "200 ids 4,1,3,2",
+      "observed_status": 200,
+      "observed_body": {
+        "results": [
+          {
+            "id": 4,
+            "name": "Cable",
+            "price": 2.0
+          },
+          {
+            "id": 1,
+            "name": "Widget small",
+            "price": 4.5
+          },
+          {
+            "id": 3,
+            "name": "Gadget",
+            "price": 7.25
+          },
+          {
+            "id": 2,
+            "name": "Widget large",
+            "price": 9.0
+          }
+        ]
+      },
+      "matches_demonstration": true,
+      "secure_boundary_holds": false,
+      "response_file": "vulnerable-sort-oracle-true.http",
+      "response_sha256": "3318c0e586523442e539798d32f04c3467bdcda0c65f69b9610801e03d42e447"
+    },
+    {
+      "id": "vulnerable/sort-oracle-false",
+      "description": "same expression with a wrong character",
+      "started_at": "2026-11-10T22:46:49.782660+00:00",
+      "elapsed_ms": 7.589,
+      "server": {
+        "fixture_version": "1.0.0",
+        "mode": "vulnerable",
+        "base_url": "http://127.0.0.1:53155"
+      },
+      "command": [
+        "curl",
+        "--noproxy",
+        "*",
+        "--silent",
+        "--show-error",
+        "--include",
+        "--http1.1",
+        "--connect-timeout",
+        "1",
+        "--max-time",
+        "3",
+        "--request",
+        "GET",
+        "--get",
+        "--data-urlencode",
+        "q=",
+        "--data-urlencode",
+        "sort=CASE WHEN (SELECT substr(pw_hash,1,1) FROM users WHERE username='alice')='0' THEN price ELSE -price END",
+        "http://127.0.0.1:53155/search"
+      ],
+      "curl_exit_code": 0,
+      "stderr": "",
+      "request": {
+        "method": "GET",
+        "path": "/search",
+        "query": [
+          [
+            "q",
+            ""
+          ],
+          [
+            "sort",
+            "CASE WHEN (SELECT substr(pw_hash,1,1) FROM users WHERE username='alice')='0' THEN price ELSE -price END"
+          ]
+        ]
+      },
+      "secure_expected": "400 invalid_sort",
+      "demonstration_expected": "200 ids 2,3,1,4",
+      "observed_status": 200,
+      "observed_body": {
+        "results": [
+          {
+            "id": 2,
+            "name": "Widget large",
+            "price": 9.0
+          },
+          {
+            "id": 3,
+            "name": "Gadget",
+            "price": 7.25
+          },
+          {
+            "id": 1,
+            "name": "Widget small",
+            "price": 4.5
+          },
+          {
+            "id": 4,
+            "name": "Cable",
+            "price": 2.0
+          }
+        ]
+      },
+      "matches_demonstration": true,
+      "secure_boundary_holds": false,
+      "response_file": "vulnerable-sort-oracle-false.http",
+      "response_sha256": "fbced0ff76fa2c8302da634faaa756780bd60b6f27552008b114def91b97e318"
+    },
+    {
+      "id": "vulnerable/second-order-legit-step1",
+      "description": "register carol, then read her history",
+      "started_at": "2026-11-10T22:46:49.790307+00:00",
+      "elapsed_ms": 8.302,
+      "server": {
+        "fixture_version": "1.0.0",
+        "mode": "vulnerable",
+        "base_url": "http://127.0.0.1:53155"
+      },
+      "command": [
+        "curl",
+        "--noproxy",
+        "*",
+        "--silent",
+        "--show-error",
+        "--include",
+        "--http1.1",
+        "--connect-timeout",
+        "1",
+        "--max-time",
+        "3",
+        "--request",
+        "POST",
+        "--header",
+        "Content-Type: application/json",
+        "--data",
+        "{\"username\": \"carol\"}",
+        "http://127.0.0.1:53155/register"
+      ],
+      "curl_exit_code": 0,
+      "stderr": "",
+      "request": {
+        "method": "POST",
+        "path": "/register",
+        "json": {
+          "username": "carol"
+        }
+      },
+      "secure_expected": "201 registered",
+      "demonstration_expected": "201 registered",
+      "observed_status": 201,
+      "observed_body": {
+        "id": 4,
+        "username": "carol"
+      },
+      "matches_demonstration": true,
+      "secure_boundary_holds": true,
+      "response_file": "vulnerable-second-order-legit-step1.http",
+      "response_sha256": "85ff4c8e878904f3b9c5a61d9835d4545ea22fc530eea79b5d473a09d6e558c7"
+    },
+    {
+      "id": "vulnerable/second-order-legit-step2",
+      "description": "register carol, then read her history",
+      "started_at": "2026-11-10T22:46:49.798715+00:00",
+      "elapsed_ms": 9.787,
+      "server": {
+        "fixture_version": "1.0.0",
+        "mode": "vulnerable",
+        "base_url": "http://127.0.0.1:53155"
+      },
+      "command": [
+        "curl",
+        "--noproxy",
+        "*",
+        "--silent",
+        "--show-error",
+        "--include",
+        "--http1.1",
+        "--connect-timeout",
+        "1",
+        "--max-time",
+        "3",
+        "--request",
+        "GET",
+        "--get",
+        "--data-urlencode",
+        "id=4",
+        "http://127.0.0.1:53155/history"
+      ],
+      "curl_exit_code": 0,
+      "stderr": "",
+      "request": {
+        "method": "GET",
+        "path": "/history",
+        "query": [
+          [
+            "id",
+            "4"
+          ]
+        ]
+      },
+      "secure_expected": "200 one order",
+      "demonstration_expected": "200 one order",
+      "observed_status": 200,
+      "observed_body": {
+        "orders": [
+          "synthetic order C-1"
+        ],
+        "user": "carol"
+      },
+      "matches_demonstration": true,
+      "secure_boundary_holds": true,
+      "response_file": "vulnerable-second-order-legit-step2.http",
+      "response_sha256": "ec80b098806cd407d6787de3c58c4e4634ac2604751f1ca5c3e1faec99d0f13c"
+    },
+    {
+      "id": "vulnerable/second-order-payload-step1",
+      "description": "register a username holding SQL, then read its history",
+      "started_at": "2026-11-10T22:46:49.808669+00:00",
+      "elapsed_ms": 11.328,
+      "server": {
+        "fixture_version": "1.0.0",
+        "mode": "vulnerable",
+        "base_url": "http://127.0.0.1:53155"
+      },
+      "command": [
+        "curl",
+        "--noproxy",
+        "*",
+        "--silent",
+        "--show-error",
+        "--include",
+        "--http1.1",
+        "--connect-timeout",
+        "1",
+        "--max-time",
+        "3",
+        "--request",
+        "POST",
+        "--header",
+        "Content-Type: application/json",
+        "--data",
+        "{\"username\": \"x' OR '1'='1\"}",
+        "http://127.0.0.1:53155/register"
+      ],
+      "curl_exit_code": 0,
+      "stderr": "",
+      "request": {
+        "method": "POST",
+        "path": "/register",
+        "json": {
+          "username": "x' OR '1'='1"
+        }
+      },
+      "secure_expected": "201 registered",
+      "demonstration_expected": "201 registered",
+      "observed_status": 201,
+      "observed_body": {
+        "id": 5,
+        "username": "x' OR '1'='1"
+      },
+      "matches_demonstration": true,
+      "secure_boundary_holds": true,
+      "response_file": "vulnerable-second-order-payload-step1.http",
+      "response_sha256": "2512bb93e47ac37a546f80114fd4496e42bdbbed38a67446664f2377705e0679"
+    },
+    {
+      "id": "vulnerable/second-order-payload-step2",
+      "description": "register a username holding SQL, then read its history",
+      "started_at": "2026-11-10T22:46:49.820101+00:00",
+      "elapsed_ms": 8.685,
+      "server": {
+        "fixture_version": "1.0.0",
+        "mode": "vulnerable",
+        "base_url": "http://127.0.0.1:53155"
+      },
+      "command": [
+        "curl",
+        "--noproxy",
+        "*",
+        "--silent",
+        "--show-error",
+        "--include",
+        "--http1.1",
+        "--connect-timeout",
+        "1",
+        "--max-time",
+        "3",
+        "--request",
+        "GET",
+        "--get",
+        "--data-urlencode",
+        "id=5",
+        "http://127.0.0.1:53155/history"
+      ],
+      "curl_exit_code": 0,
+      "stderr": "",
+      "request": {
+        "method": "GET",
+        "path": "/history",
+        "query": [
+          [
+            "id",
+            "5"
+          ]
+        ]
+      },
+      "secure_expected": "200 no orders",
+      "demonstration_expected": "200 all three orders",
+      "observed_status": 200,
+      "observed_body": {
+        "orders": [
+          "synthetic order A-1",
+          "synthetic order B-1",
+          "synthetic order C-1"
+        ],
+        "user": "x' OR '1'='1"
+      },
+      "matches_demonstration": true,
+      "secure_boundary_holds": false,
+      "response_file": "vulnerable-second-order-payload-step2.http",
+      "response_sha256": "9ebc2d7aa64fbc31ba3839c24b50846637ffbf56820347cf9bddc0a8e20a54c0"
+    },
+    {
+      "id": "bound/login-valid",
+      "description": "alice logs in with the right password",
+      "started_at": "2026-11-10T22:46:49.867572+00:00",
+      "elapsed_ms": 7.637,
+      "server": {
+        "fixture_version": "1.0.0",
+        "mode": "bound",
+        "base_url": "http://127.0.0.1:53170"
+      },
+      "command": [
+        "curl",
+        "--noproxy",
+        "*",
+        "--silent",
+        "--show-error",
+        "--include",
+        "--http1.1",
+        "--connect-timeout",
+        "1",
+        "--max-time",
+        "3",
+        "--request",
+        "POST",
+        "--header",
+        "Content-Type: application/json",
+        "--data",
+        "{\"username\": \"alice\", \"password\": \"demo-alice-pw\"}",
+        "http://127.0.0.1:53170/login"
+      ],
+      "curl_exit_code": 0,
+      "stderr": "",
+      "request": {
+        "method": "POST",
+        "path": "/login",
+        "json": {
+          "username": "alice",
+          "password": "demo-alice-pw"
+        }
+      },
+      "secure_expected": "200 login as alice",
+      "demonstration_expected": "200 login as alice",
+      "observed_status": 200,
+      "observed_body": {
+        "ok": true,
+        "user": "alice"
+      },
+      "matches_demonstration": true,
+      "secure_boundary_holds": true,
+      "response_file": "bound-login-valid.http",
+      "response_sha256": "f1f177bfa3ede08b511d92b9002e9d98ede3891c17886927e27742408d77ccc8"
+    },
+    {
+      "id": "bound/login-wrong-password",
+      "description": "alice with a wrong password",
+      "started_at": "2026-11-10T22:46:49.875271+00:00",
+      "elapsed_ms": 9.364,
+      "server": {
+        "fixture_version": "1.0.0",
+        "mode": "bound",
+        "base_url": "http://127.0.0.1:53170"
+      },
+      "command": [
+        "curl",
+        "--noproxy",
+        "*",
+        "--silent",
+        "--show-error",
+        "--include",
+        "--http1.1",
+        "--connect-timeout",
+        "1",
+        "--max-time",
+        "3",
+        "--request",
+        "POST",
+        "--header",
+        "Content-Type: application/json",
+        "--data",
+        "{\"username\": \"alice\", \"password\": \"wrong\"}",
+        "http://127.0.0.1:53170/login"
+      ],
+      "curl_exit_code": 0,
+      "stderr": "",
+      "request": {
+        "method": "POST",
+        "path": "/login",
+        "json": {
+          "username": "alice",
+          "password": "wrong"
+        }
+      },
+      "secure_expected": "401 invalid_credentials",
+      "demonstration_expected": "401 invalid_credentials",
+      "observed_status": 401,
+      "observed_body": {
+        "error": "invalid_credentials"
+      },
+      "matches_demonstration": true,
+      "secure_boundary_holds": true,
+      "response_file": "bound-login-wrong-password.http",
+      "response_sha256": "b5a6f33b4d90ba229015776a5607122f3f6247474c2f1bcc35994cc27c1c96db"
+    },
+    {
+      "id": "bound/login-apostrophe-name",
+      "description": "o'brien logs in with the right password",
+      "started_at": "2026-11-10T22:46:49.884754+00:00",
+      "elapsed_ms": 10.972,
+      "server": {
+        "fixture_version": "1.0.0",
+        "mode": "bound",
+        "base_url": "http://127.0.0.1:53170"
+      },
+      "command": [
+        "curl",
+        "--noproxy",
+        "*",
+        "--silent",
+        "--show-error",
+        "--include",
+        "--http1.1",
+        "--connect-timeout",
+        "1",
+        "--max-time",
+        "3",
+        "--request",
+        "POST",
+        "--header",
+        "Content-Type: application/json",
+        "--data",
+        "{\"username\": \"o'brien\", \"password\": \"demo-obrien-pw\"}",
+        "http://127.0.0.1:53170/login"
+      ],
+      "curl_exit_code": 0,
+      "stderr": "",
+      "request": {
+        "method": "POST",
+        "path": "/login",
+        "json": {
+          "username": "o'brien",
+          "password": "demo-obrien-pw"
+        }
+      },
+      "secure_expected": "200 login as o'brien",
+      "demonstration_expected": "200 login as o'brien",
+      "observed_status": 200,
+      "observed_body": {
+        "ok": true,
+        "user": "o'brien"
+      },
+      "matches_demonstration": true,
+      "secure_boundary_holds": true,
+      "response_file": "bound-login-apostrophe-name.http",
+      "response_sha256": "402d950b6e43f2bf5787dd002cd8f0f8590a879e1e47ada211c906a4eb9638c3"
+    },
+    {
+      "id": "bound/login-bypass",
+      "description": "username alice'-- with a wrong password",
+      "started_at": "2026-11-10T22:46:49.895805+00:00",
+      "elapsed_ms": 9.133,
+      "server": {
+        "fixture_version": "1.0.0",
+        "mode": "bound",
+        "base_url": "http://127.0.0.1:53170"
+      },
+      "command": [
+        "curl",
+        "--noproxy",
+        "*",
+        "--silent",
+        "--show-error",
+        "--include",
+        "--http1.1",
+        "--connect-timeout",
+        "1",
+        "--max-time",
+        "3",
+        "--request",
+        "POST",
+        "--header",
+        "Content-Type: application/json",
+        "--data",
+        "{\"username\": \"alice'--\", \"password\": \"wrong\"}",
+        "http://127.0.0.1:53170/login"
+      ],
+      "curl_exit_code": 0,
+      "stderr": "",
+      "request": {
+        "method": "POST",
+        "path": "/login",
+        "json": {
+          "username": "alice'--",
+          "password": "wrong"
+        }
+      },
+      "secure_expected": "401 invalid_credentials",
+      "demonstration_expected": "401 invalid_credentials",
+      "observed_status": 401,
+      "observed_body": {
+        "error": "invalid_credentials"
+      },
+      "matches_demonstration": true,
+      "secure_boundary_holds": true,
+      "response_file": "bound-login-bypass.http",
+      "response_sha256": "b5a6f33b4d90ba229015776a5607122f3f6247474c2f1bcc35994cc27c1c96db"
+    },
+    {
+      "id": "bound/search-valid",
+      "description": "search for Widget",
+      "started_at": "2026-11-10T22:46:49.904992+00:00",
+      "elapsed_ms": 8.353,
+      "server": {
+        "fixture_version": "1.0.0",
+        "mode": "bound",
+        "base_url": "http://127.0.0.1:53170"
+      },
+      "command": [
+        "curl",
+        "--noproxy",
+        "*",
+        "--silent",
+        "--show-error",
+        "--include",
+        "--http1.1",
+        "--connect-timeout",
+        "1",
+        "--max-time",
+        "3",
+        "--request",
+        "GET",
+        "--get",
+        "--data-urlencode",
+        "q=Widget",
+        "http://127.0.0.1:53170/search"
+      ],
+      "curl_exit_code": 0,
+      "stderr": "",
+      "request": {
+        "method": "GET",
+        "path": "/search",
+        "query": [
+          [
+            "q",
+            "Widget"
+          ]
+        ]
+      },
+      "secure_expected": "200 two rows",
+      "demonstration_expected": "200 two rows",
+      "observed_status": 200,
+      "observed_body": {
+        "results": [
+          {
+            "id": 2,
+            "name": "Widget large",
+            "price": 9.0
+          },
+          {
+            "id": 1,
+            "name": "Widget small",
+            "price": 4.5
+          }
+        ]
+      },
+      "matches_demonstration": true,
+      "secure_boundary_holds": true,
+      "response_file": "bound-search-valid.http",
+      "response_sha256": "36667f8f0ae7c7b65cb203fccff74ddc5dfd38523c2a64ebba7bf47f777cde05"
+    },
+    {
+      "id": "bound/search-union",
+      "description": "UNION SELECT from the users table through q",
+      "started_at": "2026-11-10T22:46:49.913406+00:00",
+      "elapsed_ms": 9.095,
+      "server": {
+        "fixture_version": "1.0.0",
+        "mode": "bound",
+        "base_url": "http://127.0.0.1:53170"
+      },
+      "command": [
+        "curl",
+        "--noproxy",
+        "*",
+        "--silent",
+        "--show-error",
+        "--include",
+        "--http1.1",
+        "--connect-timeout",
+        "1",
+        "--max-time",
+        "3",
+        "--request",
+        "GET",
+        "--get",
+        "--data-urlencode",
+        "q=zzz' UNION SELECT id, username, pw_hash FROM users --",
+        "http://127.0.0.1:53170/search"
+      ],
+      "curl_exit_code": 0,
+      "stderr": "",
+      "request": {
+        "method": "GET",
+        "path": "/search",
+        "query": [
+          [
+            "q",
+            "zzz' UNION SELECT id, username, pw_hash FROM users --"
+          ]
+        ]
+      },
+      "secure_expected": "200 no rows",
+      "demonstration_expected": "200 no rows",
+      "observed_status": 200,
+      "observed_body": {
+        "results": []
+      },
+      "matches_demonstration": true,
+      "secure_boundary_holds": true,
+      "response_file": "bound-search-union.http",
+      "response_sha256": "7334c3363ea4032dab6398f24ca43b3290f19a18ba8f1cb5b9b0aef9822d3a36"
+    },
+    {
+      "id": "bound/sort-valid",
+      "description": "sort by price",
+      "started_at": "2026-11-10T22:46:49.922562+00:00",
+      "elapsed_ms": 9.234,
+      "server": {
+        "fixture_version": "1.0.0",
+        "mode": "bound",
+        "base_url": "http://127.0.0.1:53170"
+      },
+      "command": [
+        "curl",
+        "--noproxy",
+        "*",
+        "--silent",
+        "--show-error",
+        "--include",
+        "--http1.1",
+        "--connect-timeout",
+        "1",
+        "--max-time",
+        "3",
+        "--request",
+        "GET",
+        "--get",
+        "--data-urlencode",
+        "q=",
+        "--data-urlencode",
+        "sort=price",
+        "http://127.0.0.1:53170/search"
+      ],
+      "curl_exit_code": 0,
+      "stderr": "",
+      "request": {
+        "method": "GET",
+        "path": "/search",
+        "query": [
+          [
+            "q",
+            ""
+          ],
+          [
+            "sort",
+            "price"
+          ]
+        ]
+      },
+      "secure_expected": "200 ids 4,1,3,2",
+      "demonstration_expected": "200 ids 4,1,3,2",
+      "observed_status": 200,
+      "observed_body": {
+        "results": [
+          {
+            "id": 4,
+            "name": "Cable",
+            "price": 2.0
+          },
+          {
+            "id": 1,
+            "name": "Widget small",
+            "price": 4.5
+          },
+          {
+            "id": 3,
+            "name": "Gadget",
+            "price": 7.25
+          },
+          {
+            "id": 2,
+            "name": "Widget large",
+            "price": 9.0
+          }
+        ]
+      },
+      "matches_demonstration": true,
+      "secure_boundary_holds": true,
+      "response_file": "bound-sort-valid.http",
+      "response_sha256": "3318c0e586523442e539798d32f04c3467bdcda0c65f69b9610801e03d42e447"
+    },
+    {
+      "id": "bound/sort-unknown-column",
+      "description": "sort by a column that does not exist",
+      "started_at": "2026-11-10T22:46:49.931874+00:00",
+      "elapsed_ms": 12.468,
+      "server": {
+        "fixture_version": "1.0.0",
+        "mode": "bound",
+        "base_url": "http://127.0.0.1:53170"
+      },
+      "command": [
+        "curl",
+        "--noproxy",
+        "*",
+        "--silent",
+        "--show-error",
+        "--include",
+        "--http1.1",
+        "--connect-timeout",
+        "1",
+        "--max-time",
+        "3",
+        "--request",
+        "GET",
+        "--get",
+        "--data-urlencode",
+        "q=",
+        "--data-urlencode",
+        "sort=nosuchcolumn",
+        "http://127.0.0.1:53170/search"
+      ],
+      "curl_exit_code": 0,
+      "stderr": "",
+      "request": {
+        "method": "GET",
+        "path": "/search",
+        "query": [
+          [
+            "q",
+            ""
+          ],
+          [
+            "sort",
+            "nosuchcolumn"
+          ]
+        ]
+      },
+      "secure_expected": "400 invalid_sort",
+      "demonstration_expected": "500 database_error",
+      "observed_status": 500,
+      "observed_body": {
+        "error": "database_error"
+      },
+      "matches_demonstration": true,
+      "secure_boundary_holds": false,
+      "response_file": "bound-sort-unknown-column.http",
+      "response_sha256": "743775149078633d685c2532ca432f41b1149427619607551fb9d002300abc18"
+    },
+    {
+      "id": "bound/sort-oracle-true",
+      "description": "sort expression true when the first hash character of alice matches",
+      "started_at": "2026-11-10T22:46:49.944462+00:00",
+      "elapsed_ms": 11.248,
+      "server": {
+        "fixture_version": "1.0.0",
+        "mode": "bound",
+        "base_url": "http://127.0.0.1:53170"
+      },
+      "command": [
+        "curl",
+        "--noproxy",
+        "*",
+        "--silent",
+        "--show-error",
+        "--include",
+        "--http1.1",
+        "--connect-timeout",
+        "1",
+        "--max-time",
+        "3",
+        "--request",
+        "GET",
+        "--get",
+        "--data-urlencode",
+        "q=",
+        "--data-urlencode",
+        "sort=CASE WHEN (SELECT substr(pw_hash,1,1) FROM users WHERE username='alice')='4' THEN price ELSE -price END",
+        "http://127.0.0.1:53170/search"
+      ],
+      "curl_exit_code": 0,
+      "stderr": "",
+      "request": {
+        "method": "GET",
+        "path": "/search",
+        "query": [
+          [
+            "q",
+            ""
+          ],
+          [
+            "sort",
+            "CASE WHEN (SELECT substr(pw_hash,1,1) FROM users WHERE username='alice')='4' THEN price ELSE -price END"
+          ]
+        ]
+      },
+      "secure_expected": "400 invalid_sort",
+      "demonstration_expected": "200 ids 4,1,3,2",
+      "observed_status": 200,
+      "observed_body": {
+        "results": [
+          {
+            "id": 4,
+            "name": "Cable",
+            "price": 2.0
+          },
+          {
+            "id": 1,
+            "name": "Widget small",
+            "price": 4.5
+          },
+          {
+            "id": 3,
+            "name": "Gadget",
+            "price": 7.25
+          },
+          {
+            "id": 2,
+            "name": "Widget large",
+            "price": 9.0
+          }
+        ]
+      },
+      "matches_demonstration": true,
+      "secure_boundary_holds": false,
+      "response_file": "bound-sort-oracle-true.http",
+      "response_sha256": "3318c0e586523442e539798d32f04c3467bdcda0c65f69b9610801e03d42e447"
+    },
+    {
+      "id": "bound/sort-oracle-false",
+      "description": "same expression with a wrong character",
+      "started_at": "2026-11-10T22:46:49.955794+00:00",
+      "elapsed_ms": 10.663,
+      "server": {
+        "fixture_version": "1.0.0",
+        "mode": "bound",
+        "base_url": "http://127.0.0.1:53170"
+      },
+      "command": [
+        "curl",
+        "--noproxy",
+        "*",
+        "--silent",
+        "--show-error",
+        "--include",
+        "--http1.1",
+        "--connect-timeout",
+        "1",
+        "--max-time",
+        "3",
+        "--request",
+        "GET",
+        "--get",
+        "--data-urlencode",
+        "q=",
+        "--data-urlencode",
+        "sort=CASE WHEN (SELECT substr(pw_hash,1,1) FROM users WHERE username='alice')='0' THEN price ELSE -price END",
+        "http://127.0.0.1:53170/search"
+      ],
+      "curl_exit_code": 0,
+      "stderr": "",
+      "request": {
+        "method": "GET",
+        "path": "/search",
+        "query": [
+          [
+            "q",
+            ""
+          ],
+          [
+            "sort",
+            "CASE WHEN (SELECT substr(pw_hash,1,1) FROM users WHERE username='alice')='0' THEN price ELSE -price END"
+          ]
+        ]
+      },
+      "secure_expected": "400 invalid_sort",
+      "demonstration_expected": "200 ids 2,3,1,4",
+      "observed_status": 200,
+      "observed_body": {
+        "results": [
+          {
+            "id": 2,
+            "name": "Widget large",
+            "price": 9.0
+          },
+          {
+            "id": 3,
+            "name": "Gadget",
+            "price": 7.25
+          },
+          {
+            "id": 1,
+            "name": "Widget small",
+            "price": 4.5
+          },
+          {
+            "id": 4,
+            "name": "Cable",
+            "price": 2.0
+          }
+        ]
+      },
+      "matches_demonstration": true,
+      "secure_boundary_holds": false,
+      "response_file": "bound-sort-oracle-false.http",
+      "response_sha256": "fbced0ff76fa2c8302da634faaa756780bd60b6f27552008b114def91b97e318"
+    },
+    {
+      "id": "bound/second-order-legit-step1",
+      "description": "register carol, then read her history",
+      "started_at": "2026-11-10T22:46:49.966572+00:00",
+      "elapsed_ms": 11.236,
+      "server": {
+        "fixture_version": "1.0.0",
+        "mode": "bound",
+        "base_url": "http://127.0.0.1:53170"
+      },
+      "command": [
+        "curl",
+        "--noproxy",
+        "*",
+        "--silent",
+        "--show-error",
+        "--include",
+        "--http1.1",
+        "--connect-timeout",
+        "1",
+        "--max-time",
+        "3",
+        "--request",
+        "POST",
+        "--header",
+        "Content-Type: application/json",
+        "--data",
+        "{\"username\": \"carol\"}",
+        "http://127.0.0.1:53170/register"
+      ],
+      "curl_exit_code": 0,
+      "stderr": "",
+      "request": {
+        "method": "POST",
+        "path": "/register",
+        "json": {
+          "username": "carol"
+        }
+      },
+      "secure_expected": "201 registered",
+      "demonstration_expected": "201 registered",
+      "observed_status": 201,
+      "observed_body": {
+        "id": 4,
+        "username": "carol"
+      },
+      "matches_demonstration": true,
+      "secure_boundary_holds": true,
+      "response_file": "bound-second-order-legit-step1.http",
+      "response_sha256": "85ff4c8e878904f3b9c5a61d9835d4545ea22fc530eea79b5d473a09d6e558c7"
+    },
+    {
+      "id": "bound/second-order-legit-step2",
+      "description": "register carol, then read her history",
+      "started_at": "2026-11-10T22:46:49.977861+00:00",
+      "elapsed_ms": 10.209,
+      "server": {
+        "fixture_version": "1.0.0",
+        "mode": "bound",
+        "base_url": "http://127.0.0.1:53170"
+      },
+      "command": [
+        "curl",
+        "--noproxy",
+        "*",
+        "--silent",
+        "--show-error",
+        "--include",
+        "--http1.1",
+        "--connect-timeout",
+        "1",
+        "--max-time",
+        "3",
+        "--request",
+        "GET",
+        "--get",
+        "--data-urlencode",
+        "id=4",
+        "http://127.0.0.1:53170/history"
+      ],
+      "curl_exit_code": 0,
+      "stderr": "",
+      "request": {
+        "method": "GET",
+        "path": "/history",
+        "query": [
+          [
+            "id",
+            "4"
+          ]
+        ]
+      },
+      "secure_expected": "200 one order",
+      "demonstration_expected": "200 one order",
+      "observed_status": 200,
+      "observed_body": {
+        "orders": [
+          "synthetic order C-1"
+        ],
+        "user": "carol"
+      },
+      "matches_demonstration": true,
+      "secure_boundary_holds": true,
+      "response_file": "bound-second-order-legit-step2.http",
+      "response_sha256": "ec80b098806cd407d6787de3c58c4e4634ac2604751f1ca5c3e1faec99d0f13c"
+    },
+    {
+      "id": "bound/second-order-payload-step1",
+      "description": "register a username holding SQL, then read its history",
+      "started_at": "2026-11-10T22:46:49.988145+00:00",
+      "elapsed_ms": 11.064,
+      "server": {
+        "fixture_version": "1.0.0",
+        "mode": "bound",
+        "base_url": "http://127.0.0.1:53170"
+      },
+      "command": [
+        "curl",
+        "--noproxy",
+        "*",
+        "--silent",
+        "--show-error",
+        "--include",
+        "--http1.1",
+        "--connect-timeout",
+        "1",
+        "--max-time",
+        "3",
+        "--request",
+        "POST",
+        "--header",
+        "Content-Type: application/json",
+        "--data",
+        "{\"username\": \"x' OR '1'='1\"}",
+        "http://127.0.0.1:53170/register"
+      ],
+      "curl_exit_code": 0,
+      "stderr": "",
+      "request": {
+        "method": "POST",
+        "path": "/register",
+        "json": {
+          "username": "x' OR '1'='1"
+        }
+      },
+      "secure_expected": "201 registered",
+      "demonstration_expected": "201 registered",
+      "observed_status": 201,
+      "observed_body": {
+        "id": 5,
+        "username": "x' OR '1'='1"
+      },
+      "matches_demonstration": true,
+      "secure_boundary_holds": true,
+      "response_file": "bound-second-order-payload-step1.http",
+      "response_sha256": "2512bb93e47ac37a546f80114fd4496e42bdbbed38a67446664f2377705e0679"
+    },
+    {
+      "id": "bound/second-order-payload-step2",
+      "description": "register a username holding SQL, then read its history",
+      "started_at": "2026-11-10T22:46:49.999276+00:00",
+      "elapsed_ms": 10.239,
+      "server": {
+        "fixture_version": "1.0.0",
+        "mode": "bound",
+        "base_url": "http://127.0.0.1:53170"
+      },
+      "command": [
+        "curl",
+        "--noproxy",
+        "*",
+        "--silent",
+        "--show-error",
+        "--include",
+        "--http1.1",
+        "--connect-timeout",
+        "1",
+        "--max-time",
+        "3",
+        "--request",
+        "GET",
+        "--get",
+        "--data-urlencode",
+        "id=5",
+        "http://127.0.0.1:53170/history"
+      ],
+      "curl_exit_code": 0,
+      "stderr": "",
+      "request": {
+        "method": "GET",
+        "path": "/history",
+        "query": [
+          [
+            "id",
+            "5"
+          ]
+        ]
+      },
+      "secure_expected": "200 no orders",
+      "demonstration_expected": "200 no orders",
+      "observed_status": 200,
+      "observed_body": {
+        "orders": [],
+        "user": "x' OR '1'='1"
+      },
+      "matches_demonstration": true,
+      "secure_boundary_holds": true,
+      "response_file": "bound-second-order-payload-step2.http",
+      "response_sha256": "1716fbb563a1b770bd1a85f6e112050e6087444cb140b52a4c2dfc1047ab5577"
+    },
+    {
+      "id": "fixed/login-valid",
+      "description": "alice logs in with the right password",
+      "started_at": "2026-11-10T22:46:50.050394+00:00",
+      "elapsed_ms": 7.683,
+      "server": {
+        "fixture_version": "1.0.0",
+        "mode": "fixed",
+        "base_url": "http://127.0.0.1:53186"
+      },
+      "command": [
+        "curl",
+        "--noproxy",
+        "*",
+        "--silent",
+        "--show-error",
+        "--include",
+        "--http1.1",
+        "--connect-timeout",
+        "1",
+        "--max-time",
+        "3",
+        "--request",
+        "POST",
+        "--header",
+        "Content-Type: application/json",
+        "--data",
+        "{\"username\": \"alice\", \"password\": \"demo-alice-pw\"}",
+        "http://127.0.0.1:53186/login"
+      ],
+      "curl_exit_code": 0,
+      "stderr": "",
+      "request": {
+        "method": "POST",
+        "path": "/login",
+        "json": {
+          "username": "alice",
+          "password": "demo-alice-pw"
+        }
+      },
+      "secure_expected": "200 login as alice",
+      "demonstration_expected": "200 login as alice",
+      "observed_status": 200,
+      "observed_body": {
+        "ok": true,
+        "user": "alice"
+      },
+      "matches_demonstration": true,
+      "secure_boundary_holds": true,
+      "response_file": "fixed-login-valid.http",
+      "response_sha256": "29afcb8ca1099c04904927fe7f4748e9cd5ad8b5c29a4e2596448cc4677dd046"
+    },
+    {
+      "id": "fixed/login-wrong-password",
+      "description": "alice with a wrong password",
+      "started_at": "2026-11-10T22:46:50.058156+00:00",
+      "elapsed_ms": 10.346,
+      "server": {
+        "fixture_version": "1.0.0",
+        "mode": "fixed",
+        "base_url": "http://127.0.0.1:53186"
+      },
+      "command": [
+        "curl",
+        "--noproxy",
+        "*",
+        "--silent",
+        "--show-error",
+        "--include",
+        "--http1.1",
+        "--connect-timeout",
+        "1",
+        "--max-time",
+        "3",
+        "--request",
+        "POST",
+        "--header",
+        "Content-Type: application/json",
+        "--data",
+        "{\"username\": \"alice\", \"password\": \"wrong\"}",
+        "http://127.0.0.1:53186/login"
+      ],
+      "curl_exit_code": 0,
+      "stderr": "",
+      "request": {
+        "method": "POST",
+        "path": "/login",
+        "json": {
+          "username": "alice",
+          "password": "wrong"
+        }
+      },
+      "secure_expected": "401 invalid_credentials",
+      "demonstration_expected": "401 invalid_credentials",
+      "observed_status": 401,
+      "observed_body": {
+        "error": "invalid_credentials"
+      },
+      "matches_demonstration": true,
+      "secure_boundary_holds": true,
+      "response_file": "fixed-login-wrong-password.http",
+      "response_sha256": "9a3e60c8c9490960046c94a77a01c8eb2d7a369c1b3b32629bcddc6d51a44be2"
+    },
+    {
+      "id": "fixed/login-apostrophe-name",
+      "description": "o'brien logs in with the right password",
+      "started_at": "2026-11-10T22:46:50.068578+00:00",
+      "elapsed_ms": 8.02,
+      "server": {
+        "fixture_version": "1.0.0",
+        "mode": "fixed",
+        "base_url": "http://127.0.0.1:53186"
+      },
+      "command": [
+        "curl",
+        "--noproxy",
+        "*",
+        "--silent",
+        "--show-error",
+        "--include",
+        "--http1.1",
+        "--connect-timeout",
+        "1",
+        "--max-time",
+        "3",
+        "--request",
+        "POST",
+        "--header",
+        "Content-Type: application/json",
+        "--data",
+        "{\"username\": \"o'brien\", \"password\": \"demo-obrien-pw\"}",
+        "http://127.0.0.1:53186/login"
+      ],
+      "curl_exit_code": 0,
+      "stderr": "",
+      "request": {
+        "method": "POST",
+        "path": "/login",
+        "json": {
+          "username": "o'brien",
+          "password": "demo-obrien-pw"
+        }
+      },
+      "secure_expected": "200 login as o'brien",
+      "demonstration_expected": "200 login as o'brien",
+      "observed_status": 200,
+      "observed_body": {
+        "ok": true,
+        "user": "o'brien"
+      },
+      "matches_demonstration": true,
+      "secure_boundary_holds": true,
+      "response_file": "fixed-login-apostrophe-name.http",
+      "response_sha256": "b06dcc8af3c68ba638606c07c87545425c9c346be6e165068e23ed63f141a806"
+    },
+    {
+      "id": "fixed/login-bypass",
+      "description": "username alice'-- with a wrong password",
+      "started_at": "2026-11-10T22:46:50.076672+00:00",
+      "elapsed_ms": 7.648,
+      "server": {
+        "fixture_version": "1.0.0",
+        "mode": "fixed",
+        "base_url": "http://127.0.0.1:53186"
+      },
+      "command": [
+        "curl",
+        "--noproxy",
+        "*",
+        "--silent",
+        "--show-error",
+        "--include",
+        "--http1.1",
+        "--connect-timeout",
+        "1",
+        "--max-time",
+        "3",
+        "--request",
+        "POST",
+        "--header",
+        "Content-Type: application/json",
+        "--data",
+        "{\"username\": \"alice'--\", \"password\": \"wrong\"}",
+        "http://127.0.0.1:53186/login"
+      ],
+      "curl_exit_code": 0,
+      "stderr": "",
+      "request": {
+        "method": "POST",
+        "path": "/login",
+        "json": {
+          "username": "alice'--",
+          "password": "wrong"
+        }
+      },
+      "secure_expected": "401 invalid_credentials",
+      "demonstration_expected": "401 invalid_credentials",
+      "observed_status": 401,
+      "observed_body": {
+        "error": "invalid_credentials"
+      },
+      "matches_demonstration": true,
+      "secure_boundary_holds": true,
+      "response_file": "fixed-login-bypass.http",
+      "response_sha256": "9a3e60c8c9490960046c94a77a01c8eb2d7a369c1b3b32629bcddc6d51a44be2"
+    },
+    {
+      "id": "fixed/search-valid",
+      "description": "search for Widget",
+      "started_at": "2026-11-10T22:46:50.084382+00:00",
+      "elapsed_ms": 7.157,
+      "server": {
+        "fixture_version": "1.0.0",
+        "mode": "fixed",
+        "base_url": "http://127.0.0.1:53186"
+      },
+      "command": [
+        "curl",
+        "--noproxy",
+        "*",
+        "--silent",
+        "--show-error",
+        "--include",
+        "--http1.1",
+        "--connect-timeout",
+        "1",
+        "--max-time",
+        "3",
+        "--request",
+        "GET",
+        "--get",
+        "--data-urlencode",
+        "q=Widget",
+        "http://127.0.0.1:53186/search"
+      ],
+      "curl_exit_code": 0,
+      "stderr": "",
+      "request": {
+        "method": "GET",
+        "path": "/search",
+        "query": [
+          [
+            "q",
+            "Widget"
+          ]
+        ]
+      },
+      "secure_expected": "200 two rows",
+      "demonstration_expected": "200 two rows",
+      "observed_status": 200,
+      "observed_body": {
+        "results": [
+          {
+            "id": 2,
+            "name": "Widget large",
+            "price": 9.0
+          },
+          {
+            "id": 1,
+            "name": "Widget small",
+            "price": 4.5
+          }
+        ]
+      },
+      "matches_demonstration": true,
+      "secure_boundary_holds": true,
+      "response_file": "fixed-search-valid.http",
+      "response_sha256": "fa7c808bc876f4b59dbb1ee74d88ee4e594f483489b6e6bf564de0ce2de8793a"
+    },
+    {
+      "id": "fixed/search-union",
+      "description": "UNION SELECT from the users table through q",
+      "started_at": "2026-11-10T22:46:50.091596+00:00",
+      "elapsed_ms": 7.163,
+      "server": {
+        "fixture_version": "1.0.0",
+        "mode": "fixed",
+        "base_url": "http://127.0.0.1:53186"
+      },
+      "command": [
+        "curl",
+        "--noproxy",
+        "*",
+        "--silent",
+        "--show-error",
+        "--include",
+        "--http1.1",
+        "--connect-timeout",
+        "1",
+        "--max-time",
+        "3",
+        "--request",
+        "GET",
+        "--get",
+        "--data-urlencode",
+        "q=zzz' UNION SELECT id, username, pw_hash FROM users --",
+        "http://127.0.0.1:53186/search"
+      ],
+      "curl_exit_code": 0,
+      "stderr": "",
+      "request": {
+        "method": "GET",
+        "path": "/search",
+        "query": [
+          [
+            "q",
+            "zzz' UNION SELECT id, username, pw_hash FROM users --"
+          ]
+        ]
+      },
+      "secure_expected": "200 no rows",
+      "demonstration_expected": "200 no rows",
+      "observed_status": 200,
+      "observed_body": {
+        "results": []
+      },
+      "matches_demonstration": true,
+      "secure_boundary_holds": true,
+      "response_file": "fixed-search-union.http",
+      "response_sha256": "0dcc818413ab96510fbd39ae3bcc48a2fd0280a731279b6568be0d341caacdfd"
+    },
+    {
+      "id": "fixed/sort-valid",
+      "description": "sort by price",
+      "started_at": "2026-11-10T22:46:50.098809+00:00",
+      "elapsed_ms": 6.305,
+      "server": {
+        "fixture_version": "1.0.0",
+        "mode": "fixed",
+        "base_url": "http://127.0.0.1:53186"
+      },
+      "command": [
+        "curl",
+        "--noproxy",
+        "*",
+        "--silent",
+        "--show-error",
+        "--include",
+        "--http1.1",
+        "--connect-timeout",
+        "1",
+        "--max-time",
+        "3",
+        "--request",
+        "GET",
+        "--get",
+        "--data-urlencode",
+        "q=",
+        "--data-urlencode",
+        "sort=price",
+        "http://127.0.0.1:53186/search"
+      ],
+      "curl_exit_code": 0,
+      "stderr": "",
+      "request": {
+        "method": "GET",
+        "path": "/search",
+        "query": [
+          [
+            "q",
+            ""
+          ],
+          [
+            "sort",
+            "price"
+          ]
+        ]
+      },
+      "secure_expected": "200 ids 4,1,3,2",
+      "demonstration_expected": "200 ids 4,1,3,2",
+      "observed_status": 200,
+      "observed_body": {
+        "results": [
+          {
+            "id": 4,
+            "name": "Cable",
+            "price": 2.0
+          },
+          {
+            "id": 1,
+            "name": "Widget small",
+            "price": 4.5
+          },
+          {
+            "id": 3,
+            "name": "Gadget",
+            "price": 7.25
+          },
+          {
+            "id": 2,
+            "name": "Widget large",
+            "price": 9.0
+          }
+        ]
+      },
+      "matches_demonstration": true,
+      "secure_boundary_holds": true,
+      "response_file": "fixed-sort-valid.http",
+      "response_sha256": "dd61ec063a1e7b5d231c6c783f50bec8fd44615c9fb621a6725811c986fe974d"
+    },
+    {
+      "id": "fixed/sort-unknown-column",
+      "description": "sort by a column that does not exist",
+      "started_at": "2026-11-10T22:46:50.105171+00:00",
+      "elapsed_ms": 7.034,
+      "server": {
+        "fixture_version": "1.0.0",
+        "mode": "fixed",
+        "base_url": "http://127.0.0.1:53186"
+      },
+      "command": [
+        "curl",
+        "--noproxy",
+        "*",
+        "--silent",
+        "--show-error",
+        "--include",
+        "--http1.1",
+        "--connect-timeout",
+        "1",
+        "--max-time",
+        "3",
+        "--request",
+        "GET",
+        "--get",
+        "--data-urlencode",
+        "q=",
+        "--data-urlencode",
+        "sort=nosuchcolumn",
+        "http://127.0.0.1:53186/search"
+      ],
+      "curl_exit_code": 0,
+      "stderr": "",
+      "request": {
+        "method": "GET",
+        "path": "/search",
+        "query": [
+          [
+            "q",
+            ""
+          ],
+          [
+            "sort",
+            "nosuchcolumn"
+          ]
+        ]
+      },
+      "secure_expected": "400 invalid_sort",
+      "demonstration_expected": "400 invalid_sort",
+      "observed_status": 400,
+      "observed_body": {
+        "error": "invalid_sort"
+      },
+      "matches_demonstration": true,
+      "secure_boundary_holds": true,
+      "response_file": "fixed-sort-unknown-column.http",
+      "response_sha256": "af0ae26a20c4dbb616762a18ce0db390a25cfa796721b34e7a40b6a7e839a005"
+    },
+    {
+      "id": "fixed/sort-oracle-true",
+      "description": "sort expression true when the first hash character of alice matches",
+      "started_at": "2026-11-10T22:46:50.112254+00:00",
+      "elapsed_ms": 7.054,
+      "server": {
+        "fixture_version": "1.0.0",
+        "mode": "fixed",
+        "base_url": "http://127.0.0.1:53186"
+      },
+      "command": [
+        "curl",
+        "--noproxy",
+        "*",
+        "--silent",
+        "--show-error",
+        "--include",
+        "--http1.1",
+        "--connect-timeout",
+        "1",
+        "--max-time",
+        "3",
+        "--request",
+        "GET",
+        "--get",
+        "--data-urlencode",
+        "q=",
+        "--data-urlencode",
+        "sort=CASE WHEN (SELECT substr(pw_hash,1,1) FROM users WHERE username='alice')='4' THEN price ELSE -price END",
+        "http://127.0.0.1:53186/search"
+      ],
+      "curl_exit_code": 0,
+      "stderr": "",
+      "request": {
+        "method": "GET",
+        "path": "/search",
+        "query": [
+          [
+            "q",
+            ""
+          ],
+          [
+            "sort",
+            "CASE WHEN (SELECT substr(pw_hash,1,1) FROM users WHERE username='alice')='4' THEN price ELSE -price END"
+          ]
+        ]
+      },
+      "secure_expected": "400 invalid_sort",
+      "demonstration_expected": "400 invalid_sort",
+      "observed_status": 400,
+      "observed_body": {
+        "error": "invalid_sort"
+      },
+      "matches_demonstration": true,
+      "secure_boundary_holds": true,
+      "response_file": "fixed-sort-oracle-true.http",
+      "response_sha256": "af0ae26a20c4dbb616762a18ce0db390a25cfa796721b34e7a40b6a7e839a005"
+    },
+    {
+      "id": "fixed/sort-oracle-false",
+      "description": "same expression with a wrong character",
+      "started_at": "2026-11-10T22:46:50.119370+00:00",
+      "elapsed_ms": 9.746,
+      "server": {
+        "fixture_version": "1.0.0",
+        "mode": "fixed",
+        "base_url": "http://127.0.0.1:53186"
+      },
+      "command": [
+        "curl",
+        "--noproxy",
+        "*",
+        "--silent",
+        "--show-error",
+        "--include",
+        "--http1.1",
+        "--connect-timeout",
+        "1",
+        "--max-time",
+        "3",
+        "--request",
+        "GET",
+        "--get",
+        "--data-urlencode",
+        "q=",
+        "--data-urlencode",
+        "sort=CASE WHEN (SELECT substr(pw_hash,1,1) FROM users WHERE username='alice')='0' THEN price ELSE -price END",
+        "http://127.0.0.1:53186/search"
+      ],
+      "curl_exit_code": 0,
+      "stderr": "",
+      "request": {
+        "method": "GET",
+        "path": "/search",
+        "query": [
+          [
+            "q",
+            ""
+          ],
+          [
+            "sort",
+            "CASE WHEN (SELECT substr(pw_hash,1,1) FROM users WHERE username='alice')='0' THEN price ELSE -price END"
+          ]
+        ]
+      },
+      "secure_expected": "400 invalid_sort",
+      "demonstration_expected": "400 invalid_sort",
+      "observed_status": 400,
+      "observed_body": {
+        "error": "invalid_sort"
+      },
+      "matches_demonstration": true,
+      "secure_boundary_holds": true,
+      "response_file": "fixed-sort-oracle-false.http",
+      "response_sha256": "af0ae26a20c4dbb616762a18ce0db390a25cfa796721b34e7a40b6a7e839a005"
+    },
+    {
+      "id": "fixed/second-order-legit-step1",
+      "description": "register carol, then read her history",
+      "started_at": "2026-11-10T22:46:50.129188+00:00",
+      "elapsed_ms": 11.259,
+      "server": {
+        "fixture_version": "1.0.0",
+        "mode": "fixed",
+        "base_url": "http://127.0.0.1:53186"
+      },
+      "command": [
+        "curl",
+        "--noproxy",
+        "*",
+        "--silent",
+        "--show-error",
+        "--include",
+        "--http1.1",
+        "--connect-timeout",
+        "1",
+        "--max-time",
+        "3",
+        "--request",
+        "POST",
+        "--header",
+        "Content-Type: application/json",
+        "--data",
+        "{\"username\": \"carol\"}",
+        "http://127.0.0.1:53186/register"
+      ],
+      "curl_exit_code": 0,
+      "stderr": "",
+      "request": {
+        "method": "POST",
+        "path": "/register",
+        "json": {
+          "username": "carol"
+        }
+      },
+      "secure_expected": "201 registered",
+      "demonstration_expected": "201 registered",
+      "observed_status": 201,
+      "observed_body": {
+        "id": 4,
+        "username": "carol"
+      },
+      "matches_demonstration": true,
+      "secure_boundary_holds": true,
+      "response_file": "fixed-second-order-legit-step1.http",
+      "response_sha256": "64e6169d73e64da7047d3e1d80e12b1de2cd0bfa5327c3760541304ee2418aae"
+    },
+    {
+      "id": "fixed/second-order-legit-step2",
+      "description": "register carol, then read her history",
+      "started_at": "2026-11-10T22:46:50.140519+00:00",
+      "elapsed_ms": 9.865,
+      "server": {
+        "fixture_version": "1.0.0",
+        "mode": "fixed",
+        "base_url": "http://127.0.0.1:53186"
+      },
+      "command": [
+        "curl",
+        "--noproxy",
+        "*",
+        "--silent",
+        "--show-error",
+        "--include",
+        "--http1.1",
+        "--connect-timeout",
+        "1",
+        "--max-time",
+        "3",
+        "--request",
+        "GET",
+        "--get",
+        "--data-urlencode",
+        "id=4",
+        "http://127.0.0.1:53186/history"
+      ],
+      "curl_exit_code": 0,
+      "stderr": "",
+      "request": {
+        "method": "GET",
+        "path": "/history",
+        "query": [
+          [
+            "id",
+            "4"
+          ]
+        ]
+      },
+      "secure_expected": "200 one order",
+      "demonstration_expected": "200 one order",
+      "observed_status": 200,
+      "observed_body": {
+        "orders": [
+          "synthetic order C-1"
+        ],
+        "user": "carol"
+      },
+      "matches_demonstration": true,
+      "secure_boundary_holds": true,
+      "response_file": "fixed-second-order-legit-step2.http",
+      "response_sha256": "189d8afcb51c13c69462e5c9b57cf30b8f4e296ff619f980a8e5c05e2a79ff2c"
+    },
+    {
+      "id": "fixed/second-order-payload-step1",
+      "description": "register a username holding SQL, then read its history",
+      "started_at": "2026-11-10T22:46:50.150453+00:00",
+      "elapsed_ms": 6.577,
+      "server": {
+        "fixture_version": "1.0.0",
+        "mode": "fixed",
+        "base_url": "http://127.0.0.1:53186"
+      },
+      "command": [
+        "curl",
+        "--noproxy",
+        "*",
+        "--silent",
+        "--show-error",
+        "--include",
+        "--http1.1",
+        "--connect-timeout",
+        "1",
+        "--max-time",
+        "3",
+        "--request",
+        "POST",
+        "--header",
+        "Content-Type: application/json",
+        "--data",
+        "{\"username\": \"x' OR '1'='1\"}",
+        "http://127.0.0.1:53186/register"
+      ],
+      "curl_exit_code": 0,
+      "stderr": "",
+      "request": {
+        "method": "POST",
+        "path": "/register",
+        "json": {
+          "username": "x' OR '1'='1"
+        }
+      },
+      "secure_expected": "201 registered",
+      "demonstration_expected": "201 registered",
+      "observed_status": 201,
+      "observed_body": {
+        "id": 5,
+        "username": "x' OR '1'='1"
+      },
+      "matches_demonstration": true,
+      "secure_boundary_holds": true,
+      "response_file": "fixed-second-order-payload-step1.http",
+      "response_sha256": "04c1012db014d566ced3b9ca2887f182b7ecbdff5f6b438267187eefbf2b7052"
+    },
+    {
+      "id": "fixed/second-order-payload-step2",
+      "description": "register a username holding SQL, then read its history",
+      "started_at": "2026-11-10T22:46:50.157082+00:00",
+      "elapsed_ms": 7.269,
+      "server": {
+        "fixture_version": "1.0.0",
+        "mode": "fixed",
+        "base_url": "http://127.0.0.1:53186"
+      },
+      "command": [
+        "curl",
+        "--noproxy",
+        "*",
+        "--silent",
+        "--show-error",
+        "--include",
+        "--http1.1",
+        "--connect-timeout",
+        "1",
+        "--max-time",
+        "3",
+        "--request",
+        "GET",
+        "--get",
+        "--data-urlencode",
+        "id=5",
+        "http://127.0.0.1:53186/history"
+      ],
+      "curl_exit_code": 0,
+      "stderr": "",
+      "request": {
+        "method": "GET",
+        "path": "/history",
+        "query": [
+          [
+            "id",
+            "5"
+          ]
+        ]
+      },
+      "secure_expected": "200 no orders",
+      "demonstration_expected": "200 no orders",
+      "observed_status": 200,
+      "observed_body": {
+        "orders": [],
+        "user": "x' OR '1'='1"
+      },
+      "matches_demonstration": true,
+      "secure_boundary_holds": true,
+      "response_file": "fixed-second-order-payload-step2.http",
+      "response_sha256": "1716fbb563a1b770bd1a85f6e112050e6087444cb140b52a4c2dfc1047ab5577"
+    }
+  ],
+  "failures": [],
+  "finished_at": "2026-11-10T22:46:50.165548+00:00",
+  "all_demonstration_checks_passed": true,
+  "secure_boundary_failures": [
+    "vulnerable/login-apostrophe-name",
+    "vulnerable/login-bypass",
+    "vulnerable/search-union",
+    "vulnerable/sort-unknown-column",
+    "vulnerable/sort-oracle-true",
+    "vulnerable/sort-oracle-false",
+    "vulnerable/second-order-payload-step2",
+    "bound/sort-unknown-column",
+    "bound/sort-oracle-true",
+    "bound/sort-oracle-false"
+  ]
+}

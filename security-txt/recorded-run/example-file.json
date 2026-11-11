@@ -1,0 +1,61 @@
+{
+  "checker_version": "1.0.0",
+  "source": "security.txt.example",
+  "errors": 0,
+  "findings": [
+    {
+      "level": "NOTE",
+      "rule": "signature",
+      "rfc9116": "2.3",
+      "message": "File is not signed. A signature is RECOMMENDED, with a Canonical field."
+    },
+    {
+      "level": "OK",
+      "rule": "contact-required",
+      "rfc9116": "2.5.3",
+      "message": "2 Contact field(s) present."
+    },
+    {
+      "level": "OK",
+      "rule": "expires-format",
+      "rfc9116": "2.5.5",
+      "message": "Expires 2027-06-30T23:59:59Z is a valid date-time in the future."
+    },
+    {
+      "level": "OK",
+      "rule": "uri",
+      "rfc9116": "2.5",
+      "message": "Acknowledgments on line 8: https://example.com/security/thanks"
+    },
+    {
+      "level": "OK",
+      "rule": "uri",
+      "rfc9116": "2.5",
+      "message": "Canonical on line 10: https://example.com/.well-known/security.txt"
+    },
+    {
+      "level": "OK",
+      "rule": "uri",
+      "rfc9116": "2.5",
+      "message": "Contact on line 3: mailto:security@example.com"
+    },
+    {
+      "level": "OK",
+      "rule": "uri",
+      "rfc9116": "2.5",
+      "message": "Contact on line 4: https://example.com/security/report"
+    },
+    {
+      "level": "OK",
+      "rule": "uri",
+      "rfc9116": "2.5",
+      "message": "Encryption on line 6: https://example.com/.well-known/pgp-key.txt"
+    },
+    {
+      "level": "OK",
+      "rule": "uri",
+      "rfc9116": "2.5",
+      "message": "Policy on line 7: https://example.com/security/policy"
+    }
+  ]
+}

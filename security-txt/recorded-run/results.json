@@ -1,0 +1,236 @@
+{
+  "schema_version": 1,
+  "fixture_version": "1.0.0",
+  "started_at": "2026-11-10T22:47:50.930731+00:00",
+  "method": "check.py run as a subprocess against two locally spawned fixture modes and one example file",
+  "scope": {
+    "hosts": [
+      "127.0.0.1"
+    ],
+    "methods": [
+      "GET"
+    ],
+    "data": "Synthetic files; every address uses example.com"
+  },
+  "versions": {
+    "python": "3.15.2",
+    "os": "Darwin",
+    "architecture": "arm64"
+  },
+  "sha256": {
+    "fixture.py": "b9d0dcee472d849e26816df8d12584c49fc0483f937650663379b441fa5dc62b",
+    "verify.py": "a2bd645f6f6de4fa5f133229cc9c798d7c1792ecff5ae4b079f22f831e6d2f70",
+    "check.py": "87cb2a30f396df92700fda53e7a3de618aaa372bc6f120a704966704c563b1a9",
+    "security.txt.example": "5e6f6ac951736b59bcd46a8a399b1878c69ffc2016b72794d48285f133843076"
+  },
+  "reproduction_command": "python3 verify.py --output recorded-run",
+  "agent_execution": {
+    "executed": false,
+    "note": "Scripted verification; no model or agent ran"
+  },
+  "cases": [
+    {
+      "id": "broken/wrong-path",
+      "server": {
+        "fixture_version": "1.0.0",
+        "mode": "broken",
+        "base_url": "http://127.0.0.1:53877",
+        "paths": [
+          "/expired/.well-known/security.txt",
+          "/html/.well-known/security.txt",
+          "/httpcontact/.well-known/security.txt",
+          "/noexpires/.well-known/security.txt",
+          "/security.txt"
+        ]
+      },
+      "site_prefix": "/",
+      "expected_error_rules": [
+        "http-status"
+      ],
+      "observed_error_rules": [
+        "http-status"
+      ],
+      "check_exit_code": 1,
+      "matches_expectation": true,
+      "output_file": "broken-wrong-path.txt",
+      "output_sha256": "455592d55f679c4541f91d676fc5fc9210e68bb0d285728fa32037f6ae6e0379"
+    },
+    {
+      "id": "broken/missing-expires",
+      "server": {
+        "fixture_version": "1.0.0",
+        "mode": "broken",
+        "base_url": "http://127.0.0.1:53877",
+        "paths": [
+          "/expired/.well-known/security.txt",
+          "/html/.well-known/security.txt",
+          "/httpcontact/.well-known/security.txt",
+          "/noexpires/.well-known/security.txt",
+          "/security.txt"
+        ]
+      },
+      "site_prefix": "/noexpires",
+      "expected_error_rules": [
+        "expires-required"
+      ],
+      "observed_error_rules": [
+        "expires-required"
+      ],
+      "check_exit_code": 1,
+      "matches_expectation": true,
+      "output_file": "broken-missing-expires.txt",
+      "output_sha256": "ef1d6b6be6198f794cc6f41804d7783843c07d4324c921edb6144d28f2dfc6f7"
+    },
+    {
+      "id": "broken/expired-date",
+      "server": {
+        "fixture_version": "1.0.0",
+        "mode": "broken",
+        "base_url": "http://127.0.0.1:53877",
+        "paths": [
+          "/expired/.well-known/security.txt",
+          "/html/.well-known/security.txt",
+          "/httpcontact/.well-known/security.txt",
+          "/noexpires/.well-known/security.txt",
+          "/security.txt"
+        ]
+      },
+      "site_prefix": "/expired",
+      "expected_error_rules": [
+        "expires-stale"
+      ],
+      "observed_error_rules": [
+        "expires-stale"
+      ],
+      "check_exit_code": 1,
+      "matches_expectation": true,
+      "output_file": "broken-expired-date.txt",
+      "output_sha256": "0d19de836837644205091a99398e0844740b53aa03c2f5959bb24b91ffc9fcb7"
+    },
+    {
+      "id": "broken/http-contact",
+      "server": {
+        "fixture_version": "1.0.0",
+        "mode": "broken",
+        "base_url": "http://127.0.0.1:53877",
+        "paths": [
+          "/expired/.well-known/security.txt",
+          "/html/.well-known/security.txt",
+          "/httpcontact/.well-known/security.txt",
+          "/noexpires/.well-known/security.txt",
+          "/security.txt"
+        ]
+      },
+      "site_prefix": "/httpcontact",
+      "expected_error_rules": [
+        "https-only"
+      ],
+      "observed_error_rules": [
+        "https-only"
+      ],
+      "check_exit_code": 1,
+      "matches_expectation": true,
+      "output_file": "broken-http-contact.txt",
+      "output_sha256": "a43a797371215ccc76583ffe804e0a538702d16d9f9c44ae68b40f191fec8c59"
+    },
+    {
+      "id": "broken/html-content-type",
+      "server": {
+        "fixture_version": "1.0.0",
+        "mode": "broken",
+        "base_url": "http://127.0.0.1:53877",
+        "paths": [
+          "/expired/.well-known/security.txt",
+          "/html/.well-known/security.txt",
+          "/httpcontact/.well-known/security.txt",
+          "/noexpires/.well-known/security.txt",
+          "/security.txt"
+        ]
+      },
+      "site_prefix": "/html",
+      "expected_error_rules": [
+        "content-type"
+      ],
+      "observed_error_rules": [
+        "content-type"
+      ],
+      "check_exit_code": 1,
+      "matches_expectation": true,
+      "output_file": "broken-html-content-type.txt",
+      "output_sha256": "478307d98f7cbc1aa8c309139bc59f68ddfeb993bc5a2b9bb3b0edcaab69ffc2"
+    },
+    {
+      "id": "fixed/corrected-file",
+      "server": {
+        "fixture_version": "1.0.0",
+        "mode": "fixed",
+        "base_url": "http://127.0.0.1:53894",
+        "paths": [
+          "/.well-known/security.txt",
+          "/minimal/.well-known/security.txt",
+          "/signed/.well-known/security.txt"
+        ]
+      },
+      "site_prefix": "/",
+      "expected_error_rules": [],
+      "observed_error_rules": [],
+      "check_exit_code": 0,
+      "matches_expectation": true,
+      "output_file": "fixed-corrected-file.txt",
+      "output_sha256": "ac7b561d36c79445300c8b42cbb2d1b3b082c70c13f7850e5c9b10de779dad92"
+    },
+    {
+      "id": "fixed/control-minimal-file",
+      "server": {
+        "fixture_version": "1.0.0",
+        "mode": "fixed",
+        "base_url": "http://127.0.0.1:53894",
+        "paths": [
+          "/.well-known/security.txt",
+          "/minimal/.well-known/security.txt",
+          "/signed/.well-known/security.txt"
+        ]
+      },
+      "site_prefix": "/minimal",
+      "expected_error_rules": [],
+      "observed_error_rules": [],
+      "check_exit_code": 0,
+      "matches_expectation": true,
+      "output_file": "fixed-control-minimal-file.txt",
+      "output_sha256": "11b4d4ef2e40d8f3f308d325ce43a2fc0638245d3947c4d84cec37c56d5a6df0"
+    },
+    {
+      "id": "fixed/control-signed-structure",
+      "server": {
+        "fixture_version": "1.0.0",
+        "mode": "fixed",
+        "base_url": "http://127.0.0.1:53894",
+        "paths": [
+          "/.well-known/security.txt",
+          "/minimal/.well-known/security.txt",
+          "/signed/.well-known/security.txt"
+        ]
+      },
+      "site_prefix": "/signed",
+      "expected_error_rules": [],
+      "observed_error_rules": [],
+      "check_exit_code": 0,
+      "matches_expectation": true,
+      "output_file": "fixed-control-signed-structure.txt",
+      "output_sha256": "90b2cdc9890e5d9310388b32c6b0fb942e1d87888e3d3ef24de04a806551b3aa"
+    },
+    {
+      "id": "example/copy-paste-file",
+      "note": "Expires compared with a pinned clock 2026-11-10T00:00:00Z so a rerun stays valid after the example expires",
+      "expected_error_rules": [],
+      "observed_error_rules": [],
+      "check_exit_code": 0,
+      "matches_expectation": true,
+      "output_file": "example-file.txt",
+      "output_sha256": "87946f228d872ce0ab04a75c8693ce123d17408abbc97a335e3e2a00707d1148"
+    }
+  ],
+  "failures": [],
+  "finished_at": "2026-11-10T22:47:52.279926+00:00",
+  "all_checks_passed": true
+}

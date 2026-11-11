@@ -1,0 +1,8 @@
+HTTP/1.0 200 OK
+Server: AuthzFixture/1.0.0 
+Date: Mon, 02 Nov 2026 23:06:25 GMT
+Content-Type: application/json
+Content-Length: 71
+Cache-Control: no-store
+
+{"id": "alice-note", "owner": "alice", "text": "Alice synthetic note"}
